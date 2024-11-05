@@ -6,7 +6,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp
+@TeleOp(name="TeleUpdateTest", group="TeleOp")
 @Config
 public class TeleUpdateTest extends LinearOpMode {
     public void runOpMode() {
