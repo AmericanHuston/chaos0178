@@ -6,6 +6,8 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+//isPrime was copied from: https://stackoverflow.com/a/24006293
+
 @TeleOp(name="PrimeCruncher", group="Autonomous")
 @Config
 public class PrimeCruncher extends LinearOpMode{
@@ -15,14 +17,21 @@ public class PrimeCruncher extends LinearOpMode{
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
         dashboard.updateConfig();
+        waitForStart();
         //Don't edit code above this point
         int num = 0;
+        int totalPrimesFound = 0;
+        while (opModeIsActive()) {
 
             do {
                 num = num + 1;
             } while (!isPrime(num));
-            telemetry.addData("Prime: ", num);
+            telemetry.addData("Prime ", num);
+            totalPrimesFound = totalPrimesFound +1;
+            telemetry.addData("Number of primes found ", totalPrimesFound);
+            telemetry.update();
         }
+    }
   // print the number
 
     /**
