@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.TeleOp.TestFiles;
+package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp(name="TestSliders", group="TeleOp")
-public class TestSliders extends LinearOpMode {
+public class Sliders extends LinearOpMode {
 
     public DcMotor sliderLeft = hardwareMap.get(DcMotor.class, "sliderLeft");
     public DcMotor sliderRight = hardwareMap.get(DcMotor.class, "sliderRight");

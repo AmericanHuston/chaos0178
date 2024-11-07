@@ -1,9 +1,9 @@
 package org.firstinspires.ftc.teamcode.TeleOp.TestFiles;
 
-import static org.firstinspires.ftc.teamcode.TeleOp.Methods.Adding;
-import static org.firstinspires.ftc.teamcode.TeleOp.Methods.Dividing;
-import static org.firstinspires.ftc.teamcode.TeleOp.Methods.Multiplying;
-import static org.firstinspires.ftc.teamcode.TeleOp.Methods.Subtracting;
+import static org.firstinspires.ftc.teamcode.TeleOp.TestFiles.Methods.Adding;
+import static org.firstinspires.ftc.teamcode.TeleOp.TestFiles.Methods.Dividing;
+import static org.firstinspires.ftc.teamcode.TeleOp.TestFiles.Methods.Multiplying;
+import static org.firstinspires.ftc.teamcode.TeleOp.TestFiles.Methods.Subtracting;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
