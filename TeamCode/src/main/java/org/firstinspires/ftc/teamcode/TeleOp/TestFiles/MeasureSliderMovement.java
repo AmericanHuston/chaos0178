@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.TeleOp.TestFiles;
 
-import static org.firstinspires.ftc.teamcode.TeleOp.TestFiles.Methods.driving;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -10,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
@@ -19,13 +18,11 @@ public class MeasureSliderMovement extends LinearOpMode {
 
     public DcMotor SliderLeft;
     public DcMotor SliderRight;
-    private DcMotor frontLeftMotor;
-    private DcMotor frontRightMotor;
-    private DcMotor backLeftMotor;
-    private DcMotor backRightMotor;
+    private Servo claw;
 
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
+        claw = hardwareMap.get(Servo.class, "claw");
         SliderLeft = hardwareMap.get(DcMotor.class, "SliderLeft");
         SliderRight = hardwareMap.get(DcMotor.class, "SliderRight");
         IMU imu = hardwareMap.get(IMU.class, "imu");
@@ -40,8 +37,9 @@ public class MeasureSliderMovement extends LinearOpMode {
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
         dashboard.updateConfig();
         waitForStart();
-        int leftPos = SliderLeft.getCurrentPosition();
-        int rightPos = SliderRight.getCurrentPosition();
+        SliderLeft.getCurrentPosition();
+        int leftPos;
+        int rightPos;
         double power = 0.35;
         //Don't edit code above this point
         while (opModeIsActive()) {
@@ -49,6 +47,7 @@ public class MeasureSliderMovement extends LinearOpMode {
                 SliderLeft.setPower(power);
                 SliderRight.setPower(-power);
                 driving();
+                servo();
                 leftPos = SliderLeft.getCurrentPosition();
                 rightPos = SliderRight.getCurrentPosition();
                 telemetry.addData("leftPos", -leftPos);
@@ -56,21 +55,71 @@ public class MeasureSliderMovement extends LinearOpMode {
                 telemetry.update();
             }
             driving();
+            servo();
             SliderRight.setPower(0.0);
             SliderLeft.setPower(0.0);
             while (this.gamepad2.dpad_down) {
                 SliderLeft.setPower(-power);
                 SliderRight.setPower(power);
+                servo();
                 driving();
                 leftPos = SliderLeft.getCurrentPosition();
                 rightPos = SliderRight.getCurrentPosition();
-                telemetry.addData("leftPos", -leftPos);
-                telemetry.addData("rightPos", rightPos);
+                telemetry.addData("leftPos", leftPos);
+                telemetry.addData("rightPos", -rightPos);
                 telemetry.update();
             }
+            servo();
             driving();
             SliderRight.setPower(0.0);
             SliderLeft.setPower(0.0);
         }
+    }
+    public void servo(){
+        double INCREMENT = 0.01;
+        double MAX_POS = 1.0;
+        double MIN_POS = 0.0;
+        int CYCLE_MS = 50;
+        double position = (MIN_POS - MAX_POS);
+        while (this.gamepad2.b) {
+            position = position + INCREMENT;
+        }
+        while (this.gamepad2.a){
+            position = position - INCREMENT;
+        }
+        claw.setPosition(position); //Tell the servo to go to the correct pos
+        sleep(CYCLE_MS);
+        idle();
+    }
+    public void driving() {
+        DcMotor frontLeftMotor = hardwareMap.dcMotor.get("frontLeft");
+        DcMotor backLeftMotor = hardwareMap.dcMotor.get("backLeft");
+        DcMotor frontRightMotor = hardwareMap.dcMotor.get("frontRight");
+        DcMotor backRightMotor = hardwareMap.dcMotor.get("backRight");
+        IMU imu = hardwareMap.get(IMU.class, "imu");
+        double y = -gamepad1.left_stick_y / 2; // Remember, Y stick value is reversed
+        double x = gamepad1.left_stick_x / 2;
+        double rx = gamepad1.right_stick_x / 2;
+        if (gamepad1.right_trigger >= 0.01) {
+            y = y * 2;
+            x = x * 2;
+            rx = rx * 2;
+        }
+        double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
+        double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
+        if (gamepad1.left_stick_button) {
+            imu.resetYaw();
+        }
+        rotX = rotX * 1.1;
+        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
+        double frontLeftPower = (rotY + rotX + rx) / denominator;
+        double backLeftPower = (rotY - rotX + rx) / denominator;
+        double frontRightPower = (rotY - rotX - rx) / denominator;
+        double backRightPower = (rotY + rotX - rx) / denominator;
+        frontLeftMotor.setPower(frontLeftPower);
+        backLeftMotor.setPower(backLeftPower);
+        frontRightMotor.setPower(frontRightPower);
+        backRightMotor.setPower(backRightPower);
     }
 }
