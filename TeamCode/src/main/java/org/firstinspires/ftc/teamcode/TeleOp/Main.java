@@ -11,8 +11,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-@Autonomous(name = "FirstAuto", group = "TeleOp")
-public class FirstAuto extends LinearOpMode {
+@Autonomous(name = "Main", group = "TeleOp")
+public class Main extends LinearOpMode {
     public DcMotor SliderLeft;
     public DcMotor SliderRight;
     private Servo claw;
