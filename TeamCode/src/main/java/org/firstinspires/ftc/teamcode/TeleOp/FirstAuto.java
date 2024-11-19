@@ -1,7 +1,8 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -36,26 +37,32 @@ public class FirstAuto extends LinearOpMode {
             }
             driving();
             while(this.gamepad2.dpad_up){
-                sliders(sliderSpeed);
+                slidersGo(sliderSpeed);
                 driving();
             }
+            slidersStop();
             while(this.gamepad2.dpad_down){
-                sliders(-sliderSpeed);
+                slidersGo(-sliderSpeed);
                 driving();
             }
-            while(this.gamepad2.left_trigger > 0.0){
-                double increment = this.gamepad2.left_trigger;
-                servo(increment);
+            slidersStop();
+            while(this.gamepad2.left_trigger > 0.1){
+                servo();
                 driving();
             }
-            while(this.gamepad2.right_trigger > 0.0){
-                double increment = this.gamepad2.right_trigger;
-                servo(increment);
+            while(this.gamepad2.right_trigger > 0.1){
+                servo();
                 driving();
             }
         }
     }
-    public void sliders(double power){
+    //Fixes slider stopping issue
+    public void slidersStop(){
+        SliderLeft.setPower(0.0);
+        SliderRight.setPower(0.0);
+    }
+    //Sliders don't stop
+    public void slidersGo(double power){
         SliderLeft.setPower(power);
         SliderRight.setPower(-power);
         double leftPos = SliderLeft.getCurrentPosition();
@@ -64,22 +71,37 @@ public class FirstAuto extends LinearOpMode {
         telemetry.addData("rightPos", rightPos);
         telemetry.update();
     }
-    public void servo(double INCREMENT){
-        double MAX_POS = 1.0;
-        double MIN_POS = 0.0;
-        int CYCLE_MS = 50;
+    //yet to be tested, kind of works
+    public void servo(){
+        double INCREMENT = 0.5;
+        int CYCLE_MS = 10;
         double position = claw.getPosition();
-        position = position + INCREMENT;
+        while(this.gamepad2.right_trigger > 0.1) {
+            position = position + INCREMENT;
+            claw.setPosition(position); //Tell the servo to go to the correct pos
+            sleep(CYCLE_MS);
+            idle();
+        }
+        while(this.gamepad2.left_trigger > 0.1){
+            position = position - INCREMENT;
+            claw.setPosition(position); //Tell the servo to go to the correct pos
+            sleep(CYCLE_MS);
+            idle();
+        }
         claw.setPosition(position); //Tell the servo to go to the correct pos
         sleep(CYCLE_MS);
         idle();
     }
+    //driving is working, field centric
     public void driving() {
         DcMotor frontLeftMotor = hardwareMap.dcMotor.get("frontLeft");
         DcMotor backLeftMotor = hardwareMap.dcMotor.get("backLeft");
         DcMotor frontRightMotor = hardwareMap.dcMotor.get("frontRight");
         DcMotor backRightMotor = hardwareMap.dcMotor.get("backRight");
         IMU imu = hardwareMap.get(IMU.class, "imu");
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,
+                RevHubOrientationOnRobot.UsbFacingDirection.RIGHT));
         double y = gamepad1.left_stick_y / 2; // Remember, Y stick value is reversed
         double x = -gamepad1.left_stick_x / 2;
         double rx = gamepad1.right_stick_x / 2;
