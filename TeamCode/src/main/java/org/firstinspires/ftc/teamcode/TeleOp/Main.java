@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -59,8 +58,12 @@ public class Main extends LinearOpMode {
     }
     //Fixes slider stopping issue
     public void slidersStop(){
-        SliderLeft.setPower(0.0);
-        SliderRight.setPower(0.0);
+        int rightTarget = SliderRight.getCurrentPosition();
+        int leftTarget = SliderLeft.getCurrentPosition();
+        SliderRight.setPower(0.1);
+        SliderLeft.setPower(0.1);
+        SliderLeft.setTargetPosition(leftTarget);
+        SliderRight.setTargetPosition(rightTarget);
     }
     //Sliders don't stop
     public void slidersGo(double power){
