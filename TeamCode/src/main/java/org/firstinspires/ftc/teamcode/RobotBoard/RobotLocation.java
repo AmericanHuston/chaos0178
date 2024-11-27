@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 
 public class RobotLocation {
     double angle;
+    double x;
+    double y;
     public RobotLocation(double angle){
         this.angle = angle;
     }
@@ -17,6 +19,31 @@ public class RobotLocation {
         }
         return angle;
     }
+    public double getAngle(){
+        return angle;
+    }
+    public double getX(){
+        return x;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+    public void changeX(double changeX){
+        x += changeX;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+    public void changeY(double changeY){
+        y += changeY;
+    }
+
     @Override
     @NonNull
     public String toString(){
