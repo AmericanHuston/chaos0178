@@ -6,6 +6,7 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -36,21 +37,21 @@ public class Main extends LinearOpMode {
                 imu.resetYaw();
             }
             driving();
-            while(this.gamepad2.dpad_up){
+            if (this.gamepad2.dpad_up){
                 slidersGo(sliderSpeed);
                 driving();
             }
             slidersStop();
-            while(this.gamepad2.dpad_down){
+            if(this.gamepad2.dpad_down){
                 slidersGo(-sliderSpeed);
                 driving();
             }
             slidersStop();
-            while(this.gamepad2.left_trigger > 0.1){
+            if(this.gamepad2.left_trigger > 0.1){
                 servo();
                 driving();
             }
-            while(this.gamepad2.right_trigger > 0.1){
+            if(this.gamepad2.right_trigger > 0.1){
                 servo();
                 driving();
             }
@@ -103,11 +104,17 @@ public class Main extends LinearOpMode {
         DcMotor frontRightMotor = hardwareMap.dcMotor.get("frontRight");
         DcMotor backRightMotor = hardwareMap.dcMotor.get("backRight");
         IMU imu = hardwareMap.get(IMU.class, "imu");
+        if (gamepad1.left_stick_button) {
+            imu.resetYaw();
+        }
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,
                 RevHubOrientationOnRobot.UsbFacingDirection.RIGHT));
-        double y = gamepad1.left_stick_y / 2; // Remember, Y stick value is reversed
-        double x = -gamepad1.left_stick_x / 2;
+        imu.initialize(parameters);
+        frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        double y = -gamepad1.left_stick_y / 2; // Remember, Y stick value is reversed
+        double x = gamepad1.left_stick_x / 2;
         double rx = gamepad1.right_stick_x / 2;
         if (gamepad1.right_trigger >= 0.01) {
             y = y * 2;
@@ -117,9 +124,6 @@ public class Main extends LinearOpMode {
         double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
         double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
-        if (gamepad1.left_stick_button) {
-            imu.resetYaw();
-        }
         rotX = rotX * 1.1;
         double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
         double frontLeftPower = (rotY + rotX + rx) / denominator;
