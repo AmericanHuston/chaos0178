@@ -138,10 +138,6 @@ public class Main extends LinearOpMode {
         backLeftPower = (rotY - rotX + rx) / denominator;
         frontRightPower = (rotY - rotX - rx) / denominator;
         backRightPower = (rotY + rotX - rx) / denominator;
-        frontLeftMotor.setPower(frontLeftPower);
-        backLeftMotor.setPower(backLeftPower);
-        frontRightMotor.setPower(frontRightPower);
-        backRightMotor.setPower(backRightPower);
     }
     public void action() {
         DcMotor frontLeftMotor = hardwareMap.get(DcMotor.class,"frontLeft");
