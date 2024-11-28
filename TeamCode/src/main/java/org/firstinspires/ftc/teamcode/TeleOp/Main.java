@@ -18,7 +18,10 @@ public class Main extends LinearOpMode {
     public DcMotor SliderRight;
     private Servo claw;
     private Servo arm;
-
+    double backRightPower;
+    double frontRightPower;
+    double frontLeftPower;
+    double backLeftPower;
     @Override
     public void runOpMode() throws InterruptedException {
         IMU imu = hardwareMap.get(IMU.class, "imu");
@@ -37,23 +40,28 @@ public class Main extends LinearOpMode {
                 imu.resetYaw();
             }
             driving();
+            action();
             if (this.gamepad2.dpad_up){
                 slidersGo(sliderSpeed);
                 driving();
+                action();
             }
             slidersStop();
             if(this.gamepad2.dpad_down){
                 slidersGo(-sliderSpeed);
                 driving();
+                action();
             }
             slidersStop();
             if(this.gamepad2.left_trigger > 0.1){
                 servo();
                 driving();
+                action();
             }
             if(this.gamepad2.right_trigger > 0.1){
                 servo();
                 driving();
+                action();
             }
         }
     }
@@ -126,10 +134,20 @@ public class Main extends LinearOpMode {
         double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
         rotX = rotX * 1.1;
         double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
-        double frontLeftPower = (rotY + rotX + rx) / denominator;
-        double backLeftPower = (rotY - rotX + rx) / denominator;
-        double frontRightPower = (rotY - rotX - rx) / denominator;
-        double backRightPower = (rotY + rotX - rx) / denominator;
+        frontLeftPower = (rotY + rotX + rx) / denominator;
+        backLeftPower = (rotY - rotX + rx) / denominator;
+        frontRightPower = (rotY - rotX - rx) / denominator;
+        backRightPower = (rotY + rotX - rx) / denominator;
+        frontLeftMotor.setPower(frontLeftPower);
+        backLeftMotor.setPower(backLeftPower);
+        frontRightMotor.setPower(frontRightPower);
+        backRightMotor.setPower(backRightPower);
+    }
+    public void action() {
+        DcMotor frontLeftMotor = hardwareMap.get(DcMotor.class,"frontLeft");
+        DcMotor backLeftMotor = hardwareMap.get(DcMotor.class,"backLeft");
+        DcMotor frontRightMotor = hardwareMap.get(DcMotor.class,"frontRight");
+        DcMotor backRightMotor = hardwareMap.get(DcMotor.class,"backRight");
         frontLeftMotor.setPower(frontLeftPower);
         backLeftMotor.setPower(backLeftPower);
         frontRightMotor.setPower(frontRightPower);
