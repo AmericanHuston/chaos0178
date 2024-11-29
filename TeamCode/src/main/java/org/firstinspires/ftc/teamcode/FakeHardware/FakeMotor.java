@@ -7,16 +7,18 @@ public class FakeMotor {
     public enum mode {RUN_TO_POSITION, CONTINUOUS}
 
     int tick; //tick can be substituted for position, or rotation angle.
-    public mode runMode;
+    public mode runMode = mode.RUN_TO_POSITION;
     int runDirection;
     int MAX_TICKS = 4000;
     int MIN_TICKS = 0;
     double MAX_POWER = 1.0;
     double MIN_POWER = -1.0;
     double MAX_RPM, power;
-    public FakeMotor(double rpm, mode runMode){
-        this.runMode = runMode;
+    public FakeMotor(double rpm){
         this.MAX_RPM = rpm;
+    }
+    public void setRunMode(mode runMode){
+        this.runMode = runMode;
     }
     public void setRunDirection(direction dir){
         if (dir == direction.BACKWARD){
