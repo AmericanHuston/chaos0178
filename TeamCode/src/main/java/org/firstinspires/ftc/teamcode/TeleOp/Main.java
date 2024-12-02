@@ -16,8 +16,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 public class Main extends LinearOpMode {
     public DcMotor SliderLeft;
     public DcMotor SliderRight;
-    private Servo claw;
-    private Servo arm;
     double backRightPower;
     double frontRightPower;
     double frontLeftPower;
@@ -25,10 +23,15 @@ public class Main extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         IMU imu = hardwareMap.get(IMU.class, "imu");
-        claw = hardwareMap.get(Servo.class, "claw");
-        arm = hardwareMap.get(Servo.class, "arm");
+        Servo claw = hardwareMap.get(Servo.class, "claw");
+        Servo arm = hardwareMap.get(Servo.class, "arm");
         SliderLeft = hardwareMap.get(DcMotor.class, "SliderLeft");
         SliderRight = hardwareMap.get(DcMotor.class, "SliderRight");
+        SliderLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        SliderRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        SliderRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        SliderLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        SliderRight.setDirection(DcMotorSimple.Direction.REVERSE); //It needs to be reversed because...
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
         dashboard.updateConfig();
@@ -41,67 +44,75 @@ public class Main extends LinearOpMode {
             }
             driving();
             action();
-            if (this.gamepad2.dpad_up){
-                slidersGo(sliderSpeed);
+            while(this.gamepad2.dpad_up){
+                sliderPreset1();
+//                slidersGo(sliderSpeed);
                 driving();
                 action();
             }
             slidersStop();
-            if(this.gamepad2.dpad_down){
-                slidersGo(-sliderSpeed);
+            while(this.gamepad2.dpad_down){
+                slidersGo(-sliderSpeed); //Go down, so negative
                 driving();
                 action();
             }
             slidersStop();
             if(this.gamepad2.left_trigger > 0.1){
-                servo();
+                servo(claw);
                 driving();
                 action();
             }
+            slidersStop();
             if(this.gamepad2.right_trigger > 0.1){
-                servo();
+                servo(claw);
                 driving();
                 action();
             }
+            slidersStop();
         }
     }
     //Fixes slider stopping issue
     public void slidersStop(){
         int rightTarget = SliderRight.getCurrentPosition();
         int leftTarget = SliderLeft.getCurrentPosition();
-        SliderRight.setPower(0.1);
-        SliderLeft.setPower(0.1);
-        SliderLeft.setTargetPosition(leftTarget);
-        SliderRight.setTargetPosition(rightTarget);
+        if (SliderRight.getCurrentPosition() != rightTarget || SliderLeft.getCurrentPosition() != leftTarget) {
+            SliderLeft.setTargetPosition(leftTarget);
+            SliderRight.setTargetPosition(rightTarget);
+            SliderLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            SliderRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            SliderRight.setPower(0.2);
+            SliderLeft.setPower(0.2);
+        }
     }
     //Sliders don't stop
     public void slidersGo(double power){
         SliderLeft.setPower(power);
-        SliderRight.setPower(-power);
-        double leftPos = SliderLeft.getCurrentPosition();
-        double rightPos = SliderRight.getCurrentPosition();
-        telemetry.addData("leftPos", -leftPos);
+        SliderRight.setPower(power);
+        int leftPos = SliderLeft.getCurrentPosition();
+        int rightPos = SliderRight.getCurrentPosition();
+        telemetry.addData("leftPos", leftPos);
         telemetry.addData("rightPos", rightPos);
         telemetry.update();
+        idle();
     }
     //yet to be tested, kind of works
-    public void servo(){
+    public void servo(Servo servo){
         double INCREMENT = 0.5;
         int CYCLE_MS = 10;
-        double position = claw.getPosition();
+        double position = servo.getPosition();
         while(this.gamepad2.right_trigger > 0.1) {
             position = position + INCREMENT;
-            claw.setPosition(position); //Tell the servo to go to the correct pos
+            servo.setPosition(position); //Tell the servo to go to the correct pos
             sleep(CYCLE_MS);
             idle();
         }
         while(this.gamepad2.left_trigger > 0.1){
             position = position - INCREMENT;
-            claw.setPosition(position); //Tell the servo to go to the correct pos
+            servo.setPosition(position); //Tell the servo to go to the correct pos
             sleep(CYCLE_MS);
             idle();
         }
-        claw.setPosition(position); //Tell the servo to go to the correct pos
+        servo.setPosition(position); //Tell the servo to go to the correct pos
         sleep(CYCLE_MS);
         idle();
     }
@@ -148,5 +159,17 @@ public class Main extends LinearOpMode {
         backLeftMotor.setPower(backLeftPower);
         frontRightMotor.setPower(frontRightPower);
         backRightMotor.setPower(backRightPower);
+    }
+    //High basket, up_dpad
+    public void sliderPreset1(){
+        int rightTargetPos = 3800;
+        int leftTargetPos = 3800;
+        while(SliderRight.getCurrentPosition() < rightTargetPos || SliderLeft.getCurrentPosition() < leftTargetPos) {
+            SliderLeft.setPower(0.35);
+            SliderRight.setPower(0.35);
+            telemetry.addData("sliderpreset1", "Active");
+        }
+        telemetry.addData("sliderpreset1", "inactive");
+        telemetry.update();
     }
 }
