@@ -44,14 +44,14 @@ public class Main extends LinearOpMode {
             }
             driving();
             action();
-            while(this.gamepad2.dpad_up){
+            if(this.gamepad2.dpad_up){
                 sliderPreset1();
 //                slidersGo(sliderSpeed);
                 driving();
                 action();
             }
             slidersStop();
-            while(this.gamepad2.dpad_down){
+            if(this.gamepad2.dpad_down){
                 slidersGo(-sliderSpeed); //Go down, so negative
                 driving();
                 action();
@@ -86,14 +86,17 @@ public class Main extends LinearOpMode {
     }
     //Sliders don't stop
     public void slidersGo(double power){
-        SliderLeft.setPower(power);
-        SliderRight.setPower(power);
-        int leftPos = SliderLeft.getCurrentPosition();
-        int rightPos = SliderRight.getCurrentPosition();
-        telemetry.addData("leftPos", leftPos);
-        telemetry.addData("rightPos", rightPos);
-        telemetry.update();
-        idle();
+        if (SliderLeft.getCurrentPosition() != 140 || SliderRight.getCurrentPosition() != 140) {
+            SliderLeft.setPower(power);
+            SliderRight.setPower(power);
+            SliderRight.setTargetPosition(100);
+            SliderLeft.setTargetPosition(100);
+            int leftPos = SliderLeft.getCurrentPosition();
+            int rightPos = SliderRight.getCurrentPosition();
+            telemetry.addData("leftPos", leftPos);
+            telemetry.addData("rightPos", rightPos);
+            telemetry.update();
+        }
     }
     //yet to be tested, kind of works
     public void servo(Servo servo){
@@ -164,9 +167,11 @@ public class Main extends LinearOpMode {
     public void sliderPreset1(){
         int rightTargetPos = 3800;
         int leftTargetPos = 3800;
-        while(SliderRight.getCurrentPosition() < rightTargetPos || SliderLeft.getCurrentPosition() < leftTargetPos) {
+        if(SliderRight.getCurrentPosition() < rightTargetPos || SliderLeft.getCurrentPosition() < leftTargetPos) {
             SliderLeft.setPower(0.35);
             SliderRight.setPower(0.35);
+            SliderLeft.setTargetPosition(leftTargetPos);
+            SliderRight.setTargetPosition(rightTargetPos);
             telemetry.addData("sliderpreset1", "Active");
         }
         telemetry.addData("sliderpreset1", "inactive");
