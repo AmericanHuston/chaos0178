@@ -4,22 +4,33 @@ import androidx.annotation.NonNull;
 
 public class FakeMotor {
     public enum direction {FORWARD, BACKWARD}
-    public enum mode {RUN_TO_POSITION, CONTINUOUS}
+    public enum mode {
+        RUN_TO_POSITION,
+        CONTINUOUS;
+    }
+    public enum ZeroPowerBehavior {
+        BRAKE,
+        FLOAT
+    }
+    public mode runMode = mode.RUN_TO_POSITION;
+    public ZeroPowerBehavior zeroPowerBehavior = ZeroPowerBehavior.FLOAT;
 
     int tick; //tick can be substituted for position, or rotation angle.
-    public mode runMode = mode.RUN_TO_POSITION;
     int runDirection;
     int MAX_TICKS = 4000;
     int MIN_TICKS = 0;
     double MAX_POWER = 1.0;
     double MIN_POWER = -1.0;
     double MAX_RPM, power;
+
     public FakeMotor(double rpm){
         this.MAX_RPM = rpm;
     }
+
     public void setRunMode(mode runMode){
         this.runMode = runMode;
     }
+
     public void setRunDirection(direction dir){
         if (dir == direction.BACKWARD){
             this.runDirection = -1;
@@ -27,9 +38,11 @@ public class FakeMotor {
             this.runDirection = 1;
         }
     }
+
     public int getTick() {
         return tick;
     }
+
     public void setPower(double power){
         int runDirection = this.runDirection;
         if (MAX_POWER > power && power > MIN_POWER) {
@@ -60,7 +73,9 @@ public class FakeMotor {
         double currentTicks = getTick();
         double power = getPower();
         if(this.runMode != mode.RUN_TO_POSITION){
-            applyPowerContinuous();
+            if (this.runMode == mode.CONTINUOUS){
+                applyPowerContinuous();
+            }
         }else {
             while (tick != currentTicks){
                 if (currentTicks + power > targetPos){
@@ -70,10 +85,15 @@ public class FakeMotor {
             }
         }
     }
+
     public void applyPowerContinuous(){
         double currentPos = getTick();
         double power = getPower();
         currentPos = currentPos + getPower();
         this.tick = (int) Math.round(currentPos);
+    }
+
+    public void setZeroPowerBehavior(ZeroPowerBehavior z){
+        this.zeroPowerBehavior = z;
     }
 }

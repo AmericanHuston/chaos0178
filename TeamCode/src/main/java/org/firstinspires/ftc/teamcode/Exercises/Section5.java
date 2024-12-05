@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Exercises;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.RobotBoard.RobotLocation;
+import org.firstinspires.ftc.teamcode.FakeRobotBoard.RobotLocation;
 
 public class Section5 extends LinearOpMode {
     RobotLocation robotLocation = new RobotLocation(0);
