@@ -87,6 +87,7 @@ public class Main extends LinearOpMode {
         telemetry.update();
     }
     //yet to be tested, kind of works
+    //it works but needs to be changed probably because mechanics
     public void servo(){
         double INCREMENT = 0.5;
         int CYCLE_MS = 10;
