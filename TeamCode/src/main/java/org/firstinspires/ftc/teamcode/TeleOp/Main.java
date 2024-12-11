@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
-
+//imports
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
@@ -14,17 +14,19 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 @TeleOp(name = "Main", group = "TeleOp")
 public class Main extends LinearOpMode {
+    //motor declarations.
     public DcMotor SliderLeft;
     public DcMotor SliderRight;
     private Servo claw;
     private Servo arm;
+    //variable declarations
     double backRightPower;
     double frontRightPower;
     double frontLeftPower;
     double backLeftPower;
     @Override
     public void runOpMode() throws InterruptedException {
-        IMU imu = hardwareMap.get(IMU.class, "imu");
+        IMU imu = hardwareMap.get(IMU.class, "imu"); //getting the hardware path
         claw = hardwareMap.get(Servo.class, "claw");
         arm = hardwareMap.get(Servo.class, "arm");
         SliderLeft = hardwareMap.get(DcMotor.class, "SliderLeft");
@@ -34,32 +36,32 @@ public class Main extends LinearOpMode {
         dashboard.updateConfig();
         waitForStart();
         SliderLeft.getCurrentPosition();
-        final double sliderSpeed = 0.35;
+        final double sliderSpeed = 0.35; //more variables
         while(opModeIsActive()){
-            if (gamepad1.left_stick_button) {
+            if (gamepad1.left_stick_button) { //resets the yaw when this button is pushed. We might need to change this.
                 imu.resetYaw();
             }
-            driving();
+            driving(); //calls the methods for simultaneous motion
             action();
             if (this.gamepad2.dpad_up){
-                slidersGo(sliderSpeed);
+                slidersGo(sliderSpeed); //sliders, this needs to change to RunToPosition
                 driving();
                 action();
             }
             slidersStop();
             if(this.gamepad2.dpad_down){
-                slidersGo(-sliderSpeed);
+                slidersGo(-sliderSpeed); //more sliders
                 driving();
                 action();
             }
             slidersStop();
             if(this.gamepad2.left_trigger > 0.1){
-                servo();
+                servo(); //servo for the claw. this can stay mostly the same, but we should change the servo's name
                 driving();
                 action();
             }
             if(this.gamepad2.right_trigger > 0.1){
-                servo();
+                servo(); //same as above
                 driving();
                 action();
             }
@@ -107,17 +109,17 @@ public class Main extends LinearOpMode {
     }
     //driving is working, field centric
     public void driving() {
-        DcMotor frontLeftMotor = hardwareMap.dcMotor.get("frontLeft");
+        DcMotor frontLeftMotor = hardwareMap.dcMotor.get("frontLeft"); //grabbing the hardware map of the motors
         DcMotor backLeftMotor = hardwareMap.dcMotor.get("backLeft");
         DcMotor frontRightMotor = hardwareMap.dcMotor.get("frontRight");
         DcMotor backRightMotor = hardwareMap.dcMotor.get("backRight");
         IMU imu = hardwareMap.get(IMU.class, "imu");
-        if (gamepad1.left_stick_button) {
+        if (gamepad1.left_stick_button) { //this is repeated from above, consider changing
             imu.resetYaw();
         }
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,
-                RevHubOrientationOnRobot.UsbFacingDirection.RIGHT));
+                RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
+                RevHubOrientationOnRobot.UsbFacingDirection.UP));
         imu.initialize(parameters);
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -140,7 +142,7 @@ public class Main extends LinearOpMode {
         backRightPower = (rotY + rotX - rx) / denominator;
     }
     public void action() {
-        DcMotor frontLeftMotor = hardwareMap.get(DcMotor.class,"frontLeft");
+        DcMotor frontLeftMotor = hardwareMap.get(DcMotor.class,"frontLeft"); //this is also partially repeated code
         DcMotor backLeftMotor = hardwareMap.get(DcMotor.class,"backLeft");
         DcMotor frontRightMotor = hardwareMap.get(DcMotor.class,"frontRight");
         DcMotor backRightMotor = hardwareMap.get(DcMotor.class,"backRight");
