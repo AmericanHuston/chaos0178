@@ -112,9 +112,9 @@ public class Main extends LinearOpMode {
         servo.setPosition(position); //Tell the servo to go to the correct pos
     }
     //driving is working, field centric
-    private void pointAtBasket() {
+    private void pointAtBasket() { //still need to work on this
         double currentYaw = imu.getRobotYawPitchRollAngles().getYaw();
-        double pointedAtBasket = -45.0;
+        double pointedAtBasket = -45.0; //we might want to consider changing this to -30.0 as I noticed it consistently stops about fifteen degrees below target
         double power = .50 * (.01 * (pointedAtBasket - currentYaw));
         if(pointedAtBasket < currentYaw) {
             backLeftPower = -power;
@@ -147,7 +147,7 @@ public class Main extends LinearOpMode {
             x = x / 2;
             rx = rx / 2;
         }
-        //When dpad down is pressed it will point at basket
+
 
         double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
