@@ -25,9 +25,11 @@ public class Main extends LinearOpMode {
     DcMotor backRightMotor;
     Servo arm;
     Servo claw;
+    DcMotor elbow;
     @Override
     public void runOpMode() throws InterruptedException {
         imu = hardwareMap.get(IMU.class, "imu");
+        elbow = hardwareMap.get(DcMotor.class, "Shoulder");
         frontLeftMotor = hardwareMap.dcMotor.get("frontLeft");
         backLeftMotor = hardwareMap.dcMotor.get("backLeft");
         frontRightMotor = hardwareMap.dcMotor.get("frontRight");
@@ -69,11 +71,13 @@ public class Main extends LinearOpMode {
             if(this.gamepad2.right_trigger > 0.1){
                 servo(claw, -0.5);
             }
+
             driving();
             if (gamepad1.a) {
                 pointAtBasket();
             }
 
+            elbowjoint();
             action();
             slidersStop();
             telemetry.addData("Yaw", imu.getRobotYawPitchRollAngles().getYaw());
@@ -111,10 +115,17 @@ public class Main extends LinearOpMode {
         position = position + increment;
         servo.setPosition(position); //Tell the servo to go to the correct pos
     }
+    public void elbowjoint(){
+        //This works but there are no software stops and it's at full power, so it guns it pretty hard.
+        double EY = gamepad2.left_stick_y;
+        double EX = gamepad2.left_stick_x;
+        double elbowPower = EY - EX;
+        elbow.setPower(elbowPower);
+    }
     //driving is working, field centric
     private void pointAtBasket() { //still need to work on this
         double currentYaw = imu.getRobotYawPitchRollAngles().getYaw();
-        double pointedAtBasket = -45.0; //we might want to consider changing this to -30.0 as I noticed it consistently stops about fifteen degrees below target
+        double pointedAtBasket = -25.0; //The angle works okay, but it still only drives in one direction.
         double power = .50 * (.01 * (pointedAtBasket - currentYaw));
         if(pointedAtBasket < currentYaw) {
             backLeftPower = -power;
