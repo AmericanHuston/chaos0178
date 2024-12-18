@@ -77,7 +77,7 @@ public class Main extends LinearOpMode {
                 pointAtBasket();
             }
 
-            elbowjoint();
+            elbowJoint();
             action();
             slidersStop();
             telemetry.addData("Yaw", imu.getRobotYawPitchRollAngles().getYaw());
@@ -115,11 +115,11 @@ public class Main extends LinearOpMode {
         position = position + increment;
         servo.setPosition(position); //Tell the servo to go to the correct pos
     }
-    public void elbowjoint(){
-        //This works but there are no software stops and it's at full power, so it guns it pretty hard.
-        double EY = gamepad2.left_stick_y;
+    public void elbowJoint(){
+        //This works but there are no software stops and gravity is causing it to smash both ends.
+        double ENX = -gamepad2.left_stick_x;
         double EX = gamepad2.left_stick_x;
-        double elbowPower = EY - EX;
+        double elbowPower = (ENX - EX) * 0.5;
         elbow.setPower(elbowPower);
     }
     //driving is working, field centric
