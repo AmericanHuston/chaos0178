@@ -23,6 +23,7 @@ public class Main extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         IMU imu = hardwareMap.get(IMU.class, "imu");
+        imu.getRobotYawPitchRollAngles();
         Servo claw = hardwareMap.get(Servo.class, "claw");
         Servo arm = hardwareMap.get(Servo.class, "arm");
         SliderLeft = hardwareMap.get(DcMotor.class, "SliderLeft");
