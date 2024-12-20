@@ -74,7 +74,10 @@ public class Main extends LinearOpMode {
 
             driving();
             if (gamepad1.a) {
-                pointAtBasket();
+                pointAtBasketRight();
+            }
+            if(gamepad1.b) {
+                pointAtBasketLeft();
             }
 
             elbowJoint();
@@ -123,39 +126,39 @@ public class Main extends LinearOpMode {
         elbow.setPower(elbowPower);
     }
     //driving is working, field centric
-/*    private void pointAtBasket() { //still need to work on this
+    public void pointAtBasketRight() { //still need to work on this
         double currentYaw = imu.getRobotYawPitchRollAngles().getYaw();
         double pointedAtBasket = -25.0; //The angle works okay, but it still only drives in one direction.
         double power = .50 * (.01 * (pointedAtBasket - currentYaw));
-        if(pointedAtBasket < currentYaw) {
+        if (pointedAtBasket < currentYaw) {
             backLeftPower = -power;
             frontLeftPower = -power;
             backRightPower = power;
             frontRightPower = power;
 
-        }else{
+        } else {
 
             backLeftPower = power;
             frontLeftPower = power;
             backRightPower = -power;
             frontRightPower = -power;
         }
-*/
-    private void pointAtBasket(){
-        double currentYaw = imu.getRobotYawPitchRollAngles().getYaw();
-        double pointedAtBasket = -45.0;
-        double power = 0.50 * (0.01 *(pointedAtBasket - currentYaw));
-        if(pointedAtBasket < currentYaw) {
+    }
+    public void pointAtBasketLeft(){
+        double currentYawL = imu.getRobotYawPitchRollAngles().getYaw();
+        double pointedAtBasketL = -45.0;
+        double powerL = 0.50 * (0.01 *(pointedAtBasketL - currentYawL));
+        if(pointedAtBasketL < currentYawL) {
             //I tried the arrow in the other direction (> instead of <) and it resulted the same as the above code
-            backLeftPower = power;
-            frontLeftPower = power;
-            backRightPower  = -power;
-            frontRightPower = -power;
+            backLeftPower = powerL;
+            frontLeftPower = powerL;
+            backRightPower  = -powerL;
+            frontRightPower = -powerL;
         } else {
-            backLeftPower = -power;
-            frontLeftPower = -power;
-            backRightPower = power;
-            frontRightPower = power;
+            backLeftPower = -powerL;
+            frontLeftPower = -powerL;
+            backRightPower = powerL;
+            frontRightPower = powerL;
         }
     }
     public void driving() {
