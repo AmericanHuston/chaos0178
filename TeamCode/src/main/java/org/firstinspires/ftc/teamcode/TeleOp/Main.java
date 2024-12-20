@@ -146,6 +146,7 @@ public class Main extends LinearOpMode {
         double pointedAtBasket = -45.0;
         double power = 0.50 * (0.01 *(pointedAtBasket - currentYaw));
         if(pointedAtBasket < currentYaw) {
+            //I tried the arrow in the other direction (> instead of <) and it resulted the same as the above code
             backLeftPower = power;
             frontLeftPower = power;
             backRightPower  = -power;
