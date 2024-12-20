@@ -167,7 +167,7 @@ public class Main extends LinearOpMode {
             frontRightPower = powerL;
         }
     }
-    public void driving() { //fieldcentric diving code
+    public void driving() { //Field centric diving code
 
         double y = -gamepad1.left_stick_y / 2; // Remember, Y stick value is reversed
         double x = gamepad1.left_stick_x / 2;
@@ -209,9 +209,9 @@ public class Main extends LinearOpMode {
             SliderRight.setPower(0.35);
             SliderLeft.setTargetPosition(leftTargetPos);
             SliderRight.setTargetPosition(rightTargetPos);
-            telemetry.addData("sliderpreset1", "Active");
+            telemetry.addData("SliderPreset1", "Active");
         }
-        telemetry.addData("sliderpreset1", "inactive");
+        telemetry.addData("SliderPreset1", "inactive");
 
     }
 }
