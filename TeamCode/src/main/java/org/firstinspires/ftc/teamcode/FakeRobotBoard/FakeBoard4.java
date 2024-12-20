@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.FakeHardware.FakeMotor;
 public class FakeBoard4 {
     public FakeButton button;
     public void init(FakeHardwareMap hw){
-        button = hw.get(button, "aButton");
+        button = (FakeButton) hw.get(FakeButton.class, "aButton");
     }
     /*
     Presses (Or releases) the button
