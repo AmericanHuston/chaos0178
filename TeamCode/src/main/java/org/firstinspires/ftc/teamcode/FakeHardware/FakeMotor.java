@@ -43,6 +43,9 @@ public class FakeMotor {
         return tick;
     }
 
+    public int getTicksPerRev(){
+        return this.MAX_TICKS;
+    }
     public void setPower(double power){
         int runDirection = this.runDirection;
         if (MAX_POWER > power && power > MIN_POWER) {
