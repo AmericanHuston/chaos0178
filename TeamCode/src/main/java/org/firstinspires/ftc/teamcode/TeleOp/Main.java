@@ -73,11 +73,11 @@ public class Main extends LinearOpMode {
             }
 
             driving();
-            if (gamepad1.a) {
-                pointAtBasketRight();
+            if (gamepad1.b){
+                pointAtBasketTest();
             }
-            if(gamepad1.b) {
-                pointAtBasketLeft();
+            if (gamepad1.a) {
+                pointAtBasket();
             }
 
             elbowJoint();
@@ -126,40 +126,50 @@ public class Main extends LinearOpMode {
         elbow.setPower(elbowPower);
     }
     //driving is working, field centric
-    public void pointAtBasketRight() { //still need to work on this
+/*    private void pointAtBasket() { //still need to work on this
         double currentYaw = imu.getRobotYawPitchRollAngles().getYaw();
         double pointedAtBasket = -25.0; //The angle works okay, but it still only drives in one direction.
         double power = .50 * (.01 * (pointedAtBasket - currentYaw));
-        if (pointedAtBasket < currentYaw) {
+        if(pointedAtBasket < currentYaw) {
             backLeftPower = -power;
             frontLeftPower = -power;
             backRightPower = power;
             frontRightPower = power;
 
-        } else {
+        }else{
 
             backLeftPower = power;
             frontLeftPower = power;
             backRightPower = -power;
             frontRightPower = -power;
         }
-    }
-    public void pointAtBasketLeft(){
-        double currentYawL = imu.getRobotYawPitchRollAngles().getYaw();
-        double pointedAtBasketL = -45.0;
-        double powerL = 0.50 * (0.01 *(pointedAtBasketL - currentYawL));
-        if(pointedAtBasketL < currentYawL) {
-            //I tried the arrow in the other direction (> instead of <) and it resulted the same as the above code
-            backLeftPower = powerL;
-            frontLeftPower = powerL;
-            backRightPower  = -powerL;
-            frontRightPower = -powerL;
+*/
+    private void pointAtBasket(){
+        double currentYaw = imu.getRobotYawPitchRollAngles().getYaw();
+        double pointedAtBasket = -60.0; //numbers need to be tested
+        double power = 0.50 * (0.01 *(pointedAtBasket - currentYaw));
+        if(pointedAtBasket < currentYaw) {
+            backLeftPower = power;
+            frontLeftPower = power;
+            backRightPower  = -power;
+            frontRightPower = -power;
         } else {
-            backLeftPower = -powerL;
-            frontLeftPower = -powerL;
-            backRightPower = powerL;
-            frontRightPower = powerL;
+            backLeftPower = -power;
+            frontLeftPower = -power;
+            backRightPower = power;
+            frontRightPower = power;
         }
+        telemetry.addData("Power: ", power);
+        telemetry.update();
+    }
+    private void pointAtBasketTest(){
+        double currentYaw = imu.getRobotYawPitchRollAngles().getYaw();
+        double pointedAtBasket = -45.0; //numbers need to be tested.
+        double power = 0.50 * (0.01 *(pointedAtBasket - currentYaw)) + 0.1;
+        backLeftPower = power;
+        frontLeftPower = power;
+        backRightPower  = -power;
+        frontRightPower = -power;
     }
     public void driving() {
 
@@ -177,6 +187,7 @@ public class Main extends LinearOpMode {
             x = x / 2;
             rx = rx / 2;
         }
+
 
 
         double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
