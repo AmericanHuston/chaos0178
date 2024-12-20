@@ -62,7 +62,6 @@ public class Main extends LinearOpMode {
             }
             if(this.gamepad2.dpad_up){//Slider top preset
                 sliderPreset1();
-//                slidersGo(sliderSpeed);
             }
             if(this.gamepad2.dpad_down){//goes down, eventually needs to be run to position zero
                 slidersGo(-sliderSpeed); //Go down, so negative
@@ -95,7 +94,7 @@ public class Main extends LinearOpMode {
         }
     }
     //Fixes slider stopping issue
-    public void slidersStop(){
+    public void slidersStop() {
         int rightTarget = SliderRight.getCurrentPosition();
         int leftTarget = SliderLeft.getCurrentPosition();
         SliderLeft.setTargetPosition(leftTarget);
@@ -106,7 +105,6 @@ public class Main extends LinearOpMode {
         SliderLeft.setPower(0.2);
 
     }
-    //test
     public void slidersGo(double power){ //This will eventually be replaced by presets
         int leftPos = SliderLeft.getCurrentPosition();
         int rightPos = SliderRight.getCurrentPosition();
