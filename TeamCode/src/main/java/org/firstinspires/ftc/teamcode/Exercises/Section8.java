@@ -9,8 +9,4 @@ public class Section8 {
     private FakeMotor motor;
     private double ticksPerRotation;
     private FakeServo Servo;
-
-    public void init(){
-        button =
-    }
 }
