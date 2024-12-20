@@ -25,19 +25,19 @@ public class Main extends LinearOpMode {
     DcMotor backRightMotor;
     Servo arm;
     Servo claw;
-    Servo wristRotate;
-    DcMotor elbow;
+    Servo wrist;
+    DcMotor shoulder;
     @Override
     public void runOpMode() throws InterruptedException {
         imu = hardwareMap.get(IMU.class, "imu");//guess what the stuff actually exists now
-        elbow = hardwareMap.get(DcMotor.class, "Shoulder");
+        shoulder = hardwareMap.get(DcMotor.class, "Shoulder");
         frontLeftMotor = hardwareMap.dcMotor.get("frontLeft");
         backLeftMotor = hardwareMap.dcMotor.get("backLeft");
         frontRightMotor = hardwareMap.dcMotor.get("frontRight");
         backRightMotor = hardwareMap.dcMotor.get("backRight");
         claw = hardwareMap.get(Servo.class, "claw");
         arm = hardwareMap.get(Servo.class, "arm");
-        wristRotate = hardwareMap.get(Servo.class, "wristRotate");
+        wrist = hardwareMap.get(Servo.class, "wrist");
         SliderLeft = hardwareMap.get(DcMotor.class, "SliderLeft");
         SliderRight = hardwareMap.get(DcMotor.class, "SliderRight");
         SliderLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -51,7 +51,7 @@ public class Main extends LinearOpMode {
         imu.initialize(parameters);
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        final double sliderSpeed = 0.35;
+        final double sliderSpeed = 0.60;
 
 
         waitForStart();
@@ -73,10 +73,10 @@ public class Main extends LinearOpMode {
                 servo(claw, -0.5);
             }
             if(this.gamepad2.left_bumper){//wrist at 90
-                servo(wristRotate, -0.5);
+                servo(wrist, -0.5);
             }
             if(this.gamepad2.right_bumper){//wrist at zero
-                servo(wristRotate, 0.5);
+                servo(wrist, 0.5);
             }
             driving();//driving function
             if (gamepad1.a) {//point at basket right turn
@@ -86,7 +86,7 @@ public class Main extends LinearOpMode {
                 pointAtBasketLeft();
             }
 
-            elbowJoint();//elbow function
+            shoulderJoint();//shoulder function
             action();//thinking function
             slidersStop();//hold to slider position
             telemetry.addData("Yaw", imu.getRobotYawPitchRollAngles().getYaw());//telemetry
@@ -124,12 +124,19 @@ public class Main extends LinearOpMode {
         position = position + increment;
         servo.setPosition(position); //Tell the servo to go to the correct pos
     }
-    public void elbowJoint(){
-        //This works but there are no software stops and gravity is causing it to smash both ends.
-        double ENX = -gamepad2.left_stick_x;
-        double EX = gamepad2.left_stick_x;
-        double elbowPower = (ENX - EX) * 0.5;
-        elbow.setPower(elbowPower);
+    public void shoulderJoint(){
+        if (gamepad2.left_stick_y != 0.0){
+            double ENX = -gamepad2.left_stick_x;
+            double EX = gamepad2.left_stick_x;
+            double shoulderPower = (ENX - EX) * 0.4;
+            shoulder.setPower(shoulderPower);
+        }else {
+            //This works but there are no software stops and gravity is causing it to smash both ends.
+            int target = shoulder.getCurrentPosition();
+            shoulder.setTargetPosition(target);
+            shoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            shoulder.setPower(0.4);
+        }
     }
     //driving is working, field centric
     public void pointAtBasketRight() { //still need to work on this
@@ -141,9 +148,7 @@ public class Main extends LinearOpMode {
             frontLeftPower = -power;
             backRightPower = power;
             frontRightPower = power;
-
         } else {
-
             backLeftPower = power;
             frontLeftPower = power;
             backRightPower = -power;
@@ -211,7 +216,6 @@ public class Main extends LinearOpMode {
             SliderRight.setTargetPosition(rightTargetPos);
             telemetry.addData("SliderPreset1", "Active");
         }
-        telemetry.addData("SliderPreset1", "inactive");
-
+        telemetry.addData("SliderPreset1", "Inactive");
     }
 }
