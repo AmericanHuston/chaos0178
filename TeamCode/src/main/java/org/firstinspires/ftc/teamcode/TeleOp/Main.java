@@ -74,7 +74,10 @@ public class Main extends LinearOpMode {
 
             driving();
             if (gamepad1.b){
-                pointAtBasketTest();
+                pointAtAngle(-45.0);
+            }
+            if (gamepad1.x){
+                pointAtAngle(0.0);
             }
             if (gamepad1.a) {
                 pointAtBasket();
@@ -162,14 +165,25 @@ public class Main extends LinearOpMode {
         telemetry.addData("Power: ", power);
         telemetry.update();
     }
-    private void pointAtBasketTest(){
+    private void pointAtAngle(double pointAt){
+        double MAXPOWER = 0.5;
         double currentYaw = imu.getRobotYawPitchRollAngles().getYaw();
-        double pointedAtBasket = -45.0; //numbers need to be tested.
-        double power = 0.50 * (0.01 *(pointedAtBasket - currentYaw)) + 0.1;
+        double power = 0.05 *(pointAt - currentYaw);
+        power = clamp(power, -MAXPOWER, MAXPOWER);
         backLeftPower = power;
         frontLeftPower = power;
         backRightPower  = -power;
         frontRightPower = -power;
+    }
+
+    public double clamp(double input, double min, double max) {
+        double result = input;
+        if (input > max) {
+            result = max;
+        } else if (input < min) {
+            result = min;
+        }
+        return result;
     }
     public void driving() {
 
