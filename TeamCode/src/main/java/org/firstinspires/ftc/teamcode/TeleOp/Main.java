@@ -137,6 +137,7 @@ public class Main extends LinearOpMode {
             shoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             shoulder.setPower(0.4);
         }
+        shoulder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
     //driving is working, field centric
     public void pointAtBasketRight() { //still need to work on this
