@@ -123,7 +123,7 @@ public class Main extends LinearOpMode {
         elbow.setPower(elbowPower);
     }
     //driving is working, field centric
-    private void pointAtBasket() { //still need to work on this
+/*    private void pointAtBasket() { //still need to work on this
         double currentYaw = imu.getRobotYawPitchRollAngles().getYaw();
         double pointedAtBasket = -25.0; //The angle works okay, but it still only drives in one direction.
         double power = .50 * (.01 * (pointedAtBasket - currentYaw));
@@ -140,7 +140,22 @@ public class Main extends LinearOpMode {
             backRightPower = -power;
             frontRightPower = -power;
         }
-
+*/
+    private void pointAtBasket(){
+        double currentYaw = imu.getRobotYawPitchRollAngles().getYaw();
+        double pointedAtBasket = -45.0;
+        double power = 0.50 * (0.01 *(pointedAtBasket - currentYaw));
+        if(pointedAtBasket < currentYaw) {
+            backLeftPower = power;
+            frontLeftPower = power;
+            backRightPower  = -power;
+            frontRightPower = -power;
+        } else {
+            backLeftPower = -power;
+            frontLeftPower = -power;
+            backRightPower = power;
+            frontRightPower = power;
+        }
     }
     public void driving() {
 
