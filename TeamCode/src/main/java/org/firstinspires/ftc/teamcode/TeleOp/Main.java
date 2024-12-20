@@ -106,6 +106,7 @@ public class Main extends LinearOpMode {
         SliderLeft.setPower(0.2);
 
     }
+    //test
     public void slidersGo(double power){ //This will eventually be replaced by presets
         int leftPos = SliderLeft.getCurrentPosition();
         int rightPos = SliderRight.getCurrentPosition();
