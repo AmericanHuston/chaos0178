@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
 
+import android.sax.StartElementListener;
+
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -18,6 +20,8 @@ public class Main extends LinearOpMode {
     double frontRightPower;
     double frontLeftPower;
     double backLeftPower;
+
+    double Kp;
     IMU imu;
     DcMotor frontLeftMotor;
     DcMotor backLeftMotor;
@@ -28,6 +32,7 @@ public class Main extends LinearOpMode {
     DcMotor elbow;
     @Override
     public void runOpMode() throws InterruptedException {
+        Kp = 0.05;
         imu = hardwareMap.get(IMU.class, "imu");
         elbow = hardwareMap.get(DcMotor.class, "Shoulder");
         frontLeftMotor = hardwareMap.dcMotor.get("frontLeft");
@@ -83,10 +88,18 @@ public class Main extends LinearOpMode {
                 pointAtBasket();
             }
 
+            if (gamepad1.dpad_left) {
+                Kp -= 0.001;
+            }
+            if (gamepad1.dpad_right) {
+                Kp += 0.001;
+            }
+
             elbowJoint();
             action();
             slidersStop();
             telemetry.addData("Yaw", imu.getRobotYawPitchRollAngles().getYaw());
+            telemetry.addData("Kp", Kp);
             telemetry.update();
         }
     }
@@ -168,7 +181,7 @@ public class Main extends LinearOpMode {
     private void pointAtAngle(double pointAt){
         double MAXPOWER = 0.5;
         double currentYaw = imu.getRobotYawPitchRollAngles().getYaw();
-        double power = 0.05 *(pointAt - currentYaw);
+        double power = Kp *(pointAt - currentYaw);
         power = clamp(power, -MAXPOWER, MAXPOWER);
         backLeftPower = power;
         frontLeftPower = power;
