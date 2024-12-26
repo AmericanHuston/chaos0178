@@ -26,11 +26,11 @@ public class Main extends LinearOpMode {
     Servo arm;
     Servo claw;
     Servo wrist;
-    DcMotor shoulder;
+    //DcMotor shoulder;
     @Override
     public void runOpMode() throws InterruptedException {
         imu = hardwareMap.get(IMU.class, "imu");//guess what the stuff actually exists now
-        shoulder = hardwareMap.get(DcMotor.class, "Shoulder");
+        //shoulder = hardwareMap.get(DcMotor.class, "Shoulder");
         frontLeftMotor = hardwareMap.dcMotor.get("frontLeft");
         backLeftMotor = hardwareMap.dcMotor.get("backLeft");
         frontRightMotor = hardwareMap.dcMotor.get("frontRight");
@@ -78,6 +78,12 @@ public class Main extends LinearOpMode {
             if(this.gamepad2.right_bumper){//wrist at zero
                 servo(wrist, 0.5);
             }
+            if(this.gamepad2.a){
+                servo(arm, -0.4);
+            }
+            if(this.gamepad2.b){
+                servo(arm, 0.4);
+            }
             driving();//driving function
             if (gamepad1.a) {//point at basket right turn
                 pointAtBasketRight();
@@ -86,7 +92,7 @@ public class Main extends LinearOpMode {
                 pointAtBasketLeft();
             }
 
-            shoulderJoint();//shoulder function
+            //shoulderJoint();//shoulder function
             action();//thinking function
             slidersStop();//hold to slider position
             telemetry.addData("Yaw", imu.getRobotYawPitchRollAngles().getYaw());//telemetry
@@ -124,7 +130,7 @@ public class Main extends LinearOpMode {
         position = position + increment;
         servo.setPosition(position); //Tell the servo to go to the correct pos
     }
-    public void shoulderJoint(){
+    /*public void shoulderJoint(){
         if (gamepad2.left_stick_y != 0.0){
             double ENX = -gamepad2.left_stick_x;
             double EX = gamepad2.left_stick_x;
@@ -139,6 +145,8 @@ public class Main extends LinearOpMode {
         }
         shoulder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
+    */
+
     //driving is working, field centric
     public void pointAtBasketRight() { //still need to work on this
         double currentYaw = imu.getRobotYawPitchRollAngles().getYaw();
