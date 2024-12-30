@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -9,7 +12,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-
+@Config
 @TeleOp(name = "Main", group = "TeleOp")
 public class Main extends LinearOpMode {
     public DcMotor SliderLeft;//This stuff will exist at some point
@@ -23,21 +26,25 @@ public class Main extends LinearOpMode {
     DcMotor backLeftMotor;
     DcMotor frontRightMotor;
     DcMotor backRightMotor;
-    Servo arm;
-    Servo claw;
-    Servo wrist;
-    //DcMotor shoulder;
+    Servo arm1;
+    Servo arm0;
+    public static double posUpR = 0.47;
+    public static double posUpL = 0.5;
+    public static double posForwardR = 0.0;
+    public static double posForwardL = 0.01;
+    public static double posBackR = 0.97;
+    public static double posBackL = 1.0;
     @Override
     public void runOpMode() throws InterruptedException {
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         imu = hardwareMap.get(IMU.class, "imu");//guess what the stuff actually exists now
         //shoulder = hardwareMap.get(DcMotor.class, "Shoulder");
         frontLeftMotor = hardwareMap.dcMotor.get("frontLeft");
         backLeftMotor = hardwareMap.dcMotor.get("backLeft");
         frontRightMotor = hardwareMap.dcMotor.get("frontRight");
         backRightMotor = hardwareMap.dcMotor.get("backRight");
-        claw = hardwareMap.get(Servo.class, "claw");
-        arm = hardwareMap.get(Servo.class, "arm");
-        wrist = hardwareMap.get(Servo.class, "wrist");
+        arm1 = hardwareMap.get(Servo.class, "arm1");
+        arm0 = hardwareMap.get(Servo.class, "arm0");
         SliderLeft = hardwareMap.get(DcMotor.class, "SliderLeft");
         SliderRight = hardwareMap.get(DcMotor.class, "SliderRight");
         SliderLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -51,7 +58,10 @@ public class Main extends LinearOpMode {
         imu.initialize(parameters);
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        arm1.setDirection(Servo.Direction.REVERSE);
         final double sliderSpeed = 0.60;
+
+
 
 
         waitForStart();
@@ -66,23 +76,14 @@ public class Main extends LinearOpMode {
             if(this.gamepad2.dpad_down){//goes down, eventually needs to be run to position zero
                 slidersGo(-sliderSpeed); //Go down, so negative
             }
-            if(this.gamepad2.left_trigger> 0.1) {//Opens claw
-                servo(claw, 0.5);
+            if(this.gamepad2.right_bumper){
+                doubleServo(arm0, arm1, posUpL, posUpR);
             }
-            if(this.gamepad2.right_trigger > 0.1){//Closes the claw
-                servo(claw, -0.5);
-            }
-            if(this.gamepad2.left_bumper){//wrist at 90
-                servo(wrist, -0.5);
-            }
-            if(this.gamepad2.right_bumper){//wrist at zero
-                servo(wrist, 0.5);
+            if(this.gamepad2.left_bumper){
+                doubleServo(arm0, arm1, posForwardL, posForwardR);
             }
             if(this.gamepad2.a){
-                servo(arm, -0.4);
-            }
-            if(this.gamepad2.b){
-                servo(arm, 0.4);
+                doubleServo(arm0, arm1, posBackL, posBackR);
             }
             driving();//driving function
             if (gamepad1.a) {//point at basket right turn
@@ -92,10 +93,11 @@ public class Main extends LinearOpMode {
                 pointAtBasketLeft();
             }
 
-            //shoulderJoint();//shoulder function
             action();//thinking function
             slidersStop();//hold to slider position
-            telemetry.addData("Yaw", imu.getRobotYawPitchRollAngles().getYaw());//telemetry
+            telemetry.addData("Yaw", imu.getRobotYawPitchRollAngles().getYaw());
+            telemetry.addData("Left", arm0.getPosition());
+            telemetry.addData("Right", arm1.getPosition());//telemetry
             telemetry.update();//telemetry to screen
         }
     }
@@ -130,22 +132,11 @@ public class Main extends LinearOpMode {
         position = position + increment;
         servo.setPosition(position); //Tell the servo to go to the correct pos
     }
-    /*public void shoulderJoint(){
-        if (gamepad2.left_stick_y != 0.0){
-            double ENX = -gamepad2.left_stick_x;
-            double EX = gamepad2.left_stick_x;
-            double shoulderPower = (ENX - EX) * 0.4;
-            shoulder.setPower(shoulderPower);
-        }else {
-            //This works but there are no software stops and gravity is causing it to smash both ends.
-            int target = shoulder.getCurrentPosition();
-            shoulder.setTargetPosition(target);
-            shoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            shoulder.setPower(0.4);
-        }
-        shoulder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    public void doubleServo(Servo servo0, Servo servo1, double pos0, double pos1){
+        servo0.setPosition(pos0);
+        servo1.setPosition(pos1);
     }
-    */
+
 
     //driving is working, field centric
     public void pointAtBasketRight() { //still need to work on this
