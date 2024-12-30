@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
 
-import android.sax.StartElementListener;
-
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -14,14 +12,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 @TeleOp(name = "Main", group = "TeleOp")
 public class Main extends LinearOpMode {
-    public DcMotor SliderLeft;
+    public DcMotor SliderLeft;//This stuff will exist at some point
     public DcMotor SliderRight;
     double backRightPower;
     double frontRightPower;
     double frontLeftPower;
     double backLeftPower;
-
-    double Kp;
     IMU imu;
     DcMotor frontLeftMotor;
     DcMotor backLeftMotor;
@@ -29,18 +25,19 @@ public class Main extends LinearOpMode {
     DcMotor backRightMotor;
     Servo arm;
     Servo claw;
-    DcMotor elbow;
+    Servo wrist;
+    //DcMotor shoulder;
     @Override
     public void runOpMode() throws InterruptedException {
-        Kp = 0.05;
-        imu = hardwareMap.get(IMU.class, "imu");
-        elbow = hardwareMap.get(DcMotor.class, "Shoulder");
+        imu = hardwareMap.get(IMU.class, "imu");//guess what the stuff actually exists now
+        //shoulder = hardwareMap.get(DcMotor.class, "Shoulder");
         frontLeftMotor = hardwareMap.dcMotor.get("frontLeft");
         backLeftMotor = hardwareMap.dcMotor.get("backLeft");
         frontRightMotor = hardwareMap.dcMotor.get("frontRight");
         backRightMotor = hardwareMap.dcMotor.get("backRight");
         claw = hardwareMap.get(Servo.class, "claw");
         arm = hardwareMap.get(Servo.class, "arm");
+        wrist = hardwareMap.get(Servo.class, "wrist");
         SliderLeft = hardwareMap.get(DcMotor.class, "SliderLeft");
         SliderRight = hardwareMap.get(DcMotor.class, "SliderRight");
         SliderLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -54,57 +51,56 @@ public class Main extends LinearOpMode {
         imu.initialize(parameters);
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        final double sliderSpeed = 0.35;
+        final double sliderSpeed = 0.60;
 
 
         waitForStart();
 
         while(opModeIsActive()){
-            if (gamepad1.back) {
+            if (gamepad1.back) {//resets the IMU
                 imu.resetYaw();
             }
-            if(this.gamepad2.dpad_up){
+            if(this.gamepad2.dpad_up){//Slider top preset
                 sliderPreset1();
-//                slidersGo(sliderSpeed);
             }
-            if(this.gamepad2.dpad_down){
+            if(this.gamepad2.dpad_down){//goes down, eventually needs to be run to position zero
                 slidersGo(-sliderSpeed); //Go down, so negative
             }
-            if(this.gamepad2.left_trigger> 0.1) {
+            if(this.gamepad2.left_trigger> 0.1) {//Opens claw
                 servo(claw, 0.5);
             }
-            if(this.gamepad2.right_trigger > 0.1){
+            if(this.gamepad2.right_trigger > 0.1){//Closes the claw
                 servo(claw, -0.5);
             }
+            if(this.gamepad2.left_bumper){//wrist at 90
+                servo(wrist, -0.5);
+            }
+            if(this.gamepad2.right_bumper){//wrist at zero
+                servo(wrist, 0.5);
+            }
+            if(this.gamepad2.a){
+                servo(arm, -0.4);
+            }
+            if(this.gamepad2.b){
+                servo(arm, 0.4);
+            }
+            driving();//driving function
+            if (gamepad1.a) {//point at basket right turn
+                pointAtBasketRight();
+            }
+            if(gamepad1.b) { // point at basket left turn
+                pointAtBasketLeft();
+            }
 
-            driving();
-            if (gamepad1.b){
-                pointAtAngle(-45.0);
-            }
-            if (gamepad1.x){
-                pointAtAngle(0.0);
-            }
-            if (gamepad1.a) {
-                pointAtBasket();
-            }
-
-            if (gamepad1.dpad_left) {
-                Kp -= 0.001;
-            }
-            if (gamepad1.dpad_right) {
-                Kp += 0.001;
-            }
-
-            elbowJoint();
-            action();
-            slidersStop();
-            telemetry.addData("Yaw", imu.getRobotYawPitchRollAngles().getYaw());
-            telemetry.addData("Kp", Kp);
-            telemetry.update();
+            //shoulderJoint();//shoulder function
+            action();//thinking function
+            slidersStop();//hold to slider position
+            telemetry.addData("Yaw", imu.getRobotYawPitchRollAngles().getYaw());//telemetry
+            telemetry.update();//telemetry to screen
         }
     }
     //Fixes slider stopping issue
-    public void slidersStop(){
+    public void slidersStop() {
         int rightTarget = SliderRight.getCurrentPosition();
         int leftTarget = SliderLeft.getCurrentPosition();
         SliderLeft.setTargetPosition(leftTarget);
@@ -115,7 +111,7 @@ public class Main extends LinearOpMode {
         SliderLeft.setPower(0.2);
 
     }
-    public void slidersGo(double power){
+    public void slidersGo(double power){ //This will eventually be replaced by presets
         int leftPos = SliderLeft.getCurrentPosition();
         int rightPos = SliderRight.getCurrentPosition();
         SliderRight.setTargetPosition(100);
@@ -129,52 +125,63 @@ public class Main extends LinearOpMode {
         SliderRight.setPower(power);
     }
 
-    public void servo(Servo servo, double increment){
+    public void servo(Servo servo, double increment){ //servo open, close
         double position = servo.getPosition();
         position = position + increment;
         servo.setPosition(position); //Tell the servo to go to the correct pos
     }
-    public void elbowJoint(){
-        //This works but there are no software stops and gravity is causing it to smash both ends.
-        double ENX = -gamepad2.left_stick_x;
-        double EX = gamepad2.left_stick_x;
-        double elbowPower = (ENX - EX) * 0.5;
-        elbow.setPower(elbowPower);
+    /*public void shoulderJoint(){
+        if (gamepad2.left_stick_y != 0.0){
+            double ENX = -gamepad2.left_stick_x;
+            double EX = gamepad2.left_stick_x;
+            double shoulderPower = (ENX - EX) * 0.4;
+            shoulder.setPower(shoulderPower);
+        }else {
+            //This works but there are no software stops and gravity is causing it to smash both ends.
+            int target = shoulder.getCurrentPosition();
+            shoulder.setTargetPosition(target);
+            shoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            shoulder.setPower(0.4);
+        }
+        shoulder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
+    */
+
     //driving is working, field centric
-/*    private void pointAtBasket() { //still need to work on this
+    public void pointAtBasketRight() { //still need to work on this
         double currentYaw = imu.getRobotYawPitchRollAngles().getYaw();
         double pointedAtBasket = -25.0; //The angle works okay, but it still only drives in one direction.
         double power = .50 * (.01 * (pointedAtBasket - currentYaw));
-        if(pointedAtBasket < currentYaw) {
+        if (pointedAtBasket < currentYaw) {
             backLeftPower = -power;
             frontLeftPower = -power;
             backRightPower = power;
             frontRightPower = power;
-
-        }else{
-
+        } else {
             backLeftPower = power;
             frontLeftPower = power;
             backRightPower = -power;
             frontRightPower = -power;
         }
-*/
-    private void pointAtBasket(){
-        double currentYaw = imu.getRobotYawPitchRollAngles().getYaw();
-        double pointedAtBasket = -60.0; //numbers need to be tested
-        double power = 0.50 * (0.01 *(pointedAtBasket - currentYaw));
-        if(pointedAtBasket < currentYaw) {
-            backLeftPower = power;
-            frontLeftPower = power;
-            backRightPower  = -power;
-            frontRightPower = -power;
+    }
+    public void pointAtBasketLeft(){
+        double currentYawL = imu.getRobotYawPitchRollAngles().getYaw();
+        double pointedAtBasketL = -45.0;//this needs to be worked on
+        double powerL = 0.50 * (0.01 *(pointedAtBasketL - currentYawL));
+        if(pointedAtBasketL < currentYawL) {
+            //I tried the arrow in the other direction (> instead of <) and it resulted the same as the above code
+            backLeftPower = powerL;
+            frontLeftPower = powerL;
+            backRightPower  = -powerL;
+            frontRightPower = -powerL;
         } else {
-            backLeftPower = -power;
-            frontLeftPower = -power;
-            backRightPower = power;
-            frontRightPower = power;
+            backLeftPower = -powerL;
+            frontLeftPower = -powerL;
+            backRightPower = powerL;
+            frontRightPower = powerL;
         }
+    }
+    public void driving() { //Field centric diving code
         telemetry.addData("Power: ", power);
         telemetry.update();
     }//e
@@ -216,7 +223,6 @@ public class Main extends LinearOpMode {
         }
 
 
-
         double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
         double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
@@ -227,14 +233,13 @@ public class Main extends LinearOpMode {
         frontRightPower = (rotY - rotX - rx) / denominator;
         backRightPower = (rotY + rotX - rx) / denominator;
     }
-    public void action() {
+    public void action() { //setting motor powers
         frontLeftMotor.setPower(frontLeftPower);
         backLeftMotor.setPower(backLeftPower);
         frontRightMotor.setPower(frontRightPower);
         backRightMotor.setPower(backRightPower);
     }
-    //High basket, up_dpad
-    public void sliderPreset1(){
+    public void sliderPreset1(){ //top preset, the high basket, up_dpad
         int rightTargetPos = 3800;
         int leftTargetPos = 3800;
         if(SliderRight.getCurrentPosition() < rightTargetPos || SliderLeft.getCurrentPosition() < leftTargetPos) {
@@ -242,9 +247,8 @@ public class Main extends LinearOpMode {
             SliderRight.setPower(0.35);
             SliderLeft.setTargetPosition(leftTargetPos);
             SliderRight.setTargetPosition(rightTargetPos);
-            telemetry.addData("sliderpreset1", "Active");
+            telemetry.addData("SliderPreset1", "Active");
         }
-        telemetry.addData("sliderpreset1", "inactive");
-
+        telemetry.addData("SliderPreset1", "Inactive");
     }
 }
