@@ -30,12 +30,15 @@ public class servoTest extends LinearOpMode {
     DcMotor backRightMotor;
     Servo arm1;
     Servo arm0;
+    DcMotor Shoulder;
     public static double posUpR = 0.47;
     public static double posUpL = 0.5;
     public static double posForwardR = 0.0;
     public static double posForwardL = 0.01;
     public static double posBackR = 0.97;
     public static double posBackL = 1.0;
+    public static int ShoulderTicks = 50;
+    public static double ShoulderPower = 0.5;
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -45,6 +48,7 @@ public class servoTest extends LinearOpMode {
         backLeftMotor = hardwareMap.dcMotor.get("backLeft");
         frontRightMotor = hardwareMap.dcMotor.get("frontRight");
         backRightMotor = hardwareMap.dcMotor.get("backRight");
+        Shoulder = hardwareMap.dcMotor.get("Shoulder");
         arm1 = hardwareMap.get(Servo.class, "arm1");
         arm0 = hardwareMap.get(Servo.class, "arm0");
         SliderLeft = hardwareMap.get(DcMotor.class, "SliderLeft");
@@ -53,6 +57,9 @@ public class servoTest extends LinearOpMode {
         SliderRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         SliderRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         SliderLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Shoulder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Shoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        Shoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         SliderRight.setDirection(DcMotorSimple.Direction.REVERSE); //It needs to be reversed because...
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
@@ -81,6 +88,10 @@ public class servoTest extends LinearOpMode {
             if(this.gamepad2.b){
                 doubleServo(arm0, arm1, posBackL, posBackR);
             }
+            if(this.gamepad2.a){
+                Shoulder.setTargetPosition(ShoulderTicks);
+                Shoulder.setPower(ShoulderPower);
+            }
             driving();//driving function
             if (gamepad1.a) {//point at basket right turn
                 pointAtBasketRight();
@@ -94,6 +105,9 @@ public class servoTest extends LinearOpMode {
             telemetry.addData("Yaw", imu.getRobotYawPitchRollAngles().getYaw());
             telemetry.addData("Left", arm0.getPosition());
             telemetry.addData("Right", arm1.getPosition());//telemetry
+            telemetry.addData("Shoulder", Shoulder.getCurrentPosition());
+            telemetry.addData("Shoulder Power", ShoulderPower);
+            telemetry.addData("ShoulderTicks", ShoulderTicks);
             telemetry.update();//telemetry to screen
         }
     }
