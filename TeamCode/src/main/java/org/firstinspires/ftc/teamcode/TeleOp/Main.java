@@ -171,13 +171,12 @@ public class Main extends LinearOpMode {
             backRightPower = powerL;
             frontRightPower = powerL;
         }
-    }
-    public void driving() { //Field centric diving code
-        telemetry.addData("Power: ", power);
+        telemetry.addData("Power: ", powerL);
         telemetry.update();
     }//e
     private void pointAtAngle(double pointAt){
         double MAXPOWER = 0.5;
+        double  Kp = 0.2;
         double currentYaw = imu.getRobotYawPitchRollAngles().getYaw();
         double power = Kp *(pointAt - currentYaw);
         power = clamp(power, -MAXPOWER, MAXPOWER);

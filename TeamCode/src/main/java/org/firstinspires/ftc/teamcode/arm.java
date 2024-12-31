@@ -1,20 +1,26 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
+@Config
 @TeleOp(name = "arm", group = "TeleOp")
 public class arm extends LinearOpMode {
     public DcMotor SliderLeft;
     public DcMotor SliderRight;
-    public DcMotor Shoulder;
+    public DcMotorEx Shoulder;
     double backRightPower;
     double frontRightPower;
     double frontLeftPower;
@@ -27,7 +33,16 @@ public class arm extends LinearOpMode {
     }
     armState state;
 
-    double rest;
+    public static double rest;
+
+    public static double RESTING_POWER = 0.25;
+    public static double BASKET_POWER = 0.5;
+    public static double SPECIMEN_POWER = 0.3;
+    public static double COLLECTION_POWER = 0.5;
+    public static int resting_position = 0;
+    public static int basket_position = 200;
+    public static int specimen_position = 100;
+    public static int collection_position = 25;
 
     IMU imu;
     DcMotor frontLeftMotor;
@@ -36,17 +51,19 @@ public class arm extends LinearOpMode {
     DcMotor backRightMotor;
     @Override
     public void runOpMode() throws InterruptedException {
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+
         imu = hardwareMap.get(IMU.class, "imu");
         frontLeftMotor = hardwareMap.dcMotor.get("frontLeft");
         backLeftMotor = hardwareMap.dcMotor.get("backLeft");
         frontRightMotor = hardwareMap.dcMotor.get("frontRight");
         backRightMotor = hardwareMap.dcMotor.get("backRight");
-        Servo claw = hardwareMap.get(Servo.class, "claw");
-        Servo arm = hardwareMap.get(Servo.class, "arm");
+        //Servo claw = hardwareMap.get(Servo.class, "claw");
+        //Servo arm = hardwareMap.get(Servo.class, "arm");
         SliderLeft = hardwareMap.get(DcMotor.class, "SliderLeft");
         SliderRight = hardwareMap.get(DcMotor.class, "SliderRight");
-        Shoulder = hardwareMap.get(DcMotor.class, "Shoulder");
-        Shoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        Shoulder = hardwareMap.get(DcMotorEx.class, "Shoulder");
+        Shoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Shoulder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Shoulder.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         SliderLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -78,10 +95,10 @@ public class arm extends LinearOpMode {
                 slidersGo(-sliderSpeed); //Go down, so negative
             }
             if(this.gamepad2.left_trigger> 0.1) {
-                servo(claw, 0.5);
+                //servo(claw, 0.5);
             }
             if(this.gamepad2.right_trigger > 0.1){
-                servo(claw, -0.5);
+                //servo(claw, -0.5);
             }
 
             if (gamepad1.a) {
@@ -117,6 +134,7 @@ public class arm extends LinearOpMode {
             slidersStop();
             telemetry.addData("Yaw", imu.getRobotYawPitchRollAngles().getYaw());
             telemetry.addData("arm ticks", rest);
+            telemetry.addData("Current ", Shoulder.getCurrent(CurrentUnit.AMPS));
             telemetry.update();
         }
     }
@@ -151,20 +169,20 @@ public class arm extends LinearOpMode {
         telemetry.addData("state", String.valueOf(state));
         switch (state){
             case RESTING:
-                Shoulder.setTargetPosition(20);
-                Shoulder.setPower(0.25);
+                Shoulder.setTargetPosition(resting_position);
+                Shoulder.setPower(RESTING_POWER);
                 break;
             case BASKET:
-                Shoulder.setTargetPosition(250);
-                Shoulder.setPower(0.5);
+                Shoulder.setTargetPosition(basket_position);
+                Shoulder.setPower(BASKET_POWER);
                 break;
             case SPECIMEN:
-                Shoulder.setTargetPosition(340);
-                Shoulder.setPower(0.5);
+                Shoulder.setTargetPosition(specimen_position);
+                Shoulder.setPower(SPECIMEN_POWER);
                 break;
             case COLLECTION:
-                Shoulder.setTargetPosition(500);
-                Shoulder.setPower(0.25);
+                Shoulder.setTargetPosition(collection_position);
+                Shoulder.setPower(COLLECTION_POWER);
                 break;
         }
 
@@ -172,24 +190,6 @@ public class arm extends LinearOpMode {
 
     }
     //resting or normal mode
-
-    public void arm2(){
-        Shoulder.setTargetPosition(100);
-        Shoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
-    //specimen and sample score
-
-    public void arm3(){
-        Shoulder.setTargetPosition(100);
-        Shoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
-    //right before you specimen score
-
-    public void arm4(){
-        Shoulder.setTargetPosition(100);
-        Shoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
-    //collecting any specimens or samples
 
     public void servo(Servo servo, double increment){
         double position = servo.getPosition();
