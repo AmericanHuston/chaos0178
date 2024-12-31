@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -18,14 +19,15 @@ import org.firstinspires.ftc.teamcode.GoBildaPinpointDriver;
 
 import java.util.Locale;
 
+@Config
 @TeleOp(name="CoachTesting", group="Linear OpMode")
 //@Disabled
 public class CoachTesting extends LinearOpMode {
     boolean rampUp = true;
-    double position = 0.0;
-    double MAX_POS =  1.0;
-    double MIN_POS = 0.0;
-    double INCREMENT = 0.02;
+    public static double position = 0.0;
+    public static double MAX_POS =  1.0;
+    public static double MIN_POS = 0.0;
+    public static double INCREMENT = 0.02;
     @Override
     public void runOpMode() throws InterruptedException {
         //Don't edit code below this point
@@ -44,9 +46,6 @@ public class CoachTesting extends LinearOpMode {
         int slider_max = 4000;
         int slider_min = 30;
         int CYCLE_MS = 50;
-        Servo servo0 = hardwareMap.get(Servo.class, "servo0");
-        Servo arm = hardwareMap.get(Servo.class, "arm");
-        Servo claw = hardwareMap.get(Servo.class, "claw");
         DcMotor sliderLeft = hardwareMap.get(DcMotor.class, "SliderLeft");
         DcMotor sliderRight = hardwareMap.get(DcMotor.class, "SliderRight");
         // The sliders are mirrored from each other, so we need to reverse the direction of one of them.
@@ -225,20 +224,6 @@ public class CoachTesting extends LinearOpMode {
                 sliderRight.setPower(0.5);
             }
 
-            if (gamepad1.a) {
-                DesiredArmPosition = servoSlide();
-            }
-            arm.setPosition(DesiredArmPosition);
-
-            if (gamepad1.y) {
-                DesiredClawPosition = servoSlide();
-            }
-            claw.setPosition(DesiredClawPosition);
-            servo0.setPosition(DesiredServo0Position);
-
-            telemetry.addData("ROBOT", "Status:" + "Servo:" + servo0.getPosition());
-            telemetry.addData("ROBOT", "Status:" + "Arm:" + arm.getPosition());
-            telemetry.addData("ROBOT", "Status:" + "Claw:" + claw.getPosition());
 
             telemetry.addData("DesiredSliderPower", DesiredSliderPower);
             telemetry.addData("SliderLeftPos", sliderLeft.getCurrentPosition());
@@ -258,30 +243,7 @@ public class CoachTesting extends LinearOpMode {
             telemetry.addData("ROBOT", "Status:" + "Back Left =" + Math.round(backLeftPower * 100.0)/100.0);
             telemetry.addData("ROBOT", "Status:" + "Back Right =" + Math.round(backRightPower * 100.0)/100.0);
 
-            //servo0.setPosition(position); //Tell the servo to go to the correct pos
-            sleep(CYCLE_MS);
-            idle();
             telemetry.update();
         }
-    }
-
-    public double servoSlide() {
-        if (rampUp) {
-            // Keep stepping up until we hit the max value.
-            position += INCREMENT ;
-            if (position >= MAX_POS ) {
-                position = MAX_POS;
-                rampUp = !rampUp;   // Switch ramp direction
-            }
-        }
-        else {
-            // Keep stepping down until we hit the min value.
-            position -= INCREMENT ;
-            if (position <= MIN_POS ) {
-                position = MIN_POS;
-                rampUp = !rampUp;  // Switch ramp direction
-            }
-        }
-        return position;
     }
 }
