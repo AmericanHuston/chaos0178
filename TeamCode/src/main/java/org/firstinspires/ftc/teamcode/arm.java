@@ -40,9 +40,9 @@ public class arm extends LinearOpMode {
     public static double SPECIMEN_POWER = 0.3;
     public static double COLLECTION_POWER = 0.5;
     public static int resting_position = 0;
-    public static int basket_position = 200;
-    public static int specimen_position = 100;
-    public static int collection_position = 25;
+    public static int basket_position = 80;
+    public static int specimen_position = 130;
+    public static int collection_position = 360;
 
     IMU imu;
     DcMotor frontLeftMotor;
@@ -101,10 +101,6 @@ public class arm extends LinearOpMode {
                 //servo(claw, -0.5);
             }
 
-            if (gamepad1.a) {
-                pointAtBasket();
-            }
-
             if (gamepad2.y) {
                 state = armState.RESTING;
             }
@@ -129,6 +125,10 @@ public class arm extends LinearOpMode {
             }
 
             driving();
+
+            if (gamepad1.a) {
+                pointAtBasket();
+            }
             arm();
             action();
             slidersStop();
@@ -198,23 +198,29 @@ public class arm extends LinearOpMode {
     }
     //driving is working, field centric
     private void pointAtBasket() {
-       double currentYaw = imu.getRobotYawPitchRollAngles().getYaw();
        double pointedAtBasket = -45.0;
-       double power = .50 * (.01 * (pointedAtBasket - currentYaw));
-       if(pointedAtBasket < currentYaw) {
-            backLeftPower = -power;
-            frontLeftPower = -power;
-            backRightPower = power;
-            frontRightPower = power;
+       pointAtAngle(pointedAtBasket);
+    }
+    private void pointAtAngle(double pointAt){
+        double MAXPOWER = 0.5;
+        double  Kp = 0.2;
+        double currentYaw = imu.getRobotYawPitchRollAngles().getYaw();
+        double power = Kp *(pointAt - currentYaw);
+        power = clamp(power, -MAXPOWER, MAXPOWER);
+        backLeftPower = power;
+        frontLeftPower = power;
+        backRightPower  = -power;
+        frontRightPower = -power;
+    }
 
-        }else{
-
-           backLeftPower = power;
-           frontLeftPower = power;
-           backRightPower = -power;
-           frontRightPower = -power;
-       }
-
+    public double clamp(double input, double min, double max) {
+        double result = input;
+        if (input > max) {
+            result = max;
+        } else if (input < min) {
+            result = min;
+        }
+        return result;
     }
     public void driving() {
 
