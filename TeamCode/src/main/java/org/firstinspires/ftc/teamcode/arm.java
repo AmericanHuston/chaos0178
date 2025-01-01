@@ -43,12 +43,17 @@ public class arm extends LinearOpMode {
     public static int basket_position = 80;
     public static int specimen_position = 130;
     public static int collection_position = 360;
+    public static double MAX_POS     =  1.0;     // Maximum rotational position
+    public static double MIN_POS     =  0.0;     // Minimum rotational position
 
     IMU imu;
     DcMotor frontLeftMotor;
     DcMotor backLeftMotor;
     DcMotor frontRightMotor;
     DcMotor backRightMotor;
+    Servo wrist;
+    Servo claw;
+    public static double  wrist_position = (MAX_POS - MIN_POS) / 2;
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -58,8 +63,8 @@ public class arm extends LinearOpMode {
         backLeftMotor = hardwareMap.dcMotor.get("backLeft");
         frontRightMotor = hardwareMap.dcMotor.get("frontRight");
         backRightMotor = hardwareMap.dcMotor.get("backRight");
-        Servo claw = hardwareMap.get(Servo.class, "claw");
-        Servo wrist = hardwareMap.get(Servo.class, "wrist");
+        claw = hardwareMap.get(Servo.class, "claw");
+        wrist = hardwareMap.get(Servo.class, "wrist");
         SliderLeft = hardwareMap.get(DcMotor.class, "SliderLeft");
         SliderRight = hardwareMap.get(DcMotor.class, "SliderRight");
         Shoulder = hardwareMap.get(DcMotorEx.class, "Shoulder");
@@ -94,13 +99,13 @@ public class arm extends LinearOpMode {
             if(this.gamepad2.dpad_down){
                 slidersGo(-sliderSpeed); //Go down, so negative
             }
-            if(this.gamepad2.left_trigger> 0.1) {
-                //servo(claw, 0.5);
+            if(this.gamepad2.left_bumper) {
+                servo(claw, 0.4);
             }
-            if(this.gamepad2.right_trigger > 0.1){
-                //servo(claw, -0.5);
+            if(this.gamepad2.right_bumper){
+                servo(claw, -0.4);
             }
-
+            wrist_position = gamepad2.left_stick_y;
             if (gamepad2.y) {
                 state = armState.RESTING;
             }
@@ -132,6 +137,7 @@ public class arm extends LinearOpMode {
             arm();
             action();
             slidersStop();
+            wrist.setPosition(wrist_position);
             telemetry.addData("Yaw", imu.getRobotYawPitchRollAngles().getYaw());
             telemetry.addData("arm ticks", rest);
             telemetry.addData("Current ", Shoulder.getCurrent(CurrentUnit.AMPS));
@@ -183,6 +189,7 @@ public class arm extends LinearOpMode {
             case COLLECTION:
                 Shoulder.setTargetPosition(collection_position);
                 Shoulder.setPower(COLLECTION_POWER);
+                wrist.setPosition(0.9);
                 break;
         }
 
