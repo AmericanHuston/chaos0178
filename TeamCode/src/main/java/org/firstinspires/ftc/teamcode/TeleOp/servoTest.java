@@ -8,11 +8,13 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
 @Config
 @TeleOp(name = "ServoTest", group = "TeleOp")
@@ -30,7 +32,7 @@ public class servoTest extends LinearOpMode {
     DcMotor backRightMotor;
     Servo arm1;
     Servo arm0;
-    DcMotor Shoulder;
+    DcMotorEx Shoulder;
     public static double posUpR = 0.47;
     public static double posUpL = 0.5;
     public static double posForwardR = 0.0;
@@ -38,7 +40,7 @@ public class servoTest extends LinearOpMode {
     public static double posBackR = 0.97;
     public static double posBackL = 1.0;
     public static int ShoulderTicks = 50;
-    public static double ShoulderPower = 0.5;
+    public static double ShoulderPower = 0.2;
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -48,7 +50,7 @@ public class servoTest extends LinearOpMode {
         backLeftMotor = hardwareMap.dcMotor.get("backLeft");
         frontRightMotor = hardwareMap.dcMotor.get("frontRight");
         backRightMotor = hardwareMap.dcMotor.get("backRight");
-        Shoulder = hardwareMap.dcMotor.get("Shoulder");
+        Shoulder = (DcMotorEx) hardwareMap.dcMotor.get("Shoulder");
         arm1 = hardwareMap.get(Servo.class, "arm1");
         arm0 = hardwareMap.get(Servo.class, "arm0");
         SliderLeft = hardwareMap.get(DcMotor.class, "SliderLeft");
@@ -58,6 +60,7 @@ public class servoTest extends LinearOpMode {
         SliderRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         SliderLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Shoulder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Shoulder.setTargetPosition(0);
         Shoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Shoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         SliderRight.setDirection(DcMotorSimple.Direction.REVERSE); //It needs to be reversed because...
@@ -102,12 +105,14 @@ public class servoTest extends LinearOpMode {
 
             action();//thinking function
             slidersStop();//hold to slider position
+            double current = Shoulder.getCurrent(CurrentUnit.MILLIAMPS);
             telemetry.addData("Yaw", imu.getRobotYawPitchRollAngles().getYaw());
             telemetry.addData("Left", arm0.getPosition());
             telemetry.addData("Right", arm1.getPosition());//telemetry
             telemetry.addData("Shoulder", Shoulder.getCurrentPosition());
             telemetry.addData("Shoulder Power", ShoulderPower);
             telemetry.addData("ShoulderTicks", ShoulderTicks);
+            telemetry.addData("Current", current);
             telemetry.update();//telemetry to screen
         }
     }

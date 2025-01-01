@@ -58,8 +58,8 @@ public class arm extends LinearOpMode {
         backLeftMotor = hardwareMap.dcMotor.get("backLeft");
         frontRightMotor = hardwareMap.dcMotor.get("frontRight");
         backRightMotor = hardwareMap.dcMotor.get("backRight");
-        //Servo claw = hardwareMap.get(Servo.class, "claw");
-        //Servo arm = hardwareMap.get(Servo.class, "arm");
+        Servo claw = hardwareMap.get(Servo.class, "claw");
+        Servo wrist = hardwareMap.get(Servo.class, "wrist");
         SliderLeft = hardwareMap.get(DcMotor.class, "SliderLeft");
         SliderRight = hardwareMap.get(DcMotor.class, "SliderRight");
         Shoulder = hardwareMap.get(DcMotorEx.class, "Shoulder");

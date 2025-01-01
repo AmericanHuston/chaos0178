@@ -26,14 +26,9 @@ public class Main extends LinearOpMode {
     DcMotor backLeftMotor;
     DcMotor frontRightMotor;
     DcMotor backRightMotor;
-    Servo arm1;
-    Servo arm0;
-    public static double posUpR = 0.47;
-    public static double posUpL = 0.5;
-    public static double posForwardR = 0.0;
-    public static double posForwardL = 0.01;
-    public static double posBackR = 0.97;
-    public static double posBackL = 1.0;
+    Servo claw;
+    Servo wrist;
+
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -43,10 +38,10 @@ public class Main extends LinearOpMode {
         backLeftMotor = hardwareMap.dcMotor.get("backLeft");
         frontRightMotor = hardwareMap.dcMotor.get("frontRight");
         backRightMotor = hardwareMap.dcMotor.get("backRight");
-        arm1 = hardwareMap.get(Servo.class, "arm1");
-        arm0 = hardwareMap.get(Servo.class, "arm0");
         SliderLeft = hardwareMap.get(DcMotor.class, "SliderLeft");
         SliderRight = hardwareMap.get(DcMotor.class, "SliderRight");
+        claw = hardwareMap.get(Servo.class, "claw");
+        wrist = hardwareMap.get(Servo.class, "wrist");
         SliderLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         SliderRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         SliderRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -58,7 +53,6 @@ public class Main extends LinearOpMode {
         imu.initialize(parameters);
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        arm1.setDirection(Servo.Direction.REVERSE);
         final double sliderSpeed = 0.60;
 
 
@@ -73,17 +67,14 @@ public class Main extends LinearOpMode {
             if(this.gamepad2.dpad_up){//Slider top preset
                 sliderPreset1();
             }
-            if(this.gamepad2.dpad_down){//goes down, eventually needs to be run to position zero
+            if(this.gamepad2.dpad_down){//The dpad isn't working and I don't know why
                 slidersGo(-sliderSpeed); //Go down, so negative
             }
-            if(this.gamepad2.right_bumper){
-                doubleServo(arm0, arm1, posUpL, posUpR);
+            if(this.gamepad2.right_bumper){ // closes the claw
+                servo(claw, 0.5);
             }
             if(this.gamepad2.left_bumper){
-                doubleServo(arm0, arm1, posForwardL, posForwardR);
-            }
-            if(this.gamepad2.a){
-                doubleServo(arm0, arm1, posBackL, posBackR);
+                servo(claw, -0.5);
             }
             driving();//driving function
             if (gamepad1.a) {//point at basket right turn
@@ -95,9 +86,7 @@ public class Main extends LinearOpMode {
 
             action();//thinking function
             slidersStop();//hold to slider position
-            telemetry.addData("Yaw", imu.getRobotYawPitchRollAngles().getYaw());
-            telemetry.addData("Left", arm0.getPosition());
-            telemetry.addData("Right", arm1.getPosition());//telemetry
+            telemetry.addData("Yaw", imu.getRobotYawPitchRollAngles().getYaw());//telemetry
             telemetry.update();//telemetry to screen
         }
     }
