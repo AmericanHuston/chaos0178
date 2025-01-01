@@ -71,10 +71,10 @@ public class Main extends LinearOpMode {
                 slidersGo(-sliderSpeed); //Go down, so negative
             }
             if(this.gamepad2.right_bumper){ // closes the claw
-                servo(claw, 0.5);
+                servo(claw, 0.4);
             }
-            if(this.gamepad2.left_bumper){
-                servo(claw, -0.5);
+            if(this.gamepad2.left_bumper){//Opens the claw
+                servo(claw, -0.4);
             }
             driving();//driving function
             if (gamepad1.a) {//point at basket right turn
