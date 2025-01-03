@@ -60,7 +60,7 @@ public class Main extends LinearOpMode {
             if (gamepad1.back) {
                 imu.resetYaw();
             }
-            if(this.gamepad2.dpad_up){
+            if(this.gamepad2.dpad_right){
                 sliderPreset1();
 //                slidersGo(sliderSpeed);
             }

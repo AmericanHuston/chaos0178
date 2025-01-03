@@ -15,42 +15,7 @@ public class Gamepad {
     FakeButton _bumper_left = new FakeButton();
     FakeButton _bumper_right = new FakeButton();
     FakeButton _back = new FakeButton();
-/*
-Redundant, maybe:
- */
-//    public boolean a(){
-//        return this._a.isPressed();
-//    }
-//    public boolean b(){
-//        return this._b.isPressed();
-//    }
-//    public boolean x(){
-//        return this._x.isPressed();
-//    }
-//    public boolean y(){
-//        return this._y.isPressed();
-//    }
-//    public boolean dpad_up(){
-//        return this._dpad_up.isPressed();
-//    }
-//    public boolean dpad_down(){
-//        return this._dpad_down.isPressed();
-//    }
-//    public boolean dpad_right(){
-//        return this._dpad_right.isPressed();
-//    }
-//    public boolean dpad_left(){
-//        return this._dpad_left.isPressed();
-//    }
-//    public boolean left_bumper(){
-//        return this._bumper_left.isPressed();
-//    }
-//    public boolean right_bumper(){
-//        return this._bumper_right.isPressed();
-//    }
-//    public boolean back(){
-//        return this._back.isPressed();
-//    }
+
     public volatile boolean a = this._a.isPressed();
     public volatile boolean b = this._b.isPressed();
     public volatile boolean x = this._x.isPressed();
