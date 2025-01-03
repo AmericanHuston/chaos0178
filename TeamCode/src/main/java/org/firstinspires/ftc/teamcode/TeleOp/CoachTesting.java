@@ -35,7 +35,7 @@ public class CoachTesting extends LinearOpMode {
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
         dashboard.updateConfig();
         //Don't edit code above this point
-        GoBildaPinpointDriver odo; // Declare OpMode member for the Odometry Computer
+        GoBildaPinpointDriver pinpoint; // Declare OpMode member for the Odometry Computer
 
 
         double SLIDER_POWER = 0.40;
@@ -79,10 +79,10 @@ public class CoachTesting extends LinearOpMode {
         // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
         imu.initialize(parameters);
 
-        odo = hardwareMap.get(GoBildaPinpointDriver.class,"pinpoint");
-        odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
-        odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
-        odo.resetPosAndIMU();
+        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class,"pinpoint");
+        pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+        pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
+        pinpoint.resetPosAndIMU();
 
         double DesiredArmPosition = 0.0;
         double DesiredClawPosition = 0.0;
@@ -157,8 +157,8 @@ public class CoachTesting extends LinearOpMode {
             }
 
 
-            odo.update();
-            Pose2D pos = odo.getPosition();
+            pinpoint.update();
+            Pose2D pos = pinpoint.getPosition();
             String data = String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f}", pos.getX(DistanceUnit.MM), pos.getY(DistanceUnit.MM), pos.getHeading(AngleUnit.DEGREES));
             telemetry.addData("Position", data);
 
