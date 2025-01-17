@@ -27,7 +27,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import java.util.Arrays;
 import java.util.List;
 
-import pedroPathing.constants.*;
+import org.firstinspires.ftc.teamcode.pedroPathing.constants.*;
 
 /**
  * This is the LocalizationTest OpMode. This is basically just a simple mecanum drive attached to a

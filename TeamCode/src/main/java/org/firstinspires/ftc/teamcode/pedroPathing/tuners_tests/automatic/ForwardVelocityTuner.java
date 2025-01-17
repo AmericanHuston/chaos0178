@@ -17,6 +17,7 @@ import com.pedropathing.pathgen.MathFunctions;
 import com.pedropathing.pathgen.Vector;
 import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -28,8 +29,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import pedroPathing.constants.FConstants;
-import pedroPathing.constants.LConstants;
+import org.firstinspires.ftc.teamcode.pedroPathing.constants.FConstants;
+import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
 
 /**
  * This is the ForwardVelocityTuner autonomous follower OpMode. This runs the robot forwards at max
@@ -47,6 +48,7 @@ import pedroPathing.constants.LConstants;
  * @version 1.0, 3/13/2024
  */
 @Config
+@Disabled
 @Autonomous(name = "Forward Velocity Tuner", group = "Automatic Tuners")
 public class ForwardVelocityTuner extends OpMode {
     private ArrayList<Double> velocities = new ArrayList<>();

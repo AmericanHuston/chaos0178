@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pedroPathing.tuners_tests.automatic.pedroPathing.examples;
+package org.firstinspires.ftc.teamcode.pedroPathing.examples;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -12,9 +12,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-
-import pedroPathing.tuners_tests.automatic.pedroPathing.constants.FConstants;
-import pedroPathing.tuners_tests.automatic.pedroPathing.constants.LConstants;
+import org.firstinspires.ftc.teamcode.pedroPathing.constants.FConstants;
+import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
 
 
 /**
@@ -25,15 +24,17 @@ import pedroPathing.tuners_tests.automatic.pedroPathing.constants.LConstants;
  * @author Samarth Mahapatra - 1002 CircuitRunners Robotics Surge
  * @version 1.0, 12/30/2024
  */
-@Autonomous(name = "Triangle", group = "Examples")
-public class Triangle extends OpMode {
+@Autonomous(name = "Square", group = "Examples")
+public class Square extends OpMode {
     private Follower follower;
 
-    private final Pose startPose = new Pose(0,0, Math.toRadians(0));
-    private final Pose interPose = new Pose(24, -24, Math.toRadians(90));
-    private final Pose endPose = new Pose(24, 24, Math.toRadians(45));
+    private final Pose startingPose = new Pose(20, 244, Math.toRadians(0));
+    private final Pose blueBasket = new Pose(61,305, Math.toRadians(-45));
+    private final Pose redObservation = new Pose(305, 305, Math.toRadians(90));
+    private final Pose redBasket = new Pose(305, 61, Math.toRadians(135));
+    private final Pose blueObservation = new Pose(61,61, Math.toRadians(270));
 
-    private PathChain triangle;
+    private PathChain square;
 
     private Telemetry telemetryA;
 
@@ -46,7 +47,7 @@ public class Triangle extends OpMode {
         follower.update();
 
         if (follower.atParametricEnd()) {
-            follower.followPath(triangle, true);
+            follower.followPath(square, true);
         }
 
         follower.telemetryDebug(telemetryA);
@@ -60,18 +61,22 @@ public class Triangle extends OpMode {
     public void init() {
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
-        follower.setStartingPose(startPose);
+        follower.setStartingPose(startingPose);
 
-        triangle = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(startPose), new Point(interPose)))
-                .setLinearHeadingInterpolation(startPose.getHeading(), interPose.getHeading())
-                .addPath(new BezierLine(new Point(interPose), new Point(endPose)))
-                .setLinearHeadingInterpolation(interPose.getHeading(), endPose.getHeading())
-                .addPath(new BezierLine(new Point(endPose), new Point(startPose)))
-                .setLinearHeadingInterpolation(endPose.getHeading(), startPose.getHeading())
+        square = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(startingPose), new Point(blueBasket)))
+                .setLinearHeadingInterpolation(startingPose.getHeading(), blueBasket.getHeading())
+                .addPath(new BezierLine(new Point(blueBasket), new Point(redObservation)))
+                .setLinearHeadingInterpolation(blueBasket.getHeading(), redObservation.getHeading())
                 .build();
+//                .addPath(new BezierLine(new Point(redObservation), new Point(redBasket)))
+//                .setLinearHeadingInterpolation(redObservation.getHeading(), redBasket.getHeading())
+//                .addPath(new BezierLine(new Point(redBasket), new Point(blueObservation)))
+//                .setLinearHeadingInterpolation(redBasket.getHeading(), blueObservation.getHeading())
+//                .addPath(new BezierLine(new Point(blueObservation), new Point(blueBasket)))
+//                .setLinearHeadingInterpolation(blueObservation.getHeading(), blueBasket.getHeading())
 
-        follower.followPath(triangle);
+        follower.followPath(square);
 
         telemetryA = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
         telemetryA.addLine("This will run in a roughly triangular shape,"
