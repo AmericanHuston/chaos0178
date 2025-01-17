@@ -28,11 +28,11 @@ import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
 public class Square extends OpMode {
     private Follower follower;
 
-    private final Pose startingPose = new Pose(20, 244, Math.toRadians(0));
-    private final Pose blueBasket = new Pose(61,305, Math.toRadians(-45));
-    private final Pose redObservation = new Pose(305, 305, Math.toRadians(90));
-    private final Pose redBasket = new Pose(305, 61, Math.toRadians(135));
-    private final Pose blueObservation = new Pose(61,61, Math.toRadians(270));
+    private final Pose startingPose = new Pose(8, 96, Math.toRadians(0));
+    private final Pose blueBasket = new Pose(24,120, Math.toRadians(-135));
+    private final Pose redObservation = new Pose(120, 120, Math.toRadians(90));
+    private final Pose redBasket = new Pose(120, 24, Math.toRadians(45));
+    private final Pose blueObservation = new Pose(24,24, Math.toRadians(270));
 
     private PathChain square;
 
@@ -68,13 +68,13 @@ public class Square extends OpMode {
                 .setLinearHeadingInterpolation(startingPose.getHeading(), blueBasket.getHeading())
                 .addPath(new BezierLine(new Point(blueBasket), new Point(redObservation)))
                 .setLinearHeadingInterpolation(blueBasket.getHeading(), redObservation.getHeading())
+                .addPath(new BezierLine(new Point(redObservation), new Point(redBasket)))
+                .setLinearHeadingInterpolation(redObservation.getHeading(), redBasket.getHeading())
+                .addPath(new BezierLine(new Point(redBasket), new Point(blueObservation)))
+                .setLinearHeadingInterpolation(redBasket.getHeading(), blueObservation.getHeading())
+                .addPath(new BezierLine(new Point(blueObservation), new Point(blueBasket)))
+                .setLinearHeadingInterpolation(blueObservation.getHeading(), blueBasket.getHeading())
                 .build();
-//                .addPath(new BezierLine(new Point(redObservation), new Point(redBasket)))
-//                .setLinearHeadingInterpolation(redObservation.getHeading(), redBasket.getHeading())
-//                .addPath(new BezierLine(new Point(redBasket), new Point(blueObservation)))
-//                .setLinearHeadingInterpolation(redBasket.getHeading(), blueObservation.getHeading())
-//                .addPath(new BezierLine(new Point(blueObservation), new Point(blueBasket)))
-//                .setLinearHeadingInterpolation(blueObservation.getHeading(), blueBasket.getHeading())
 
         follower.followPath(square);
 
