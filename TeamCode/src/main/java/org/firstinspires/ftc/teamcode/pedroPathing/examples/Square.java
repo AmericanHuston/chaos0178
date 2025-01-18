@@ -29,9 +29,9 @@ public class Square extends OpMode {
     private Follower follower;
 
     private final Pose startingPose = new Pose(8, 96, Math.toRadians(0));
-    private final Pose blueBasket = new Pose(24,120, Math.toRadians(-135));
+    private final Pose blueBasket = new Pose(24,120, Math.toRadians(270));
     private final Pose redObservation = new Pose(120, 120, Math.toRadians(90));
-    private final Pose redBasket = new Pose(120, 24, Math.toRadians(45));
+    private final Pose redBasket = new Pose(120, 24, Math.toRadians(135));
     private final Pose blueObservation = new Pose(24,24, Math.toRadians(270));
 
     private PathChain square;

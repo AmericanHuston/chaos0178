@@ -20,11 +20,11 @@ public class FConstants {
 
         FollowerConstants.mass = 11.7;
 
-        FollowerConstants.xMovement = 59.029018498327915; //These are the results of the ForwardVelocityTuner run with 72 inches on 16/1/2025 (DD/MM/YYYY)
-        FollowerConstants.yMovement = 45.52893252324479; //These are the results of the StrafeVelocityTuner run with 72 inches on 16/1/2025
+        FollowerConstants.xMovement = 66.39; //These are the results of the ForwardVelocityTuner run with 72 inches on 17/1/2025 (DD/MM/YYYY)
+        FollowerConstants.yMovement = 65.96; //These are the results of the StrafeVelocityTuner run with 72 inches on 17/1/2025
 
-        FollowerConstants.forwardZeroPowerAcceleration = -32.60142059951359;//blood was shed for this test result
-        FollowerConstants.lateralZeroPowerAcceleration = -62.35330272425947;//not this one
+        FollowerConstants.forwardZeroPowerAcceleration = -32.5;//The other results of the tuning
+        FollowerConstants.lateralZeroPowerAcceleration = -61.9;
 
         FollowerConstants.translationalPIDFCoefficients.setCoefficients(0.1,0,0.01,0);
         FollowerConstants.useSecondaryTranslationalPID = false;
@@ -34,7 +34,7 @@ public class FConstants {
         FollowerConstants.useSecondaryHeadingPID = false;
         FollowerConstants.secondaryHeadingPIDFCoefficients.setCoefficients(2,0,0.1,0); // Not being used, @see useSecondaryHeadingPID
 
-        FollowerConstants.drivePIDFCoefficients.setCoefficients(0.1,0,0,0.6,0);
+        FollowerConstants.drivePIDFCoefficients.setCoefficients(0.0075,0,0.0001,0.6,0);
         FollowerConstants.useSecondaryDrivePID = false;
         FollowerConstants.secondaryDrivePIDFCoefficients.setCoefficients(0.1,0,0,0.6,0); // Not being used, @see useSecondaryDrivePID
 
