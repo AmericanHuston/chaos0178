@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 
+import static android.os.SystemClock.sleep;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.follower.Follower;
@@ -13,11 +15,13 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.EnvironmentLocations.Board0;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.FConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
 
 @Autonomous(name = "PedroSpecimenAuto", group = "PedroAutos")
 public class PedroSpecimenAuto extends OpMode {
+    Board0 board = new Board0();
     private Follower follower;
     private final int MIN_WALL_POS = 8;
     private final int t1 = 24;
@@ -53,6 +57,7 @@ public class PedroSpecimenAuto extends OpMode {
 
     @Override
     public void init() {
+        board.init(hardwareMap);
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
         follower.setStartingPose(blueStartingPose);
@@ -90,7 +95,21 @@ public class PedroSpecimenAuto extends OpMode {
 
         if (follower.atParametricEnd()) {
             follower.followPath(specimenHang, true);
-
+            board.setArmState(Board0.armStates.ABOVE_BAR);
+            board.setClawState(Board0.clawPositions.CLAW_CLOSED);
+            board.stateMachinesThink(Board0.stateMachineAct.ARM);
+            board.stateMachinesThink(Board0.stateMachineAct.CLAW);
+            board.stateMachinesAct(Board0.stateMachineAct.CLAW);
+            board.stateMachinesAct(Board0.stateMachineAct.ARM);
+            sleep(400);
+            board.setArmState(Board0.armStates.BELOW_BAR);
+            board.stateMachinesThink(Board0.stateMachineAct.ARM);
+            board.stateMachinesAct(Board0.stateMachineAct.ARM);
+            sleep(400);
+            board.setClawState(Board0.clawPositions.CLAW_OPEN);
+            board.stateMachinesThink(Board0.stateMachineAct.CLAW);
+            board.stateMachinesAct(Board0.stateMachineAct.CLAW);
+            sleep(400);
         }
 
         follower.telemetryDebug(telemetryA);

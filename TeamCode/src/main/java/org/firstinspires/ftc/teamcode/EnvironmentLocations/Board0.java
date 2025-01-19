@@ -4,7 +4,6 @@ import static android.os.SystemClock.sleep;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 import static org.firstinspires.ftc.teamcode.EnvironmentLocations.LocalUtils.*;
 
-import com.acmerobotics.roadrunner.ftc.GoBildaPinpointDriverRR;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -29,7 +28,6 @@ public class Board0 {
     DcMotor backRightMotor;
     Servo wrist;
     Servo claw;
-    GoBildaPinpointDriverRR pinpoint;
     TouchSensor sliderButton;
     public enum armStates {
         RESTING,
@@ -90,7 +88,7 @@ public class Board0 {
     int desired_slider_position;
     double desired_slider_velocity;
     double desired_wrist_position = 0.5;
-    Board0(){}
+    public Board0(){}
     public void init(HardwareMap hw){
         imu = hw.get(IMU.class, "imu");
         sliderButton = hw.touchSensor.get("sliderButton");
