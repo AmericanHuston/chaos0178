@@ -47,6 +47,8 @@ public class PedroSpecimenAuto extends OpMode {
 
     private PathChain square;
 
+    private PathChain specimenHang;
+
     private Telemetry telemetryA;
 
     @Override
@@ -54,6 +56,11 @@ public class PedroSpecimenAuto extends OpMode {
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
         follower.setStartingPose(blueStartingPose);
+
+        specimenHang = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(blueStartingPose), new Point(blueHangSpecimen)))
+                .setLinearHeadingInterpolation(blueStartingPose.getHeading(), blueHangSpecimen.getHeading())
+                .build();
 
         square = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(blueStartingPose), new Point(blueBasket)))
@@ -82,7 +89,8 @@ public class PedroSpecimenAuto extends OpMode {
         follower.update();
 
         if (follower.atParametricEnd()) {
-            follower.followPath(square, true);
+            follower.followPath(specimenHang, true);
+
         }
 
         follower.telemetryDebug(telemetryA);
