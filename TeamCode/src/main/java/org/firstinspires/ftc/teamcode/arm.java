@@ -38,13 +38,15 @@ public class arm extends LinearOpMode {
         above_bar,
         below_bar,
         prehang,
-        posthang
+        posthang,
+        wallgrab
 
     }
     armState state;
 
     public static double rest;
-
+    public static int slidersWall = 1450;
+    public static int armWall = 500;
     public static double RESTING_VELOCITY = 200;
     public static double BASKET_VELOCITY = 200;
     public static double SPECIMEN_VELOCITY = 210;
@@ -54,12 +56,8 @@ public class arm extends LinearOpMode {
     public static double Slidervelocitydown = 1200;
     public static int resting_position = 50;
     public static int basket_position = 170;
-    public static int specimen_position = 370;
+    public static int specimen_position = 400;
     public static int collection_position = 500;
-    //public static double wristpos_resting = 0.15;
-    //public static double wristpos_basket = 0.6;
-    //public static double wristpos_specimen = 0.8;
-    //public static double wristpos_collection = 0.85;
     public static int slidersdown = 40;
     public static int slidersup = 3500;
     public static double MAX_POS     =  1.0;     // Maximum rotational position
@@ -178,7 +176,7 @@ public class arm extends LinearOpMode {
             if (gamepad2.dpad_right) { state = armState.below_bar; }
             if (gamepad2.dpad_up) { state = armState.prehang; }
             if (gamepad2.dpad_down) { state = armState.posthang; }
-
+            if (gamepad1.y){state = armState.wallgrab;}
             driving();
             if (gamepad1.a) { pointAtBasket(); }
             arm();
@@ -253,6 +251,12 @@ public class arm extends LinearOpMode {
                 desired_slider_position = resting_position;
                 desired_slider_velocity = Slidervelocityup;
                 break;
+            case wallgrab:
+                desired_shoulder_position = armWall;
+                desired_shoulder_velocity = COLLECTION_VELOCITY;
+                //desired_wrist_position = wristpos_collection;
+                desired_slider_position = slidersWall;
+                desired_slider_velocity = Slidervelocityup;
         }
     }
 
