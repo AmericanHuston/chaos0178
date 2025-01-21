@@ -23,6 +23,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
 public class PedroSpecimenAuto extends OpMode {
     Board0 board = new Board0();
     private Follower follower;
+    private int autoState = 0;
     private final int MIN_WALL_POS = 8;
     private final int t1 = 24;
     private final int t2 = 48;
@@ -34,20 +35,19 @@ public class PedroSpecimenAuto extends OpMode {
 
 
     //All in inches...Not centimeters
-    //Blue Observation Zone is 0,0
-    //Red Observation Zone is 144,144
-    //0 PROBABLY intersects the fully colored bars
+    // Observation Zone is 0,0
+    //Other Observation Zone is 144,144
+    //0 PROBABLY intersects the fully coloOther bars
     // Pose goes in this order: Pose(x,y, Radians);
-    private final Pose redStartingPose = new Pose(MAX_WALL_POS, t4, Math.toRadians(180));
-    private final Pose blueStartingPose = new Pose(MIN_WALL_POS, t4, Math.toRadians(0));
-    private final Pose blueBasket = new Pose(t1,t5, Math.toRadians(270));
-    private final Pose redObservation = new Pose(t5, t5, Math.toRadians(90));
-    private final Pose redBasket = new Pose(t5, t1, Math.toRadians(135));
-    private final Pose blueObservation = new Pose(t1,t1, Math.toRadians(270));
-    private final Pose blueHangSpecimen = new Pose(38,t3, Math.toRadians(90));
-    private final Pose redHangSpecimen = new Pose(112,t3,Math.toRadians(90));
-    private final Pose blueTapeHangRobot = new Pose(t3,t4, Math.toRadians(90));
-    private final Pose redTapeHangRobot = new Pose(t3,t2, Math.toRadians(270));
+    private final Pose StartingPose = new Pose(MIN_WALL_POS, t3, Math.toRadians(0));
+    private final Pose Basket = new Pose(t1,t5, Math.toRadians(270));
+    private final Pose OtherObservation = new Pose(t5, t5, Math.toRadians(90));
+    private final Pose OtherBasket = new Pose(t5, t1, Math.toRadians(135));
+    private final Pose Observation = new Pose(t1,t1, Math.toRadians(270));
+    private final Pose HangSpecimen = new Pose(30,t3+12, Math.toRadians(0));
+    private final Pose OtherHangSpecimen = new Pose(112,t3,Math.toRadians(90));
+    private final Pose TapeHangRobot = new Pose(t3,t4, Math.toRadians(90));
+    private final Pose OtherTapeHangRobot = new Pose(t3,t2, Math.toRadians(270));
 
     private PathChain square;
 
@@ -60,27 +60,26 @@ public class PedroSpecimenAuto extends OpMode {
         board.init(hardwareMap);
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
-        follower.setStartingPose(blueStartingPose);
+        follower.setStartingPose(StartingPose);
 
         specimenHang = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(blueStartingPose), new Point(blueHangSpecimen)))
-                .setLinearHeadingInterpolation(blueStartingPose.getHeading(), blueHangSpecimen.getHeading())
+                .addPath(new BezierLine(new Point(StartingPose), new Point(HangSpecimen)))
+                .setLinearHeadingInterpolation(StartingPose.getHeading(), HangSpecimen.getHeading())
                 .build();
 
         square = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(blueStartingPose), new Point(blueBasket)))
-                .setLinearHeadingInterpolation(blueStartingPose.getHeading(), blueBasket.getHeading())
-                .addPath(new BezierLine(new Point(blueBasket), new Point(redObservation)))
-                .setLinearHeadingInterpolation(blueBasket.getHeading(), redObservation.getHeading())
-                .addPath(new BezierLine(new Point(redObservation), new Point(redBasket)))
-                .setLinearHeadingInterpolation(redObservation.getHeading(), redBasket.getHeading())
-                .addPath(new BezierLine(new Point(redBasket), new Point(blueObservation)))
-                .setLinearHeadingInterpolation(redBasket.getHeading(), blueObservation.getHeading())
-                .addPath(new BezierLine(new Point(blueObservation), new Point(blueBasket)))
-                .setLinearHeadingInterpolation(blueObservation.getHeading(), blueBasket.getHeading())
+                .addPath(new BezierLine(new Point(StartingPose), new Point(Basket)))
+                .setLinearHeadingInterpolation(StartingPose.getHeading(), Basket.getHeading())
+                .addPath(new BezierLine(new Point(Basket), new Point(OtherObservation)))
+                .setLinearHeadingInterpolation(Basket.getHeading(), OtherObservation.getHeading())
+                .addPath(new BezierLine(new Point(OtherObservation), new Point(OtherBasket)))
+                .setLinearHeadingInterpolation(OtherObservation.getHeading(), OtherBasket.getHeading())
+                .addPath(new BezierLine(new Point(OtherBasket), new Point(Observation)))
+                .setLinearHeadingInterpolation(OtherBasket.getHeading(), Observation.getHeading())
+                .addPath(new BezierLine(new Point(Observation), new Point(Basket)))
+                .setLinearHeadingInterpolation(Observation.getHeading(), Basket.getHeading())
                 .build();
 
-        follower.followPath(square);
 
         telemetryA = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
         telemetryA.addLine("This will run in a roughly triangular shape,"
@@ -89,29 +88,46 @@ public class PedroSpecimenAuto extends OpMode {
         telemetryA.update();
     }
 
+
     @Override
     public void loop() {
         follower.update();
-
-        if (follower.atParametricEnd()) {
-            follower.followPath(specimenHang, true);
-            board.setArmState(Board0.armStates.ABOVE_BAR);
-            board.setClawState(Board0.clawPositions.CLAW_CLOSED);
-            board.stateMachinesThink(Board0.stateMachineAct.ARM);
-            board.stateMachinesThink(Board0.stateMachineAct.CLAW);
-            board.stateMachinesAct(Board0.stateMachineAct.CLAW);
-            board.stateMachinesAct(Board0.stateMachineAct.ARM);
-            sleep(400);
-            board.setArmState(Board0.armStates.BELOW_BAR);
-            board.stateMachinesThink(Board0.stateMachineAct.ARM);
-            board.stateMachinesAct(Board0.stateMachineAct.ARM);
-            sleep(400);
-            board.setClawState(Board0.clawPositions.CLAW_OPEN);
-            board.stateMachinesThink(Board0.stateMachineAct.CLAW);
-            board.stateMachinesAct(Board0.stateMachineAct.CLAW);
-            sleep(400);
+        switch (autoState) {
+            case 0:
+                board.setClawState(Board0.clawPositions.CLAW_CLOSED);
+                board.stateMachinesThink(Board0.stateMachineAct.CLAW);
+                board.stateMachinesAct(Board0.stateMachineAct.CLAW);
+                autoState += 1;
+                sleep(1400);
+                break;
+            case 1:
+                board.setArmState(Board0.armStates.ABOVE_BAR);
+                board.stateMachinesThink(Board0.stateMachineAct.ARM);
+                board.stateMachinesAct(Board0.stateMachineAct.ARM);
+                sleep(1400);
+                autoState += 1;
+                break;
+            case 2:
+                follower.followPath(specimenHang, true);
+                autoState += 1;
+                break;
+            case 3:
+                if (!follower.isBusy()) {
+                    board.setArmState(Board0.armStates.BELOW_BAR);
+                    board.stateMachinesThink(Board0.stateMachineAct.ARM);
+                    board.stateMachinesAct(Board0.stateMachineAct.ARM);
+                }
+                autoState += 1;
+                break;
+            case 4:
+                sleep(1400);
+                board.setClawState(Board0.clawPositions.CLAW_OPEN);
+                board.stateMachinesThink(Board0.stateMachineAct.CLAW);
+                board.stateMachinesAct(Board0.stateMachineAct.CLAW);
+                autoState +=1;
+                break;
         }
-
+        telemetry.addData("autoState", autoState);
         follower.telemetryDebug(telemetryA);
     }
 }
