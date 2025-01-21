@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -21,7 +22,7 @@ import java.util.Locale;
 
 @Config
 @TeleOp(name="CoachTesting", group="Linear OpMode")
-//@Disabled
+@Disabled
 public class CoachTesting extends LinearOpMode {
     boolean rampUp = true;
     public static double position = 0.0;

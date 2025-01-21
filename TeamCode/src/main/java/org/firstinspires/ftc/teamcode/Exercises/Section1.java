@@ -2,9 +2,10 @@ package org.firstinspires.ftc.teamcode.Exercises;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-
+@Disabled
 @Autonomous(name = "Section1", group = "Autonomous")
 public class Section1 extends LinearOpMode {
     @Override

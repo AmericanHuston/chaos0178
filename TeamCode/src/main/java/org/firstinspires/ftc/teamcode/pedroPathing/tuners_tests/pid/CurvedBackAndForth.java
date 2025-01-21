@@ -9,6 +9,7 @@ import com.pedropathing.pathgen.Path;
 import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -30,6 +31,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
  * @version 1.0, 3/13/2024
  */
 @Config
+@Disabled
 @Autonomous (name = "Curved Back And Forth", group = "PIDF Testing")
 public class CurvedBackAndForth extends OpMode {
     private Telemetry telemetryA;

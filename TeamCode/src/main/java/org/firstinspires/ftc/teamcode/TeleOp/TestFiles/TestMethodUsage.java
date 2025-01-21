@@ -8,11 +8,13 @@ import static org.firstinspires.ftc.teamcode.TeleOp.TestFiles.Methods.Subtractin
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @Config
 @TeleOp
+@Disabled
 public class TestMethodUsage extends LinearOpMode {
     public void runOpMode(){
         FtcDashboard dashboard = FtcDashboard.getInstance();

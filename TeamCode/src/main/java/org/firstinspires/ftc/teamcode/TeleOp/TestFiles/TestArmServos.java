@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.TeleOp.TestFiles;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -24,6 +25,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
+@Disabled
 @Config
 @TeleOp(name = "Test: Arm Servos", group = "Test")
 public class TestArmServos extends LinearOpMode {

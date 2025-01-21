@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -19,7 +20,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.VisionProcessor;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
-
+@Disabled
 @Autonomous
 public class FTCDashboardCamera extends LinearOpMode {
     public static class CameraStreamProcessor implements VisionProcessor, CameraStreamSource {

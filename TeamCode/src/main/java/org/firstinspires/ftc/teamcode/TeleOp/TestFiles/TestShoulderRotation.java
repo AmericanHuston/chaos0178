@@ -27,6 +27,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 @Config
+@Disabled
 @TeleOp(name = "Test: Shoulder Rotation", group = "Test")
 public class TestShoulderRotation extends LinearOpMode {
 

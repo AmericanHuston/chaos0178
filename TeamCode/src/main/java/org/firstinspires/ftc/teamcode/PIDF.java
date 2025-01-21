@@ -3,6 +3,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.controller.PIDController;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -15,6 +16,7 @@ import java.util.Stack;
 
 @Config
 @TeleOp
+@Disabled
 public class PIDF extends OpMode {
     private PIDController controller;
 
