@@ -47,23 +47,23 @@ public class arm extends LinearOpMode {
     public static double rest;
     public static int slidersWall = 1450;
     public static int armWall = 500;
-    public static double RESTING_VELOCITY = 200;
-    public static double BASKET_VELOCITY = 200;
-    public static double SPECIMEN_VELOCITY = 210;
-    public static double COLLECTION_VELOCITY = 210;
+    public static double RESTING_VELOCITY = 250;
+    public static double BASKET_VELOCITY = 250;
+    public static double SPECIMEN_VELOCITY = 260;
+    public static double COLLECTION_VELOCITY = 260;
     public static int hangHeight = 2500;
     public static double Slidervelocityup = 2500;
     public static double Slidervelocitydown = 1200;
     public static int resting_position = 50;
     public static int basket_position = 170;
-    public static int specimen_position = 400;
+    public static int specimen_position = 430;
     public static int collection_position = 500;
     public static int slidersdown = 40;
     public static int slidersup = 3500;
     public static double MAX_POS     =  1.0;     // Maximum rotational position
     public static double MIN_POS     =  0.0;// Minimum rotational position
     public static int slider_above_bar_position = 1050;
-    public static int slider_below_bar_position = 400;
+    public static int slider_below_bar_position = 320;
     public static int shoulder_bar_position = 170;
     //public static double wrist_bar_position = 0.39;
     public static int shoulder_bar_velotity = 200;
@@ -117,8 +117,8 @@ public class arm extends LinearOpMode {
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         final double sliderSpeed = 0.35;
         state = armState.RESTING;
-        claw.setPosition(0.5);
-        wrist.setPosition(0.1);
+        //claw.setPosition(0.5);
+        //wrist.setPosition(0.1);
         boolean openClaw = true;
         boolean changedClaw = false;
         boolean openWrist = true;
