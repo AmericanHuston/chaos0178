@@ -141,6 +141,7 @@ public class arm extends LinearOpMode {
         while(opModeIsActive()){
             if (gamepad1.back) {
                 imu.resetYaw();
+                pinpoint.resetPosAndIMU();
             }
             if(gamepad2.right_trigger > 0.01) {
                 desired_claw_position = Range.scale(gamepad2.right_trigger, 0.0, 1.0, 0.5, 0.99);
@@ -294,7 +295,7 @@ public class arm extends LinearOpMode {
     public void driving() {
         double y = gamepad1.left_stick_y / 2;
         double x = -gamepad1.left_stick_x / 2; //X is reversed
-        double rx = -gamepad1.right_stick_x / 2; // X is reversed
+        double rx = gamepad1.right_stick_x / 2; // X is reversed
         if (gamepad1.right_trigger >= 0.01) {
             y = y * 2;
             x = x * 2;
