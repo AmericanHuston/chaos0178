@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
+import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.pathgen.Point;
@@ -44,16 +45,24 @@ public class PedroSpecimenAuto extends OpMode {
     private final Pose Basket = new Pose(t1,t5, Math.toRadians(270));
     private final Pose OtherObservation = new Pose(t5, t5, Math.toRadians(90));
     private final Pose OtherBasket = new Pose(t5, t1, Math.toRadians(135));
-    private final Pose Observation = new Pose(t1,t1, Math.toRadians(270));
-    private final Pose HangSpecimen = new Pose(33,t3+12, Math.toRadians(0));
+    private final Pose Observation = new Pose(14,40, Math.toRadians(0));
+    private final Pose HangSpecimen = new Pose(35,t3+12, Math.toRadians(0));
     private final Pose OtherHangSpecimen = new Pose(112,t3,Math.toRadians(90));
     private final Pose TapeHangRobot = new Pose(t3,t4, Math.toRadians(90));
     private final Pose OtherTapeHangRobot = new Pose(t3,t2, Math.toRadians(270));
-    //private final Pose SpecCollect = new Pose(t2, t1, Math.toRadians(180));
+    private final Pose SpecCollect = new Pose(t2-18, t2-8, Math.toRadians(180));
+    private final Pose littleBack = new Pose (25, t3+12, Math.toRadians(0));
+    private final Pose littleRight = new Pose(35,t3+8, Math.toRadians(0));
+    private final Pose controlHangSpec = new Pose(21, 88);
     private PathChain square;
 
     private PathChain specimenHang1;
-    //private PathChain SpecimenCollect;
+    private PathChain JustRight;
+    private PathChain SpecimenCollect;
+    private PathChain JustBack;
+    private PathChain preHang;
+    private PathChain specimenHang2;
+    private PathChain Park;
     private Telemetry telemetryA;
 
     @Override
@@ -70,12 +79,30 @@ public class PedroSpecimenAuto extends OpMode {
                 .addPath(new BezierLine(new Point(StartingPose), new Point(HangSpecimen)))
                 .setLinearHeadingInterpolation(StartingPose.getHeading(), HangSpecimen.getHeading())
                 .build();
-        /*
-        SpecimenCollect = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(HangSpecimen), new Point(SpecCollect)))
-                .setLinearHeadingInterpolation(HangSpecimen.getHeading(), SpecCollect.getHeading())
+        JustRight = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(HangSpecimen), new Point(littleRight)))
+                .setLinearHeadingInterpolation(HangSpecimen.getHeading(), littleRight.getHeading())
                 .build();
-         */
+        JustBack = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(HangSpecimen), new Point(littleBack)))
+                .setLinearHeadingInterpolation(HangSpecimen.getHeading(), littleBack.getHeading())
+                .build();
+        SpecimenCollect = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(littleBack), new Point(SpecCollect)))
+                .setLinearHeadingInterpolation(littleBack.getHeading(), SpecCollect.getHeading())
+                .build();
+        preHang = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(SpecCollect), new Point(littleBack)))
+                .setLinearHeadingInterpolation(SpecCollect.getHeading(), littleBack.getHeading())
+                .build();
+        specimenHang2 = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(littleBack), new Point(HangSpecimen)))
+                .setLinearHeadingInterpolation(littleBack.getHeading(), HangSpecimen.getHeading())
+                .build();
+        Park = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(HangSpecimen), new Point(Observation)))
+                .setLinearHeadingInterpolation(HangSpecimen.getHeading(), Observation.getHeading())
+                .build();
         square = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(StartingPose), new Point(Basket)))
                 .setLinearHeadingInterpolation(StartingPose.getHeading(), Basket.getHeading())
@@ -91,9 +118,9 @@ public class PedroSpecimenAuto extends OpMode {
 
 
         telemetryA = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
-        telemetryA.addLine("This will run in a roughly triangular shape,"
-                + "starting on the bottom-middle point. So, make sure you have enough "
-                + "space to the left, front, and right to run the OpMode.");
+        telemetryA.addLine("This is the Specimen auto."
+                + "It scores two and parks right now."
+                + "Chaos²");
         telemetryA.update();
     }
     public void next_state(){
@@ -112,51 +139,147 @@ public class PedroSpecimenAuto extends OpMode {
     public void loop() {
         follower.update();
         switch (autoState) {
-            case 0:
+            case 0: //closes the claw than waits 1.4 seconds before moving to the next step
                 board.setClawState(Board0.clawPositions.CLAW_CLOSED);
                 board.stateMachinesThink(Board0.stateMachineAct.CLAW);
                 board.stateMachinesAct(Board0.stateMachineAct.CLAW);
 
-                if (state_timer.getElapsedTimeSeconds() > 1.4){
+                if (state_timer.getElapsedTimeSeconds() > 1.4) {
                     next_state();
                 }
                 break;
-            case 1:
+            case 1: //raises the sliders than waits 1.5 seconds
                 board.setArmState(Board0.armStates.ABOVE_BAR);
                 board.stateMachinesThink(Board0.stateMachineAct.ARM);
                 board.stateMachinesAct(Board0.stateMachineAct.ARM);
-                if (state_timer.getElapsedTimeSeconds() > 1.4){
+                if (state_timer.getElapsedTimeSeconds() > 1.5) {
                     next_state();
                 }
                 break;
-            case 2:
+            case 2: //drives to the bar
                 follower.followPath(specimenHang1, true);
                 next_state();
                 break;
-            case 3:
+            case 3: //lowers the slider, clipping the specimen
                 if (!follower.isBusy()) {
                     board.setArmState(Board0.armStates.BELOW_BAR);
                     board.stateMachinesThink(Board0.stateMachineAct.ARM);
                     board.stateMachinesAct(Board0.stateMachineAct.ARM);
-                    if (state_timer.getElapsedTimeSeconds() > 2.5){
+                    if (state_timer.getElapsedTimeSeconds() > 2.5) {
                         next_state();
                     }
                 }
                 break;
-            case 4:
-                board.setClawState(Board0.clawPositions.CLAW_OPEN);
-                board.stateMachinesThink(Board0.stateMachineAct.CLAW);
-                board.stateMachinesAct(Board0.stateMachineAct.CLAW);
-
-                next_state();
+            case 4: //nudges the specimen on the bar a little right
+                if (!follower.isBusy()){
+                    follower.followPath(JustRight);
+                    next_state();
+                }
                 break;
-            case 5:
+            case 5: //opens the claw
+                if(!follower.isBusy()) {
+                    board.setClawState(Board0.clawPositions.CLAW_OPEN);
+                    board.stateMachinesThink(Board0.stateMachineAct.CLAW);
+                    board.stateMachinesAct(Board0.stateMachineAct.CLAW);
+                    next_state();
+                }
+
+                break;
+            case 6: //goes into resting mode for movement
                 board.setArmState(Board0.armStates.RESTING);
                 board.stateMachinesThink(Board0.stateMachineAct.ARM);
                 board.stateMachinesAct(Board0.stateMachineAct.ARM);
+                next_state();
                 break;
+            case 7: //Makes a short move back
+                if (!follower.isBusy()){
+                    follower.followPath(JustBack);
+                    next_state();
+                }
+                break;
+            case 8: //moves to the collection position
+                if(!follower.isBusy()) {
+                    follower.followPath(SpecimenCollect, true);
+                    next_state();
+                }
+                break;
+            case 9: //move the arm to collection position
+                if(!follower.isBusy()) {
+                    board.setArmState(Board0.armStates.COLLECTION);
+                    board.stateMachinesThink(Board0.stateMachineAct.ARM);
+                    board.stateMachinesAct(Board0.stateMachineAct.ARM);
+                    if (state_timer.getElapsedTimeSeconds() > 4.0) {
+                        next_state();
+                    }
+                }
+                break;
+            case 10: //grabs the specimen
+                board.setClawState(Board0.clawPositions.CLAW_CLOSED);
+                board.stateMachinesThink(Board0.stateMachineAct.CLAW);
+                board.stateMachinesAct(Board0.stateMachineAct.CLAW);
+                if (state_timer.getElapsedTimeSeconds() > 1.0){
+                    next_state();
+                }
+                break;
+            case 11: //prepares to hang the specimen
+                board.setArmState(Board0.armStates.ABOVE_BAR);
+                board.stateMachinesThink(Board0.stateMachineAct.ARM);
+                board.stateMachinesAct(Board0.stateMachineAct.ARM);
+                if (state_timer.getElapsedTimeSeconds() > 1.4) {
+                    next_state();
+                }
+                break;
+            case 12: //drives to hang the specimen part one
+                if (!follower.isBusy()){
+                    follower.followPath(preHang);
+                    next_state();
+                }
+                break;
+            case 13: //drives to hang the specimen part two
+                if (!follower.isBusy()){
+                    follower.followPath(specimenHang2);
+                    next_state();
+                }
+                break;
+            case 14: //lowers the sliders after waiting for the robot to stop moving
+                if(!follower.isBusy()) {
+                    board.setArmState(Board0.armStates.BELOW_BAR);
+                    board.stateMachinesThink(Board0.stateMachineAct.ARM);
+                    board.stateMachinesAct(Board0.stateMachineAct.ARM);
+                    if (state_timer.getElapsedTimeSeconds() > 2.5) {
+                        next_state();
+                    }
+                }
+                break;
+            case 15: //opens the claw
+                board.setClawState(Board0.clawPositions.CLAW_OPEN);
+                board.stateMachinesThink(Board0.stateMachineAct.CLAW);
+                board.stateMachinesAct(Board0.stateMachineAct.CLAW);
+                if(state_timer.getElapsedTimeSeconds() > 1.0){
+                    next_state();
+                }
+                break;
+            case 16: //goes to resting mode
+                board.setArmState(Board0.armStates.RESTING);
+                board.stateMachinesThink(Board0.stateMachineAct.ARM);
+                board.stateMachinesAct(Board0.stateMachineAct.ARM);
+                next_state();
+                break;
+            case 17: //parks!
+                if(!follower.isBusy()) {
+                    follower.followPath(Park, true);
+                    next_state();
+                }
+                break;
+
+
+
+
+
         }
-        telemetry.addData("autoState", autoState);
+            telemetry.addData("autoState", autoState);
+
+
         //follower.telemetryDebug(telemetryA);
     }
 }

@@ -66,10 +66,10 @@ public class Board0 {
     double backLeftPower;
     int driveTimeInMs;
     double driveSpeed;
-    double RESTING_VELOCITY = 200;
-    double BASKET_VELOCITY = 200;
-    double SPECIMEN_VELOCITY = 210;
-    double COLLECTION_VELOCITY = 210;
+    double RESTING_VELOCITY = 400;
+    double BASKET_VELOCITY = 400;
+    double SPECIMEN_VELOCITY = 400;
+    double COLLECTION_VELOCITY = 400;
     double slider_velocity_up = 2500;
     double slider_velocity_down = 1200;
     int resting_position = 50;
@@ -78,10 +78,10 @@ public class Board0 {
     int collection_position = 500;
     int sliders_down = 40;
     int sliders_up = 3500;
-    int slider_above_bar_position = 1050;
+    int slider_above_bar_position = 1100;
     int slider_below_bar_position = 400;
-    int shoulder_bar_position = 170;
-    int shoulder_bar_velocity = 200;
+    int shoulder_bar_position = 200;
+    int shoulder_bar_velocity = 400;
     double desired_claw_position;
     int desired_shoulder_position;
     double desired_shoulder_velocity;
