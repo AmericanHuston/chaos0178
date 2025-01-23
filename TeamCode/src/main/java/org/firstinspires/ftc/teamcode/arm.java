@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import android.util.SparseIntArray;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -14,7 +16,9 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.Range;
+import org.firstinspires.ftc.teamcode.GoBildaPinpointDriver;
 
+import java.util.Locale;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
@@ -75,6 +79,7 @@ public class arm extends LinearOpMode {
     public static int desired_slider_position;
     public static double desired_slider_velocity;
     public static double desired_wrist_position;
+    public double botHeading;
 
 
     IMU imu;
@@ -85,6 +90,8 @@ public class arm extends LinearOpMode {
     Servo wrist;
     Servo claw;
     TouchSensor sliderButton;
+    GoBildaPinpointDriver pinpoint;
+
     //public static double  wrist_position = (MAX_POS - MIN_POS) / 2;
     @Override
     public void runOpMode() throws InterruptedException {
@@ -115,6 +122,10 @@ public class arm extends LinearOpMode {
         imu.initialize(parameters);
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class,"pinpoint");
+        pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD.ordinal());
+        pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
+        pinpoint.resetPosAndIMU();
         final double sliderSpeed = 0.35;
         state = armState.RESTING;
         //claw.setPosition(0.5);
@@ -187,6 +198,9 @@ public class arm extends LinearOpMode {
             telemetry.addData("arm ticks", rest);
             telemetry.addData("Current ", Shoulder.getCurrent(CurrentUnit.AMPS));
             telemetry.addData("ClawPos", output);
+            telemetry.addData("botHeading", botHeading);
+            telemetry.addData("X", pinpoint.getEncoderX());
+            telemetry.addData("Y", pinpoint.getEncoderY());
             telemetry.update();
         }
     }
@@ -278,9 +292,9 @@ public class arm extends LinearOpMode {
         frontRightPower = -power;
     }
     public void driving() {
-        double y = -gamepad1.left_stick_y / 2; // Remember, Y stick value is reversed
-        double x = gamepad1.left_stick_x / 2;
-        double rx = gamepad1.right_stick_x / 2;
+        double y = gamepad1.left_stick_y / 2;
+        double x = -gamepad1.left_stick_x / 2; //X is reversed
+        double rx = -gamepad1.right_stick_x / 2; // X is reversed
         if (gamepad1.right_trigger >= 0.01) {
             y = y * 2;
             x = x * 2;
@@ -294,7 +308,9 @@ public class arm extends LinearOpMode {
         }
         //When dpad down is pressed it will point at basket
 
-        double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        //double botHeading =  imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        pinpoint.update();
+        botHeading = pinpoint.getHeading();
         double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
         double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
         rotX = rotX * 1.1;

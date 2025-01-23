@@ -212,9 +212,11 @@ public class Board0 {
                 SliderRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 SliderLeft.setVelocity(desired_slider_velocity);
                 SliderRight.setVelocity(desired_slider_velocity);
-                if (sliderButton.isPressed()){
-                    SliderLeft.setMotorDisable();
-                    SliderRight.setMotorDisable();
+                if(desired_shoulder_velocity < 0) {
+                    if (sliderButton.isPressed()) {
+                        SliderLeft.setMotorDisable();
+                        SliderRight.setMotorDisable();
+                    }
                 }
             case CLAW:
                 claw.setPosition(desired_claw_position);

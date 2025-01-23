@@ -45,7 +45,7 @@ public class PedroSpecimenAuto extends OpMode {
     private final Pose Basket = new Pose(t1,t5, Math.toRadians(270));
     private final Pose OtherObservation = new Pose(t5, t5, Math.toRadians(90));
     private final Pose OtherBasket = new Pose(t5, t1, Math.toRadians(135));
-    private final Pose Observation = new Pose(14,40, Math.toRadians(0));
+    private final Pose Observation = new Pose(8,40, Math.toRadians(0));
     private final Pose HangSpecimen = new Pose(35,t3+12, Math.toRadians(0));
     private final Pose OtherHangSpecimen = new Pose(112,t3,Math.toRadians(90));
     private final Pose TapeHangRobot = new Pose(t3,t4, Math.toRadians(90));
