@@ -47,7 +47,7 @@ public class BasketAuto extends OpMode {
     private final Pose Observation = new Pose(8,50, Math.toRadians(0));
     private final Pose TapeHangRobot = new Pose(t3,t4, Math.toRadians(90));
     private final Pose OtherTapeHangRobot = new Pose(t3,t2, Math.toRadians(270));
-    private final Pose littleBack = new Pose(t1-4, t5-4, Math.toRadians(130));
+    private final Pose littleBack = new Pose(t1-3, t5-3, Math.toRadians(130));
     private final Pose sample1  = new Pose(t1+1, t5+14, Math.toRadians(0));
     private final Pose sample2 = new Pose(t1+1,t5+24, Math.toRadians(0));
     private final Pose hangBar = new Pose(t4,t4-5, Math.toRadians(270));
@@ -155,8 +155,11 @@ public class BasketAuto extends OpMode {
                 }
                 break;
             case 2: //drives to the basket
+                follower.setMaxPower(1.0);
                 follower.followPath(scoreBasket1, true);
-                next_state();
+                if(state_timer.getElapsedTimeSeconds() > 1.0) {
+                    next_state();
+                }
                 break;
             case 3://drops the sample in the basket
                 if(!follower.isBusy()){
@@ -215,6 +218,7 @@ public class BasketAuto extends OpMode {
                 }
                 break;
             case 10: //moves to scoring position
+                follower.setMaxPower(0.80);
                 if(!follower.isBusy()) {
                     follower.followPath(scoreBasket2, true);
                     next_state();
@@ -231,6 +235,7 @@ public class BasketAuto extends OpMode {
                 }
                 break;
             case 12: //moves back so we don't accidentally ascend.
+                follower.setMaxPower(1.0);
                 if(!follower.isBusy()) {
                     follower.followPath(JustBack1);
                     next_state();
@@ -247,7 +252,7 @@ public class BasketAuto extends OpMode {
                     board.setArmState(Board0.armStates.COLLECTION);
                     board.stateMachinesThink(Board0.stateMachineAct.ARM);
                     board.stateMachinesAct(Board0.stateMachineAct.ARM);
-                    if (state_timer.getElapsedTimeSeconds() > 6.0) {
+                    if (state_timer.getElapsedTimeSeconds() > 5.5) {
                         next_state();
                     }
                 }
