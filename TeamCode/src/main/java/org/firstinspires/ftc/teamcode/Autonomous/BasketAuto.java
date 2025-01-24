@@ -142,7 +142,7 @@ public class BasketAuto extends OpMode {
                 board.setClawState(Board0.clawPositions.CLAW_CLOSED);
                 board.stateMachinesThink(Board0.stateMachineAct.CLAW);
                 board.stateMachinesAct(Board0.stateMachineAct.CLAW);
-                if (state_timer.getElapsedTimeSeconds() > 0.5) {
+                if (state_timer.getElapsedTimeSeconds() > 1.0) {
                     next_state();
                 }
                 break;
@@ -157,7 +157,7 @@ public class BasketAuto extends OpMode {
             case 2: //drives to the basket
                 follower.setMaxPower(1.0);
                 follower.followPath(scoreBasket1, true);
-                if(state_timer.getElapsedTimeSeconds() > 1.0) {
+                if(state_timer.getElapsedTimeSeconds() > 0.7) {
                     next_state();
                 }
                 break;
@@ -166,7 +166,9 @@ public class BasketAuto extends OpMode {
                     board.setClawState(Board0.clawPositions.CLAW_OPEN);
                     board.stateMachinesThink(Board0.stateMachineAct.CLAW);
                     board.stateMachinesAct(Board0.stateMachineAct.ARM);
-                    next_state();
+                    if(state_timer.getElapsedTimeSeconds() > 0.5) {
+                        next_state();
+                    }
                 }
                 break;
             case 4: //moves back so we don't accidentally ascend.
@@ -252,7 +254,7 @@ public class BasketAuto extends OpMode {
                     board.setArmState(Board0.armStates.COLLECTION);
                     board.stateMachinesThink(Board0.stateMachineAct.ARM);
                     board.stateMachinesAct(Board0.stateMachineAct.ARM);
-                    if (state_timer.getElapsedTimeSeconds() > 5.5) {
+                    if (state_timer.getElapsedTimeSeconds() > 5.3) {
                         next_state();
                     }
                 }
