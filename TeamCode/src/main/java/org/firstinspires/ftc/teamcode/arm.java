@@ -335,6 +335,8 @@ public class arm extends LinearOpMode {
         if (sliderButton.isPressed()){
             SliderLeft.setMotorDisable();
             SliderRight.setMotorDisable();
+            SliderLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            SliderRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
 
 
