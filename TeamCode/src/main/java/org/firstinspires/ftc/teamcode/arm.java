@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 
-import android.util.SparseIntArray;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -16,11 +14,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.Range;
-import org.firstinspires.ftc.teamcode.GoBildaPinpointDriver;
 
-import java.util.Locale;
-
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
 
@@ -109,10 +103,10 @@ public class arm extends LinearOpMode {
         SliderRight = hardwareMap.get(DcMotorEx.class, "SliderRight");
         Shoulder = hardwareMap.get(DcMotorEx.class, "Shoulder");
         Shoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Shoulder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        Shoulder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Shoulder.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        SliderLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        SliderRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        SliderLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        SliderRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         SliderRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         SliderLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         SliderRight.setDirection(DcMotorSimple.Direction.REVERSE); //It needs to be reversed because...
@@ -345,5 +339,4 @@ public class arm extends LinearOpMode {
 
 
     }
-
 }
