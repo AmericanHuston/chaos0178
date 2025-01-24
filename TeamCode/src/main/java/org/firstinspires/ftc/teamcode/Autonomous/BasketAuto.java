@@ -44,7 +44,7 @@ public class BasketAuto extends OpMode {
     private final Pose Basket = new Pose(t1-8.5,t5+21.5, Math.toRadians(130));
     private final Pose OtherObservation = new Pose(t5, t5, Math.toRadians(90));
     private final Pose OtherBasket = new Pose(t5, t1, Math.toRadians(135));
-    private final Pose Observation = new Pose(8,40, Math.toRadians(0));
+    private final Pose Observation = new Pose(8,50, Math.toRadians(0));
     private final Pose TapeHangRobot = new Pose(t3,t4, Math.toRadians(90));
     private final Pose OtherTapeHangRobot = new Pose(t3,t2, Math.toRadians(270));
     private final Pose littleBack = new Pose(t1-4, t5-4, Math.toRadians(130));
@@ -60,8 +60,7 @@ public class BasketAuto extends OpMode {
     private PathChain scoreBasket2;
     private PathChain sampleCollect2;
     private PathChain scoreBasket3;
-    private PathChain park1;
-    private PathChain park2;
+    private PathChain park;
     private Telemetry telemetryA;
 
     @Override
@@ -99,13 +98,9 @@ public class BasketAuto extends OpMode {
                 .addPath(new BezierLine(new Point(sample2), new Point(Basket)))
                 .setLinearHeadingInterpolation(sample2.getHeading(), Basket.getHeading())
                 .build();
-        park1 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(littleBack), new Point(sample1)))
-                .setLinearHeadingInterpolation(littleBack.getHeading(), sample1.getHeading())
-                .build();
-        park2 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(sample1), new Point(hangBar)))
-                .setLinearHeadingInterpolation(sample1.getHeading(), hangBar.getHeading())
+        park = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(Basket), new Point(Observation)))
+                .setLinearHeadingInterpolation(Basket.getHeading(), Observation.getHeading())
                 .build();
         square = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(StartingPose), new Point(Basket)))
@@ -143,11 +138,10 @@ public class BasketAuto extends OpMode {
     public void loop() {
         follower.update();
         switch (autoState) {
-            case 0: //closes the claw than waits 1.4 seconds before moving to the next step
+            case 0: //closes the claw than waits 0.5 seconds before moving to the next step
                 board.setClawState(Board0.clawPositions.CLAW_CLOSED);
                 board.stateMachinesThink(Board0.stateMachineAct.CLAW);
                 board.stateMachinesAct(Board0.stateMachineAct.CLAW);
-
                 if (state_timer.getElapsedTimeSeconds() > 0.5) {
                     next_state();
                 }
@@ -288,29 +282,17 @@ public class BasketAuto extends OpMode {
                     }
                 }
                 break;
-            case 19: //moves back so we don't accidentally ascend.
+            case 19: //parks
                 if(!follower.isBusy()) {
-                    follower.followPath(JustBack1);
+                    follower.followPath(park);
                     next_state();
                 }
                 break;
-            case 20: //step one of park
-                if(!follower.isBusy()){
-                    follower.followPath(park1);
-                    next_state();
-                }
-                break;
-            case 21: //arm in below bar so we can touch the hang bar
+            case 20: //arm in resting for initialization
                 if(state_timer.getElapsedTimeSeconds() > 1.5){
-                    board.setArmState(Board0.armStates.ABOVE_BAR);
+                    board.setArmState(Board0.armStates.RESTING);
                     board.stateMachinesThink(Board0.stateMachineAct.ARM);
                     board.stateMachinesAct(Board0.stateMachineAct.ARM);
-                    next_state();
-                }
-                break;
-            case 22://second step of park
-                if(!follower.isBusy()){
-                    follower.followPath(park2, true);
                     next_state();
                 }
                 break;
