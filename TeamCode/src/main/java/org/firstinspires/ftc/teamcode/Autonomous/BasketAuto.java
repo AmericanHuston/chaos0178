@@ -169,7 +169,9 @@ public class BasketAuto extends OpMode {
             case 4: //moves back so we don't accidentally ascend.
                 if(!follower.isBusy()) {
                     follower.followPath(JustBack1);
-                    next_state();
+                    if(state_timer.getElapsedTimeSeconds() > 0.5) {
+                        next_state();
+                    }
                 }
                 break;
             case 5: //moves the arm to resting so we don't tip
