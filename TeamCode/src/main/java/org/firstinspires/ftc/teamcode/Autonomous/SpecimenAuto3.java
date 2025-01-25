@@ -49,13 +49,13 @@ public class SpecimenAuto3 extends OpMode {
     private final Pose OtherHangSpecimen = new Pose(112,t3,Math.toRadians(90));
     private final Pose TapeHangRobot = new Pose(t3,t4, Math.toRadians(90));
     private final Pose OtherTapeHangRobot = new Pose(t3,t2, Math.toRadians(270));
-    private final Pose SpecGrab = new Pose(t2-18, t2-8, Math.toRadians(180));
+    private final Pose SpecGrab = new Pose(t2-19, t2-8, Math.toRadians(180));
     private final Pose littleBack = new Pose (25, t3+12, Math.toRadians(0));
     private final Pose littleRight = new Pose(35,t3+8, Math.toRadians(0));
     private final Pose controlHangSpec = new Pose(21, 88);
     private final Pose SpecPrepStep1 = new Pose(32, 54, Math.toRadians(180));
     private final Pose SpecPrepStep2 = new Pose(56, 54, Math.toRadians(180));
-    private final Pose SpecPrepStep3 = new Pose(56, 42, Math.toRadians(180));
+    private final Pose SpecPrepStep3 = new Pose(56, 44, Math.toRadians(180));
     private final Pose SpecPrepStep4 = new Pose(10,40, Math.toRadians(180));
     private final Pose SpecCollect1 = new Pose(t3-14, t1-4, Math.toRadians(180));
     private final Pose SpecCollect2 = new Pose(t3-14, t1-12, Math.toRadians(180));

@@ -257,7 +257,7 @@ public class arm extends LinearOpMode {
                 desired_slider_velocity = Slidervelocityup;
                 break;
             case posthang:
-                desired_slider_position = resting_position;
+                desired_slider_position = 1000;//used to be resting_position
                 desired_slider_velocity = Slidervelocityup;
                 break;
             case wallgrab:
