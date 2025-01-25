@@ -18,8 +18,8 @@ import org.firstinspires.ftc.teamcode.EnvironmentLocations.Board0;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.FConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
 
-@Autonomous(name = "PedroSpecimenAuto", group = "PedroAutos")
-public class PedroSpecimenAuto extends OpMode {
+@Autonomous(name = "SpecimenAuto3", group = "PedroAutos")
+public class SpecimenAuto3 extends OpMode {
     Board0 board = new Board0();
     private Follower follower;
     private Timer state_timer;
@@ -49,12 +49,21 @@ public class PedroSpecimenAuto extends OpMode {
     private final Pose OtherHangSpecimen = new Pose(112,t3,Math.toRadians(90));
     private final Pose TapeHangRobot = new Pose(t3,t4, Math.toRadians(90));
     private final Pose OtherTapeHangRobot = new Pose(t3,t2, Math.toRadians(270));
-    private final Pose SpecCollect1 = new Pose(t2-18, t2-8, Math.toRadians(180));
+    private final Pose SpecGrab = new Pose(t2-18, t2-8, Math.toRadians(180));
     private final Pose littleBack = new Pose (25, t3+12, Math.toRadians(0));
     private final Pose littleRight = new Pose(35,t3+8, Math.toRadians(0));
     private final Pose controlHangSpec = new Pose(21, 88);
+    private final Pose SpecPrepStep1 = new Pose(32, 54, Math.toRadians(180));
+    private final Pose SpecPrepStep2 = new Pose(56, 54, Math.toRadians(180));
+    private final Pose SpecPrepStep3 = new Pose(56, 42, Math.toRadians(180));
+    private final Pose SpecPrepStep4 = new Pose(10,40, Math.toRadians(180));
+    private final Pose SpecCollect1 = new Pose(t3-14, t1-4, Math.toRadians(180));
+    private final Pose SpecCollect2 = new Pose(t3-14, t1-12, Math.toRadians(180));
+    private final Pose BlockPush = new Pose(10, t1, Math.toRadians(180));
+    private final Pose sample1  = new Pose(t1+1, t1, Math.toRadians(0));
     private PathChain square;
 
+    private PathChain pushBlock;
     private PathChain specimenHang1;
     private PathChain JustRight;
     private PathChain SpecimenCollect;
@@ -62,6 +71,9 @@ public class PedroSpecimenAuto extends OpMode {
     private PathChain preHang;
     private PathChain specimenHang2;
     private PathChain Park;
+    private PathChain SpecCollect;
+    private PathChain BlockToBase1;
+    private PathChain grabSample;
     private Telemetry telemetryA;
 
     @Override
@@ -87,12 +99,12 @@ public class PedroSpecimenAuto extends OpMode {
                 .setLinearHeadingInterpolation(HangSpecimen.getHeading(), littleBack.getHeading())
                 .build();
         SpecimenCollect = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(littleBack), new Point(SpecCollect1)))
-                .setLinearHeadingInterpolation(littleBack.getHeading(), SpecCollect1.getHeading())
+                .addPath(new BezierLine(new Point(littleBack), new Point(SpecGrab)))
+                .setLinearHeadingInterpolation(littleBack.getHeading(), SpecGrab.getHeading())
                 .build();
         preHang = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(SpecCollect1), new Point(littleBack)))
-                .setLinearHeadingInterpolation(SpecCollect1.getHeading(), littleBack.getHeading())
+                .addPath(new BezierLine(new Point(SpecGrab), new Point(littleBack)))
+                .setLinearHeadingInterpolation(SpecGrab.getHeading(), littleBack.getHeading())
                 .build();
         specimenHang2 = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(littleBack), new Point(HangSpecimen)))
@@ -101,6 +113,34 @@ public class PedroSpecimenAuto extends OpMode {
         Park = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(HangSpecimen), new Point(Observation)))
                 .setLinearHeadingInterpolation(HangSpecimen.getHeading(), Observation.getHeading())
+                .build();
+        SpecCollect = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(littleBack), new Point(SpecPrepStep1)))
+                .setLinearHeadingInterpolation(littleBack.getHeading(), SpecPrepStep1.getHeading())
+                .addPath(new BezierLine(new Point(SpecPrepStep1), new Point(SpecPrepStep2)))
+                .setLinearHeadingInterpolation(SpecPrepStep1.getHeading(), SpecPrepStep2.getHeading())
+                .addPath(new BezierLine(new Point(SpecPrepStep2), new Point(SpecCollect1)))
+                .setLinearHeadingInterpolation(SpecPrepStep2.getHeading(), SpecCollect1.getHeading())
+                .build();
+        BlockToBase1 = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(SpecCollect1), new Point(BlockPush)))
+                .setLinearHeadingInterpolation(SpecCollect1.getHeading(), BlockPush.getHeading())
+                .addPath(new BezierLine(new Point(BlockPush), new Point(SpecGrab)))
+                .setLinearHeadingInterpolation(BlockPush.getHeading(), SpecGrab.getHeading())
+                .build();
+        grabSample = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(littleBack), new Point(sample1)))
+                .setLinearHeadingInterpolation(littleBack.getHeading(),sample1.getHeading())
+                .build();
+        pushBlock = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(littleBack), new Point(SpecPrepStep1)))
+                .setLinearHeadingInterpolation(littleBack.getHeading(), SpecPrepStep1.getHeading())
+                .addPath(new BezierLine(new Point(SpecPrepStep1), new Point(SpecPrepStep2)))
+                .setLinearHeadingInterpolation(SpecPrepStep1.getHeading(), SpecPrepStep2.getHeading())
+                .addPath(new BezierLine(new Point(SpecPrepStep2), new Point(SpecPrepStep3)))
+                .setLinearHeadingInterpolation(SpecPrepStep2.getHeading(), SpecPrepStep3.getHeading())
+                .addPath(new BezierLine(new Point(SpecPrepStep3), new Point(SpecPrepStep4)))
+                .setLinearHeadingInterpolation(SpecPrepStep3.getHeading(), SpecPrepStep4.getHeading())
                 .build();
         square = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(StartingPose), new Point(Basket)))
@@ -264,12 +304,48 @@ public class PedroSpecimenAuto extends OpMode {
                 board.stateMachinesAct(Board0.stateMachineAct.ARM);
                 next_state();
                 break;
-            case 17: //parks!
-                if(!follower.isBusy()) {
-                    follower.followPath(Park, true);
+            case 17://safe from the bar
+                if(!follower.isBusy()){
+                    follower.followPath(JustBack);
                     next_state();
                 }
                 break;
+            case 18:
+                if(!follower.isBusy()){
+                    follower.followPath(pushBlock);
+                    next_state();
+                }
+                break;
+//            case 19:
+//                if(!follower.isBusy()){
+//                    board.setArmState(Board0.armStates.COLLECTION);
+//                    board.stateMachinesThink(Board0.stateMachineAct.ARM);
+//                    board.stateMachinesAct(Board0.stateMachineAct.ARM);
+//                    if (state_timer.getElapsedTimeSeconds() > 1.5) {
+//                        next_state();
+//                    }
+//                }
+//                break;
+//            case 20: //opens the claw
+//                board.setClawState(Board0.clawPositions.CLAW_OPEN);
+//                board.stateMachinesThink(Board0.stateMachineAct.CLAW);
+//                board.stateMachinesAct(Board0.stateMachineAct.CLAW);
+//                if(state_timer.getElapsedTimeSeconds() > 1.0){
+//                    next_state();
+//                }
+//                break;
+//            case 21: //goes to resting mode
+//                board.setArmState(Board0.armStates.RESTING);
+//                board.stateMachinesThink(Board0.stateMachineAct.ARM);
+//                board.stateMachinesAct(Board0.stateMachineAct.ARM);
+//                next_state();
+//                break;
+//            case 28: //parks!
+//                if(!follower.isBusy()) {
+//                    follower.followPath(Park, true);
+//                    next_state();
+//                }
+//                break;
 
 
 

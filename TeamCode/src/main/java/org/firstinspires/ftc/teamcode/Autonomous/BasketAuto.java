@@ -49,7 +49,7 @@ public class BasketAuto extends OpMode {
     private final Pose OtherTapeHangRobot = new Pose(t3,t2, Math.toRadians(270));
     private final Pose littleBack = new Pose(t1-3, t5-3, Math.toRadians(130));
     private final Pose sample1  = new Pose(t1+1, t5+14, Math.toRadians(0));
-    private final Pose sample2 = new Pose(t1+1,t5+24, Math.toRadians(0));
+    private final Pose sample2 = new Pose(t1+1,t6, Math.toRadians(0));
     private final Pose hangBar = new Pose(t4,t4-5, Math.toRadians(270));
 
     private PathChain square;
