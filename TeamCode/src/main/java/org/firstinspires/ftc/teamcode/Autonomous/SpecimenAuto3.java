@@ -75,7 +75,7 @@ public class SpecimenAuto3 extends OpMode {
     private PathChain SpecCollect;
     private PathChain BlockToBase1;
     private PathChain grabSample;
-    private Pathchain hang2;
+    private PathChain hang2;
     private Telemetry telemetryA;
 
     @Override
@@ -146,7 +146,8 @@ public class SpecimenAuto3 extends OpMode {
                 .build();
         hang2 = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(sample1), new Point(secondSpec)))
-                .setLinearHeadingInterpolation()
+                .setLinearHeadingInterpolation(sample1.getHeading(), secondSpec.getHeading())
+                .build();
         square = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(StartingPose), new Point(Basket)))
                 .setLinearHeadingInterpolation(StartingPose.getHeading(), Basket.getHeading())
