@@ -41,7 +41,7 @@ public class BasketAuto extends OpMode {
     //0 PROBABLY intersects the fully coloOther bars
     // Pose goes in this order: Pose(x,y, Radians);
     private final Pose StartingPose = new Pose(MIN_WALL_POS, t5, Math.toRadians(90));
-    private final Pose Basket = new Pose(t1-8.5,t5+21.5, Math.toRadians(130));
+    private final Pose Basket = new Pose(t1-8.5,t5+20.5, Math.toRadians(130));
     private final Pose OtherObservation = new Pose(t5, t5, Math.toRadians(90));
     private final Pose OtherBasket = new Pose(t5, t1, Math.toRadians(135));
     private final Pose Observation = new Pose(8,50, Math.toRadians(0));
@@ -98,10 +98,10 @@ public class BasketAuto extends OpMode {
                 .addPath(new BezierLine(new Point(sample2), new Point(Basket)))
                 .setLinearHeadingInterpolation(sample2.getHeading(), Basket.getHeading())
                 .build();
-        park = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(Basket), new Point(Observation)))
-                .setLinearHeadingInterpolation(Basket.getHeading(), Observation.getHeading())
-                .build();
+//        park = follower.pathBuilder()
+//                .addPath(new BezierLine(new Point(Basket), new Point(Observation)))
+//                .setLinearHeadingInterpolation(Basket.getHeading(), Observation.getHeading())
+//                .build();
         square = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(StartingPose), new Point(Basket)))
                 .setLinearHeadingInterpolation(StartingPose.getHeading(), Basket.getHeading())
@@ -166,7 +166,7 @@ public class BasketAuto extends OpMode {
                     board.setClawState(Board0.clawPositions.CLAW_OPEN);
                     board.stateMachinesThink(Board0.stateMachineAct.CLAW);
                     board.stateMachinesAct(Board0.stateMachineAct.ARM);
-                    if(state_timer.getElapsedTimeSeconds() > 0.5) {
+                    if(state_timer.getElapsedTimeSeconds() > 1) {
                         next_state();
                     }
                 }
@@ -227,11 +227,11 @@ public class BasketAuto extends OpMode {
                 }
                 break;
             case 11://drops the sample in the bucket
-                if (!follower.isBusy() && state_timer.getElapsedTimeSeconds() > 0.5){
+                if (!follower.isBusy() && state_timer.getElapsedTimeSeconds() > 1){
                     board.setClawState(Board0.clawPositions.CLAW_OPEN);
                     board.stateMachinesThink(Board0.stateMachineAct.CLAW);
                     board.stateMachinesAct(Board0.stateMachineAct.CLAW);
-                    if(state_timer.getElapsedTimeSeconds() > 1.0){
+                    if(state_timer.getElapsedTimeSeconds() > 1.5){
                         next_state();
                     }
                 }
@@ -286,14 +286,14 @@ public class BasketAuto extends OpMode {
                     board.setClawState(Board0.clawPositions.CLAW_OPEN);
                     board.stateMachinesThink(Board0.stateMachineAct.CLAW);
                     board.stateMachinesAct(Board0.stateMachineAct.CLAW);
-                    if(state_timer.getElapsedTimeSeconds() > 0.5){
+                    if(state_timer.getElapsedTimeSeconds() > 1){
                         next_state();
                     }
                 }
                 break;
             case 19: //parks
                 if(!follower.isBusy()) {
-                    follower.followPath(park);
+                    follower.followPath(JustBack1);
                     next_state();
                 }
                 break;

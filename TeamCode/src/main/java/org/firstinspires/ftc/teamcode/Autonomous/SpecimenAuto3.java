@@ -61,6 +61,7 @@ public class SpecimenAuto3 extends OpMode {
     private final Pose SpecCollect2 = new Pose(t3-14, t1-12, Math.toRadians(180));
     private final Pose BlockPush = new Pose(10, t1, Math.toRadians(180));
     private final Pose sample1  = new Pose(t1+1, t1, Math.toRadians(0));
+    private final Pose secondSpec = new Pose(35,t3+14, Math.toRadians(0));
     private PathChain square;
 
     private PathChain pushBlock;
@@ -74,6 +75,7 @@ public class SpecimenAuto3 extends OpMode {
     private PathChain SpecCollect;
     private PathChain BlockToBase1;
     private PathChain grabSample;
+    private Pathchain hang2;
     private Telemetry telemetryA;
 
     @Override
@@ -142,6 +144,9 @@ public class SpecimenAuto3 extends OpMode {
                 .addPath(new BezierLine(new Point(SpecPrepStep3), new Point(SpecPrepStep4)))
                 .setLinearHeadingInterpolation(SpecPrepStep3.getHeading(), SpecPrepStep4.getHeading())
                 .build();
+        hang2 = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(sample1), new Point(secondSpec)))
+                .setLinearHeadingInterpolation()
         square = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(StartingPose), new Point(Basket)))
                 .setLinearHeadingInterpolation(StartingPose.getHeading(), Basket.getHeading())
@@ -204,25 +209,28 @@ public class SpecimenAuto3 extends OpMode {
                     board.setArmState(Board0.armStates.BELOW_BAR);
                     board.stateMachinesThink(Board0.stateMachineAct.ARM);
                     board.stateMachinesAct(Board0.stateMachineAct.ARM);
-                    if (state_timer.getElapsedTimeSeconds() > 2.5) {
+                    if (state_timer.getElapsedTimeSeconds() > 2) {
                         next_state();
                     }
                 }
                 break;
             case 4: //nudges the specimen on the bar a little right
-                if (!follower.isBusy()){
-                    follower.followPath(JustRight);
+//                if (!follower.isBusy()){
+//                    follower.followPath(JustRight);
+//                    next_state();
+//                }
+                telemetryA.addData("helloWorld!", "sup");
+                if(!follower.isBusy()) {
                     next_state();
                 }
                 break;
             case 5: //opens the claw
-                if(!follower.isBusy()) {
+                if (!follower.isBusy()){
                     board.setClawState(Board0.clawPositions.CLAW_OPEN);
                     board.stateMachinesThink(Board0.stateMachineAct.CLAW);
                     board.stateMachinesAct(Board0.stateMachineAct.CLAW);
                     next_state();
                 }
-
                 break;
             case 6: //goes into resting mode for movement
                 board.setArmState(Board0.armStates.RESTING);
