@@ -69,7 +69,6 @@ public class Board1 {
     public static int slider_above_bar_position = 1050;
     public static int slider_below_bar_position = 320;
     public static int shoulder_bar_position = 170;
-    //public static double wrist_bar_position = 0.39;
     public static int shoulder_bar_velocity = 200;
     public static double desired_claw_position;
     public static int desired_shoulder_position;
