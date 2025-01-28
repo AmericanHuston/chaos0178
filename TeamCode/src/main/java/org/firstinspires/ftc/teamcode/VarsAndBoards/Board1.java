@@ -34,7 +34,10 @@ public class Board1 {
         SPECIMEN,
         COLLECTION,
         ABOVE_BAR,
-        BELOW_BAR
+        BELOW_BAR,
+        PRE_HANG,
+        POST_HANG,
+        WALL_GRAB
 
     }
     public enum clawPositions{
@@ -48,28 +51,32 @@ public class Board1 {
     final static double CLAW_OPEN = 0.5;
     final static double CLAW_CLOSED = 0.99;
 
-    double RESTING_VELOCITY = 400;
-    double BASKET_VELOCITY = 400;
-    double SPECIMEN_VELOCITY = 400;
-    double COLLECTION_VELOCITY = 400;
-    double slider_velocity_up = 2500;
-    double slider_velocity_down = 1200;
-    int resting_position = 50;
-    int basket_position = 170;
-    int specimen_position = 370;
-    int collection_position = 500;
-    int sliders_down = 40;
-    int sliders_up = 3500;
-    int slider_above_bar_position = 1100;
-    int slider_below_bar_position = 400;
-    int shoulder_bar_position = 200;
-    int shoulder_bar_velocity = 400;
-    double desired_claw_position;
-    int desired_shoulder_position;
-    double desired_shoulder_velocity;
-    int desired_slider_position;
-    double desired_slider_velocity;
-    double desired_wrist_position = 0.5;
+    public static int slidersWall = 1450;
+    public static int armWall = 500;
+    public static double RESTING_VELOCITY = 250;
+    public static double BASKET_VELOCITY = 250;
+    public static double SPECIMEN_VELOCITY = 260;
+    public static double COLLECTION_VELOCITY = 260;
+    public static int hangHeight = 2500;
+    public static double slider_velocity_up = 2500;
+    public static double slider_velocity_down = 1200;
+    public static int resting_position = 50;
+    public static int basket_position = 170;
+    public static int specimen_position = 430;
+    public static int collection_position = 500;
+    public static int sliders_down = 40;
+    public static int sliders_up = 3500;
+    public static int slider_above_bar_position = 1050;
+    public static int slider_below_bar_position = 320;
+    public static int shoulder_bar_position = 170;
+    //public static double wrist_bar_position = 0.39;
+    public static int shoulder_bar_velocity = 200;
+    public static double desired_claw_position;
+    public static int desired_shoulder_position;
+    public static double desired_shoulder_velocity;
+    public static int desired_slider_position;
+    public static double desired_slider_velocity;
+    public static double desired_wrist_position;
 
     public void init(HardwareMap hw){
         imu = hw.get(IMU.class, "imu");
@@ -135,7 +142,7 @@ public class Board1 {
                 desired_shoulder_position = basket_position;
                 desired_shoulder_velocity = BASKET_VELOCITY;
                 desired_slider_position = sliders_up;
-                desired_slider_velocity = slider_velocity_up;
+                desired_slider_velocity = slider_velocity_down;
                 break;
             case SPECIMEN:
                 desired_shoulder_position = specimen_position;
@@ -158,10 +165,24 @@ public class Board1 {
             case BELOW_BAR:
                 desired_shoulder_position = shoulder_bar_position;
                 desired_shoulder_velocity = shoulder_bar_velocity;
-                //desired_wrist_position = wrist_bar_position;
                 desired_slider_position = slider_below_bar_position;
                 desired_slider_velocity = slider_velocity_down;
                 break;
+            case PRE_HANG:
+                desired_shoulder_position = resting_position;
+                desired_shoulder_velocity = shoulder_bar_velocity;
+                desired_slider_position = hangHeight;
+                desired_slider_velocity = slider_velocity_up;
+                break;
+            case POST_HANG:
+                desired_slider_position = 1000;//used to be resting_position
+                desired_slider_velocity = slider_velocity_up;
+                break;
+            case WALL_GRAB:
+                desired_shoulder_position = armWall;
+                desired_shoulder_velocity = COLLECTION_VELOCITY;
+                desired_slider_position = slidersWall;
+                desired_slider_velocity = slider_velocity_up;
         }
     }
     public void stateMachinesAct(devices stateMachine) {
