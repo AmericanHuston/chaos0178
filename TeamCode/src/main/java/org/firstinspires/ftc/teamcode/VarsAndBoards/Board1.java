@@ -1,8 +1,4 @@
-package org.firstinspires.ftc.teamcode.EnvironmentLocations;
-
-import static android.os.SystemClock.sleep;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-import static org.firstinspires.ftc.teamcode.EnvironmentLocations.LocalUtils.*;
+package org.firstinspires.ftc.teamcode.VarsAndBoards;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -13,9 +9,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-
-public class Board0 {
+public class Board1 {
 
     //Initialization:
     DcMotorEx SliderLeft;
@@ -29,6 +23,11 @@ public class Board0 {
     Servo wrist;
     Servo claw;
     TouchSensor sliderButton;
+    public enum devices {
+        ARM,
+        SLIDERS,
+        CLAW
+    }
     public enum armStates {
         RESTING,
         BASKET,
@@ -38,34 +37,17 @@ public class Board0 {
         BELOW_BAR
 
     }
-    public enum drivingDirection{
-        FORWARD,
-        BACKWARD,
-        LEFT,
-        RIGHT
-    }
     public enum clawPositions{
         CLAW_OPEN,
         CLAW_CLOSED
     }
-    public enum stateMachineAct{
-        ARM,
-        CLAW,
-        DRIVE
-    }
+
     armStates armState;
     clawPositions clawState;
-    drivingDirection driveState;
 
     final static double CLAW_OPEN = 0.5;
     final static double CLAW_CLOSED = 0.99;
 
-    double backRightPower;
-    double frontRightPower;
-    double frontLeftPower;
-    double backLeftPower;
-    int driveTimeInMs;
-    double driveSpeed;
     double RESTING_VELOCITY = 400;
     double BASKET_VELOCITY = 400;
     double SPECIMEN_VELOCITY = 400;
@@ -88,7 +70,7 @@ public class Board0 {
     int desired_slider_position;
     double desired_slider_velocity;
     double desired_wrist_position = 0.5;
-    public Board0(){}
+
     public void init(HardwareMap hw){
         imu = hw.get(IMU.class, "imu");
         sliderButton = hw.touchSensor.get("sliderButton");
@@ -131,22 +113,6 @@ public class Board0 {
 
     public clawPositions getClawState() {
         return this.clawState;
-    }
-
-    public void setDriveState(drivingDirection driveState) {
-        this.driveState = driveState;
-    }
-
-    public void setDriveTime(int timeInMs){
-        this.driveTimeInMs = timeInMs;
-    }
-
-    public void setDriveSpeed(double driveSpeed){
-        this.driveSpeed = driveSpeed;
-    }
-
-    public double getDriveSpeed(){
-        return this.driveSpeed;
     }
 
     public void stateMachineClaw() {
@@ -198,7 +164,7 @@ public class Board0 {
                 break;
         }
     }
-    public void stateMachinesAct(stateMachineAct stateMachine) {
+    public void stateMachinesAct(devices stateMachine) {
         //Tell all the motors to do what they are supposed to do.
         switch (stateMachine){
             case ARM:
@@ -220,75 +186,33 @@ public class Board0 {
                 }
             case CLAW:
                 claw.setPosition(desired_claw_position);
-            case DRIVE:
-                driveAction(driveTimeInMs);
+            case SLIDERS:
+                //TODO
                 break;
         }
     }
 
-    public void stateMachinesThink(stateMachineAct stateMachine){
+    public void stateMachinesThink(devices stateMachine){
         switch (stateMachine){
             case CLAW:
                 stateMachineClaw();
                 break;
-            case DRIVE:
-                stateMachineDrive();
-                break;
+                //Don't need this one anymore:
             case ARM:
                 stateMachineArm();
                 break;
-        }
-    }
-
-    //Not intended for manual here... used internally
-    public void drive(double x, double y, double rx){
-        double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-
-        // Rotate the movement direction counter to the bot's rotation
-        double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
-        double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
-
-        rotX = rotX * 1.1;  // Counteract imperfect strafing
-
-        // Denominator is the largest motor power (absolute value) or 1
-        // This ensures all the powers maintain the same ratio,
-        // but only if at least one is out of the range [-1, 1]
-        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
-        frontLeftPower = (rotY + rotX + rx) / denominator;
-        backLeftPower = (rotY - rotX + rx) / denominator;
-        frontRightPower = (rotY - rotX - rx) / denominator;
-        backRightPower = (rotY + rotX - rx) / denominator;
-    }
-
-    private void stateMachineDrive(){
-        double speed = clamp(0.0, 1.0, driveSpeed);
-        switch (driveState){
-            case FORWARD:
-                drive(0.0, -speed, 0.0);
-                break;
-            case BACKWARD:
-                drive(0.0, speed, 0.0);
-                break;
-            case LEFT:
-                drive(-speed, 0.0, 0.0);
-                break;
-            case RIGHT:
-                drive(speed, 0.0, 0.0);
+            case SLIDERS:
+                //TODO
                 break;
         }
     }
 
-    public void driveAction(int timeInMs) {
-        frontLeftMotor.setPower(frontLeftPower);
-        backLeftMotor.setPower(backLeftPower);
-        frontRightMotor.setPower(frontRightPower);
-        backRightMotor.setPower(backRightPower);
-
-        sleep(timeInMs);
-
-        frontLeftMotor.setPower(0.0);
-        backLeftMotor.setPower(0.0);
-        frontRightMotor.setPower(0.0);
-        backRightMotor.setPower(0.0);
+    public void DO_ALL(){
+        stateMachinesThink(devices.ARM);
+        stateMachinesAct(devices.ARM);
+        stateMachinesThink(devices.CLAW);
+        stateMachinesAct(devices.CLAW);
+        stateMachinesThink(devices.SLIDERS);
+        stateMachinesAct(devices.SLIDERS);
     }
 }

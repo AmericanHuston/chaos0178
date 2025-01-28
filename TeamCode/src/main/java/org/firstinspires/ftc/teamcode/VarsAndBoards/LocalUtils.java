@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.EnvironmentLocations;
+package org.firstinspires.ftc.teamcode.VarsAndBoards;
 
 public class LocalUtils {
     public static double clamp(double min, double max, double input){
