@@ -121,7 +121,7 @@ public class Board1 {
         return this.clawState;
     }
 
-    public void stateMachineClaw() {
+    private void stateMachineClaw() {
         if (clawState == clawPositions.CLAW_OPEN){
             desired_claw_position = CLAW_OPEN;
         }else if (clawState == clawPositions.CLAW_CLOSED){
@@ -129,7 +129,7 @@ public class Board1 {
         }
     }
 
-    public void stateMachineArm(){
+    private void stateMachineArm(){
         switch (armState) {
             case RESTING:
                 desired_shoulder_position = resting_position;
@@ -184,7 +184,7 @@ public class Board1 {
                 desired_slider_velocity = slider_velocity_up;
         }
     }
-    public void stateMachinesAct(devices stateMachine) {
+    private void stateMachinesAct(devices stateMachine) {
         //Tell all the motors to do what they are supposed to do.
         switch (stateMachine){
             case ARM:
@@ -212,7 +212,7 @@ public class Board1 {
         }
     }
 
-    public void stateMachinesThink(devices stateMachine){
+    private void stateMachinesThink(devices stateMachine){
         switch (stateMachine){
             case CLAW:
                 stateMachineClaw();
