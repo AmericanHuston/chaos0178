@@ -15,20 +15,17 @@ public class AreSystemsGo extends LinearOpMode {
             sleep(1000);
             //Claw
             board.setClawState(Board1.clawPositions.CLAW_OPEN);
-            board.stateMachinesThink(Board1.devices.CLAW);
-            board.stateMachinesAct(Board1.devices.CLAW);
+            board.DO_ALL();
 
             sleep(1000);
             //Arm
             board.setArmState(Board1.armStates.COLLECTION);
-            board.stateMachinesThink(Board1.devices.ARM);
-            board.stateMachinesAct(Board1.devices.ARM);
+            board.DO_ALL();
 
             sleep(1000);
             //Sliders
             board.setArmState(Board1.armStates.ABOVE_BAR);
-            board.stateMachinesThink(Board1.devices.ARM);
-            board.stateMachinesAct(Board1.devices.ARM);
+            board.DO_ALL();
         }
     }
 }
