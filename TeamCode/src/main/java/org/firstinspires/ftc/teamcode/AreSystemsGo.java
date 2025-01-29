@@ -18,6 +18,8 @@ public class AreSystemsGo extends LinearOpMode {
         DcMotor frontRightMotor;
         DcMotor backRightMotor;
 
+        double power;
+
         while (opModeIsActive()){
             frontLeftMotor = hardwareMap.dcMotor.get("frontLeft");
             backLeftMotor = hardwareMap.dcMotor.get("backLeft");
@@ -40,11 +42,18 @@ public class AreSystemsGo extends LinearOpMode {
             board.DO_ALL();
             
             sleep(1000);
-            double power = 0.3;
+            power = 0.3;
             frontLeftMotor.setPower(power);
             frontRightMotor.setPower(power);
             backRightMotor.setPower(power);
             backLeftMotor.setPower(power);
+            sleep(1000);
+            power = 0.0;
+            frontLeftMotor.setPower(power);
+            frontRightMotor.setPower(power);
+            backRightMotor.setPower(power);
+            backLeftMotor.setPower(power);
+
         }
     }
 }
