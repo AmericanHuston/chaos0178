@@ -42,6 +42,7 @@ public class AreSystemsGo extends LinearOpMode {
             board.DO_ALL();
             
             sleep(1000);
+            //Wheels
             power = 0.3;
             frontLeftMotor.setPower(power);
             frontRightMotor.setPower(power);
@@ -53,7 +54,6 @@ public class AreSystemsGo extends LinearOpMode {
             frontRightMotor.setPower(power);
             backRightMotor.setPower(power);
             backLeftMotor.setPower(power);
-
         }
     }
 }
