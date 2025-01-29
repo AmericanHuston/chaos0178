@@ -59,7 +59,8 @@ public class SpecimenAuto3 extends OpMode {
     private final Pose SpecPrepStep4 = new Pose(10,40, Math.toRadians(180));
     private final Pose SpecCollect1 = new Pose(t3-14, t1-4, Math.toRadians(180));
     private final Pose SpecCollect2 = new Pose(t3-14, t1-12, Math.toRadians(180));
-    private final Pose BlockPush = new Pose(10, t1, Math.toRadians(180));
+    private final Pose BlockPush1 = new Pose(10, t1, Math.toRadians(180));
+    private final Pose BlockPush2 = new Pose(5, t1, Math.toRadians(180));
     private final Pose sample1  = new Pose(t1+1, t1, Math.toRadians(0));
     private final Pose secondSpec = new Pose(35,t3+14, Math.toRadians(0));
     private PathChain square;
@@ -76,6 +77,7 @@ public class SpecimenAuto3 extends OpMode {
     private PathChain BlockToBase1;
     private PathChain grabSample;
     private PathChain hang2;
+    private PathChain BlockToBase2;
     private Telemetry telemetryA;
 
     @Override
@@ -125,10 +127,10 @@ public class SpecimenAuto3 extends OpMode {
                 .setLinearHeadingInterpolation(SpecPrepStep2.getHeading(), SpecCollect1.getHeading())
                 .build();
         BlockToBase1 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(SpecCollect1), new Point(BlockPush)))
-                .setLinearHeadingInterpolation(SpecCollect1.getHeading(), BlockPush.getHeading())
-                .addPath(new BezierLine(new Point(BlockPush), new Point(SpecGrab)))
-                .setLinearHeadingInterpolation(BlockPush.getHeading(), SpecGrab.getHeading())
+                .addPath(new BezierLine(new Point(SpecCollect1), new Point(BlockPush1)))
+                .setLinearHeadingInterpolation(SpecCollect1.getHeading(), BlockPush1.getHeading())
+                .addPath(new BezierLine(new Point(BlockPush1), new Point(SpecGrab)))
+                .setLinearHeadingInterpolation(BlockPush1.getHeading(), SpecGrab.getHeading())
                 .build();
         grabSample = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(littleBack), new Point(sample1)))
@@ -147,6 +149,12 @@ public class SpecimenAuto3 extends OpMode {
         hang2 = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(sample1), new Point(secondSpec)))
                 .setLinearHeadingInterpolation(sample1.getHeading(), secondSpec.getHeading())
+                .build();
+        BlockToBase2 = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(SpecCollect2), new Point(BlockPush2)))
+                .setLinearHeadingInterpolation(SpecCollect2.getHeading(), BlockPush2.getHeading())
+                .addPath(new BezierLine(new Point(BlockPush2), new Point(SpecGrab)))
+                .setLinearHeadingInterpolation(BlockPush2.getHeading(), SpecGrab.getHeading())
                 .build();
         square = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(StartingPose), new Point(Basket)))
@@ -319,7 +327,7 @@ public class SpecimenAuto3 extends OpMode {
                     next_state();
                 }
                 break;
-            case 18:
+            case 18: //gets to the first sample
                 if(!follower.isBusy()){
                     follower.followPath(pushBlock);
                     next_state();
