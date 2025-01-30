@@ -20,6 +20,8 @@ public class AreSystemsGo extends LinearOpMode {
 
         double power;
 
+        waitForStart();
+
         while (opModeIsActive()){
             frontLeftMotor = hardwareMap.dcMotor.get("frontLeft");
             backLeftMotor = hardwareMap.dcMotor.get("backLeft");

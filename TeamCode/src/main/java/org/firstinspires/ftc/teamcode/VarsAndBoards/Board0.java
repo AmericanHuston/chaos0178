@@ -73,10 +73,12 @@ public class Board0 {
     double slider_velocity_down = 1200;
     int resting_position = 50;
     int basket_position = 170;
-    int specimen_position = 370;
+    int specimen_position = 400;
+    // this needs to be higher up we are running into the submersible
     int collection_position = 500;
     int sliders_down = 40;
-    int sliders_up = 3500;
+    int sliders_up = 3450;
+    // this value ^ is too high slider belts are grinding a lot -James
     int slider_above_bar_position = 1100;
     int slider_below_bar_position = 400;
     int shoulder_bar_position = 200;
