@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
+import com.qualcomm.robotcore.robot.Robot;
 
 public class Board1 {
 
@@ -48,28 +49,30 @@ public class Board1 {
     armStates armState;
     clawPositions clawState;
 
-    final static double CLAW_OPEN = 0.5;
-    final static double CLAW_CLOSED = 0.99;
+    final static double CLAW_OPEN = RobotPosVars.CLAW_OPEN;
+    final static double CLAW_CLOSED = RobotPosVars.CLAW_CLOSED;
 
-    public static int slidersWall = 1450;
-    public static int armWall = 500;
-    public static double RESTING_VELOCITY = 250;
-    public static double BASKET_VELOCITY = 250;
-    public static double SPECIMEN_VELOCITY = 260;
-    public static double COLLECTION_VELOCITY = 260;
-    public static int hangHeight = 2500;
-    public static double slider_velocity_up = 2500;
-    public static double slider_velocity_down = 1200;
-    public static int resting_position = 50;
-    public static int basket_position = 170;
-    public static int specimen_position = 430;
-    public static int collection_position = 500;
-    public static int sliders_down = 40;
-    public static int sliders_up = 3500;
-    public static int slider_above_bar_position = 1050;
-    public static int slider_below_bar_position = 320;
-    public static int shoulder_bar_position = 170;
-    public static int shoulder_bar_velocity = 200;
+    public static int slidersWall = RobotPosVars.slidersWall;
+    public static int armWall = RobotPosVars.armWall;
+    public static double RESTING_VELOCITY = RobotPosVars.RESTING_VELOCITY;
+    public static double BASKET_VELOCITY = RobotPosVars.BASKET_VELOCITY;
+    public static double SPECIMEN_VELOCITY = RobotPosVars.SPECIMEN_VELOCITY;
+    public static double COLLECTION_VELOCITY = RobotPosVars.COLLECTION_VELOCITY;
+    public static int hangHeight = RobotPosVars.hangHeight;
+    public static double slider_velocity_up = RobotPosVars.slider_velocity_up;
+    public static double slider_velocity_down = RobotPosVars.slider_velocity_down;
+    public static int resting_position = RobotPosVars.resting_position;
+    public static int basket_position = RobotPosVars.basket_position;
+    public static int specimen_position = RobotPosVars.specimen_position;
+    public static int collection_position = RobotPosVars.collection_position;
+    public static int sliders_down = RobotPosVars.sliders_down;
+    public static int sliders_up = RobotPosVars.sliders_up;
+    public static int slider_above_bar_position = RobotPosVars.slider_above_bar_position;
+    public static int slider_below_bar_position = RobotPosVars.slider_below_bar_position;
+    public static int shoulder_bar_position = RobotPosVars.shoulder_bar_position;
+    public static int shoulder_bar_velocity = RobotPosVars.shoulder_bar_velocity;
+
+    /**Desired positions don't belong in RobotPosVars.**/
     public static double desired_claw_position;
     public static int desired_shoulder_position;
     public static double desired_shoulder_velocity;
