@@ -55,12 +55,11 @@ public class PedroTeleOp extends OpMode {
         follower.update();
         if(gamepad1.a){
             follower.holdPoint(SpecGrab);
-        } else {
-            follower.startTeleopDrive();
         }
         if (gamepad1.b){
             follower.holdPoint(Basket);
-        } else {
+        }
+        if(gamepad1.left_stick_button || gamepad1.right_stick_button){
             follower.startTeleopDrive();
         }
 
