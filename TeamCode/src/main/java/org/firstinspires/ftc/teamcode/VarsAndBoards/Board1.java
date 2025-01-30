@@ -184,6 +184,9 @@ public class Board1 {
                 desired_slider_velocity = slider_velocity_up;
         }
     }
+    private void stateMachineSliders(){
+        //TODO
+    }
     private void stateMachinesAct(devices stateMachine) {
         //Tell all the motors to do what they are supposed to do.
         switch (stateMachine){
@@ -207,7 +210,18 @@ public class Board1 {
             case CLAW:
                 claw.setPosition(desired_claw_position);
             case SLIDERS:
-                //TODO
+                SliderLeft.setTargetPosition(desired_slider_position);
+                SliderRight.setTargetPosition(desired_slider_position);
+                SliderLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                SliderRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                SliderLeft.setVelocity(desired_slider_velocity);
+                SliderRight.setVelocity(desired_slider_velocity);
+                if(desired_shoulder_velocity < 0) {
+                    if (sliderButton.isPressed()) {
+                        SliderLeft.setMotorDisable();
+                        SliderRight.setMotorDisable();
+                    }
+                }
                 break;
         }
     }

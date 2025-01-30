@@ -54,10 +54,10 @@ public class arm extends LinearOpMode {
     public static double Slidervelocitydown = 1200;
     public static int resting_position = 50;
     public static int basket_position = 170;
-    public static int specimen_position = 430;
+    public static int specimen_position = 400;
     public static int collection_position = 500;
     public static int slidersdown = 40;
-    public static int slidersup = 3500;
+    public static int slidersup = 3450;
     public static double MAX_POS     =  1.0;     // Maximum rotational position
     public static double MIN_POS     =  0.0;// Minimum rotational position
     public static int slider_above_bar_position = 1050;
