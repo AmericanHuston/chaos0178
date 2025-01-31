@@ -60,13 +60,14 @@ public class arm extends LinearOpMode {
     public static int slidersup = 3450;
     public static double MAX_POS     =  1.0;     // Maximum rotational position
     public static double MIN_POS     =  0.0;// Minimum rotational position
-    public static int slider_above_bar_position = 1050;
-    public static int slider_below_bar_position = 320;
-    public static int shoulder_bar_position = 170;
+    public static int slider_above_bar_position = 1800;
+    public static int slider_below_bar_position = 1250;
+    public static int shoulder_bar_position = 100;
     //public static double wrist_bar_position = 0.39;
     public static int shoulder_bar_velotity = 200;
     public static double kp = 0.2;
     public static double desired_claw_position;
+    public static double desired_miniClaw_position;
     public static int desired_shoulder_position;
     public static double desired_shoulder_velocity;
     public static double output;
@@ -83,6 +84,7 @@ public class arm extends LinearOpMode {
     DcMotor backRightMotor;
     Servo wrist;
     Servo claw;
+    Servo miniClaw;
     TouchSensor sliderButton;
     GoBildaPinpointDriver pinpoint;
 
@@ -99,6 +101,7 @@ public class arm extends LinearOpMode {
         backRightMotor = hardwareMap.dcMotor.get("backRight");
         claw = hardwareMap.get(Servo.class, "claw");
         wrist = hardwareMap.get(Servo.class, "wrist");
+        miniClaw = hardwareMap.get(Servo.class, "miniClaw");
         SliderLeft = hardwareMap.get(DcMotorEx.class, "SliderLeft");
         SliderRight = hardwareMap.get(DcMotorEx.class, "SliderRight");
         Shoulder = hardwareMap.get(DcMotorEx.class, "Shoulder");
@@ -143,8 +146,10 @@ public class arm extends LinearOpMode {
             if(gamepad2.right_bumper && !changedClaw){
                 if(openClaw) {
                     desired_claw_position = 0.99;
+                    desired_miniClaw_position = 0.99;
                 }else{
                     desired_claw_position = 0.5;
+                    desired_miniClaw_position = 0.5;
                 }
                 changedClaw = true;
                 openClaw = !openClaw;
@@ -323,6 +328,7 @@ public class arm extends LinearOpMode {
         backRightMotor.setPower(backRightPower);
         wrist.setPosition(desired_wrist_position);
         claw.setPosition(desired_claw_position);
+        miniClaw.setPosition(desired_miniClaw_position);
         Shoulder.setTargetPosition(desired_shoulder_position);
         Shoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Shoulder.setVelocity(desired_shoulder_velocity);
