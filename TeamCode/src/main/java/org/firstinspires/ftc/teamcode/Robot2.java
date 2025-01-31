@@ -20,7 +20,7 @@ public class Robot2 {
     double frontRightPower;
     double frontLeftPower;
     double backLeftPower;
-    enum armState{
+    public enum armState{
         RESTING,
         BASKET,
         SPECIMEN,
