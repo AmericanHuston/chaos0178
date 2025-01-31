@@ -66,14 +66,14 @@ public class arm extends LinearOpMode {
     //public static double wrist_bar_position = 0.39;
     public static int shoulder_bar_velotity = 200;
     public static double kp = 0.2;
-    public static double desired_claw_position;
-    public static double desired_miniClaw_position;
+    public static double desired_claw_position = 0.99;
+    public static double desired_miniClaw_position = 0.99;
     public static int desired_shoulder_position;
     public static double desired_shoulder_velocity;
     public static double output;
     public static int desired_slider_position;
     public static double desired_slider_velocity;
-    public static double desired_wrist_position;
+    public static double desired_wrist_position = 0.5;
     public double botHeading;
 
 
@@ -125,8 +125,6 @@ public class arm extends LinearOpMode {
         pinpoint.resetPosAndIMU();
         final double sliderSpeed = 0.35;
         state = armState.RESTING;
-        //claw.setPosition(0.5);
-        //wrist.setPosition(0.1);
         boolean openClaw = true;
         boolean changedClaw = false;
         boolean openWrist = true;
