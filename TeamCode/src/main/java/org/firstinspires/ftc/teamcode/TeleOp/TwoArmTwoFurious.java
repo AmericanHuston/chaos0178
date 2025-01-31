@@ -104,23 +104,18 @@ public class TwoArmTwoFurious extends OpMode {
             int shoulder_position = Shoulder.getTargetPosition();
             int shoulder_change = (int)gamepad2.right_stick_x * 10;
             desired_shoulder_position = shoulder_position + shoulder_change;
-
         }
 
-        // wrist_position = gamepad2.left_stick_y;
-        if (gamepad2.y) { state = arm.armState.RESTING;}
-        if (gamepad2.x) { state = arm.armState.BASKET; }
-        if (gamepad2.a) { state = arm.armState.SPECIMEN; }
-        if (gamepad2.b) { state = arm.armState.COLLECTION; }
-        if (gamepad2.dpad_left) { state = arm.armState.above_bar; }
-        if (gamepad2.dpad_right) { state = arm.armState.below_bar; }
-        if (gamepad2.dpad_up) { state = arm.armState.prehang; }
-        if (gamepad2.dpad_down) { state = arm.armState.posthang; }
-        if (gamepad1.y){state = arm.armState.wallgrab;}
-        driving();
-        arm();
-        if (gamepad1.dpad_up) { sliderMove(50);}
-        if (gamepad1.dpad_down) {sliderMove(-50);}
+        if (gamepad2.y) {Robot.setArmState(Robot2.armState.RESTING);}
+        if (gamepad2.x) {Robot.setArmState(Robot2.armState.BASKET);}
+        if (gamepad2.a) {Robot.setArmState(Robot2.armState.SPECIMEN);}
+        if (gamepad2.b) {Robot.setArmState(Robot2.armState.COLLECTION);}
+        if (gamepad2.dpad_left) {Robot.setArmState(Robot2.armState.ABOVE_BAR);}
+        if (gamepad2.dpad_right) {Robot.setArmState(Robot2.armState.BELOW_BAR);}
+        if (gamepad2.dpad_up) {Robot.setArmState(Robot2.armState.PREHANG);}
+        if (gamepad2.dpad_down) {Robot.setArmState(Robot2.armState.POSTHANG);}
+        if (gamepad1.dpad_up) {Robot.sliderMove(50);}
+        if (gamepad1.dpad_down) {Robot.sliderMove(-50);}
         //Rewrite above----------
 
 
