@@ -154,24 +154,12 @@ public class Robot2 {
     public void wrist45(){
         desired_wrist_position = 0.25;
     }
-
-            // wrist_position = gamepad2.left_stick_y;
-            if (gamepad2.y) { state = armState.RESTING; }
-            if (gamepad2.x) { state = armState.BASKET; }
-            if (gamepad2.a) { state = armState.SPECIMEN; }
-            if (gamepad2.b) { state = armState.COLLECTION; }
-            if (gamepad2.dpad_left) { state = armState.above_bar; }
-            if (gamepad2.dpad_right) { state = armState.below_bar; }
-            if (gamepad2.dpad_up) { state = armState.prehang; }
-            if (gamepad2.dpad_down) { state = armState.posthang; }
-            if (gamepad1.y){state = armState.wallgrab;}
-            driving();
-            arm();
-            if (gamepad1.dpad_up) { sliderMove(50);}
-            if (gamepad1.dpad_down) {sliderMove(-50);}
-            action();
-
-
+    public void sliderBumpUp(){
+        desired_slider_position = 50;
+    }
+    public void sliderBumpDown(){
+        desired_slider_position = -50;
+    }
     public void sliderMove(int moveTickAmount){
         if (state == armState.prehang) {
             hangHeight += moveTickAmount;
@@ -229,54 +217,25 @@ public class Robot2 {
             case wallgrab:
                 desired_shoulder_position = armWall;
                 desired_shoulder_velocity = COLLECTION_VELOCITY;
-                //desired_wrist_position = wristpos_collection;
                 desired_slider_position = slidersWall;
                 desired_slider_velocity = Slidervelocityup;
         }
     }
 
-    //driving is working, field centric
-    public void driving() {
-        double y = gamepad1.left_stick_y / 2;
-        double x = -gamepad1.left_stick_x / 2; //X is reversed
-        double rx = gamepad1.right_stick_x / 2; // X is reversed
-        if (gamepad1.right_trigger >= 0.01) {
-            y = y * 2;
-            x = x * 2;
-            rx = rx * 2;
-        }
-        //speed up/slow down
-        if (gamepad1.left_trigger >= 0.01) {
-            y = y / 2;
-            x = x / 2;
-            rx = rx / 2;
-        }
-        //When dpad down is pressed it will point at basket
 
-        //double botHeading =  imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-        pinpoint.update();
-        botHeading = pinpoint.getHeading();
-        double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
-        double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
-        rotX = rotX * 1.1;
-        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
-        frontLeftPower = (rotY + rotX + rx) / denominator;
-        backLeftPower = (rotY - rotX + rx) / denominator;
-        frontRightPower = (rotY - rotX - rx) / denominator;
-        backRightPower = (rotY + rotX - rx) / denominator;
-    }
-
-    public void action() {
-        frontLeftMotor.setPower(frontLeftPower);
-        backLeftMotor.setPower(backLeftPower);
-        frontRightMotor.setPower(frontRightPower);
-        backRightMotor.setPower(backRightPower);
-        wrist.setPosition(desired_wrist_position);
-        claw.setPosition(desired_claw_position);
-        miniClaw.setPosition(desired_miniClaw_position);
+    public void ShoulderAction() {
         Shoulder.setTargetPosition(desired_shoulder_position);
         Shoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Shoulder.setVelocity(desired_shoulder_velocity);
+    }
+    public void WristAction() {
+        wrist.setPosition(desired_wrist_position);
+    }
+    public void ClawAction() {
+        claw.setPosition(desired_claw_position);
+        miniClaw.setPosition(desired_miniClaw_position);
+    }
+    public void SliderAction() {
         SliderLeft.setTargetPosition(desired_slider_position);
         SliderRight.setTargetPosition(desired_slider_position);
         SliderLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -289,7 +248,5 @@ public class Robot2 {
             SliderLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             SliderRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
-
-
     }
 }
