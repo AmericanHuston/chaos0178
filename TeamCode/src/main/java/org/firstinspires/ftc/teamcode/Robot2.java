@@ -74,7 +74,6 @@ public class Robot2 {
     TouchSensor sliderButton;
     GoBildaPinpointDriver pinpoint;
 
-    //public static double  wrist_position = (MAX_POS - MIN_POS) / 2
     public void init(HardwareMap hardwareMap) {
         imu = hardwareMap.get(IMU.class, "imu");
         sliderButton = hardwareMap.touchSensor.get("sliderButton");
