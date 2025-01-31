@@ -30,6 +30,7 @@ public class TwoArmTwoFurious extends OpMode {
 
     @Override
     public void init() {
+        Robot.init(hardwareMap);
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
         follower.setStartingPose(startPose);
