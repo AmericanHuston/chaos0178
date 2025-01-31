@@ -16,10 +16,6 @@ public class Robot2 {
     public DcMotorEx SliderLeft;
     public DcMotorEx SliderRight;
     public DcMotorEx Shoulder;
-    double backRightPower;
-    double frontRightPower;
-    double frontLeftPower;
-    double backLeftPower;
     public enum armState{
         RESTING,
         BASKET,
@@ -31,12 +27,6 @@ public class Robot2 {
         POSTHANG
     }
     armState state;
-    public enum clawPositions{
-        CLAW_OPEN,
-        CLAW_CLOSED
-    }
-    clawPositions clawState;
-    public static double rest;
     final static double CLAW_OPEN = 0.5;
     final static double CLAW_CLOSED = 0.99;
     public static int slidersWall = 1450;
@@ -130,13 +120,8 @@ public class Robot2 {
     public Robot2.armState getArmState() {
         return this.state;
     }
-
-    public void setClawState(Robot2.clawPositions clawState){
-        this.clawState = clawState;
-    }
-
-    public Robot2.clawPositions getClawState() {
-        return this.clawState;
+    public boolean isClawOpen(){
+        return(claw.getPosition() < 0.9);
     }
     public void resetIMU() {
         imu.resetYaw();
@@ -228,10 +213,10 @@ public class Robot2 {
                 break;
         }
     }
-    public void stateMachineClaw() {
-        if (clawState == Robot2.clawPositions.CLAW_OPEN){
+    public void toggleClaw() {
+        if (!isClawOpen()){
             desired_claw_position = CLAW_OPEN;
-        }else if (clawState == Robot2.clawPositions.CLAW_CLOSED){
+        }else if (isClawOpen()){
             desired_claw_position = CLAW_CLOSED;
         }
     }
