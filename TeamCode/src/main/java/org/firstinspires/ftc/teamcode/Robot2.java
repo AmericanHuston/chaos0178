@@ -123,6 +123,9 @@ public class Robot2 {
     public boolean isClawOpen(){
         return(claw.getPosition() < 0.9);
     }
+    public double getWristPos(){
+        return wrist.getPosition();
+    }
     public void resetIMU() {
         imu.resetYaw();
         pinpoint.resetPosAndIMU();
@@ -216,7 +219,7 @@ public class Robot2 {
     public void toggleClaw() {
         if (!isClawOpen()){
             desired_claw_position = CLAW_OPEN;
-        }else if (isClawOpen()){
+        } else {
             desired_claw_position = CLAW_CLOSED;
         }
     }
