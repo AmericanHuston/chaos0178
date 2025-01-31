@@ -127,6 +127,12 @@ public class Robot2 {
     public double getWristPosition(){
         return wrist.getPosition();
     }
+    public int getShoulderPosition(){
+        return Shoulder.getCurrentPosition();
+    }
+    public void setShoulderPosition(int x){
+        desired_shoulder_position = x;
+    }
     public void resetIMU() {
         imu.resetYaw();
         pinpoint.resetPosAndIMU();
