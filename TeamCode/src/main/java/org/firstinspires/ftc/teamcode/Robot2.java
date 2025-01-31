@@ -154,12 +154,6 @@ public class Robot2 {
     public void wrist45(){
         desired_wrist_position = 0.25;
     }
-    public void sliderBumpUp(){
-        desired_slider_position = 50;
-    }
-    public void sliderBumpDown(){
-        desired_slider_position = -50;
-    }
     public void sliderMove(int moveTickAmount){
         if (state == armState.prehang) {
             hangHeight += moveTickAmount;
