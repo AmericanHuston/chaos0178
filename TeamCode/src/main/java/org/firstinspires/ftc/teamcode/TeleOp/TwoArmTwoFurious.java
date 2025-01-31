@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.Robot2;
 import org.firstinspires.ftc.teamcode.arm;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.FConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
@@ -25,6 +26,8 @@ public class TwoArmTwoFurious extends OpMode {
     private final Pose Basket = new Pose(15.5,140.5, Math.toRadians(130));
 
     private PathChain ToSpecPickup;
+
+    Robot2 Robot = new Robot2();
 
     @Override
     public void init() {
@@ -64,11 +67,10 @@ public class TwoArmTwoFurious extends OpMode {
 
         //Rewrite below----------
         if (gamepad1.back) {
-            imu.resetYaw();
-            pinpoint.resetPosAndIMU();
+            Robot.resetIMU();
         }
         if(gamepad2.right_trigger > 0.01) {
-            desired_claw_position = Range.scale(gamepad2.right_trigger, 0.0, 1.0, 0.5, 0.99);
+            Robot.setClawPosition(Range.scale(gamepad2.right_trigger, 0.0, 1.0, 0.5, 0.99));
         }
         if(gamepad2.right_bumper && !changedClaw){
             if(openClaw) {
@@ -85,7 +87,7 @@ public class TwoArmTwoFurious extends OpMode {
         }
 
         if(gamepad2.left_trigger > 0.01){
-            desired_wrist_position = 0.25;
+            Robot.wrist45();
         }
         if(gamepad2.left_bumper && !changedWrist){
             if(openWrist) {
