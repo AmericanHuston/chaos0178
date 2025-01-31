@@ -25,16 +25,20 @@ public class Robot2 {
         BASKET,
         SPECIMEN,
         COLLECTION,
-        above_bar,
-        below_bar,
-        prehang,
-        posthang,
-        wallgrab
-
+        ABOVE_BAR,
+        BELOW_BAR,
+        PREHANG,
+        POSTHANG
     }
     armState state;
-
+    public enum clawPositions{
+        CLAW_OPEN,
+        CLAW_CLOSED
+    }
+    clawPositions clawState;
     public static double rest;
+    final static double CLAW_OPEN = 0.5;
+    final static double CLAW_CLOSED = 0.99;
     public static int slidersWall = 1450;
     public static int armWall = 500;
     public static double RESTING_VELOCITY = 250;
@@ -119,7 +123,21 @@ public class Robot2 {
         boolean openWrist = true;
         boolean changedWrist = false;
     }
+    public void setArmState(Robot2.armState armState){
+        this.state = armState;
+    }
 
+    public Robot2.armState getArmState() {
+        return this.state;
+    }
+
+    public void setClawState(Robot2.clawPositions clawState){
+        this.clawState = clawState;
+    }
+
+    public Robot2.clawPositions getClawState() {
+        return this.clawState;
+    }
     public void resetIMU() {
         imu.resetYaw();
         pinpoint.resetPosAndIMU();
@@ -155,7 +173,7 @@ public class Robot2 {
         desired_wrist_position = 0.25;
     }
     public void sliderMove(int moveTickAmount){
-        if (state == armState.prehang) {
+        if (state == armState.PREHANG) {
             hangHeight += moveTickAmount;
         }
     }
@@ -186,36 +204,37 @@ public class Robot2 {
                 desired_slider_position = slidersdown;
                 desired_slider_velocity = Slidervelocitydown;
                 break;
-            case above_bar:
+            case ABOVE_BAR:
                 desired_shoulder_position = shoulder_bar_position;
                 desired_shoulder_velocity = shoulder_bar_velotity;
                 desired_slider_position = slider_above_bar_position;
                 desired_slider_velocity = Slidervelocityup;
                 break;
-            case below_bar:
+            case BELOW_BAR:
                 desired_shoulder_position = shoulder_bar_position;
                 desired_shoulder_velocity = shoulder_bar_velotity;
                 desired_slider_position = slider_below_bar_position;
                 desired_slider_velocity = Slidervelocitydown;
                 break;
-            case prehang:
+            case PREHANG:
                 desired_shoulder_position = resting_position;
                 desired_shoulder_velocity = shoulder_bar_velotity;
                 desired_slider_position = hangHeight;
                 desired_slider_velocity = Slidervelocityup;
                 break;
-            case posthang:
+            case POSTHANG:
                 desired_slider_position = 1000;//used to be resting_position
                 desired_slider_velocity = Slidervelocityup;
                 break;
-            case wallgrab:
-                desired_shoulder_position = armWall;
-                desired_shoulder_velocity = COLLECTION_VELOCITY;
-                desired_slider_position = slidersWall;
-                desired_slider_velocity = Slidervelocityup;
         }
     }
-
+    public void stateMachineClaw() {
+        if (clawState == Robot2.clawPositions.CLAW_OPEN){
+            desired_claw_position = CLAW_OPEN;
+        }else if (clawState == Robot2.clawPositions.CLAW_CLOSED){
+            desired_claw_position = CLAW_CLOSED;
+        }
+    }
 
     public void ShoulderAction() {
         Shoulder.setTargetPosition(desired_shoulder_position);
