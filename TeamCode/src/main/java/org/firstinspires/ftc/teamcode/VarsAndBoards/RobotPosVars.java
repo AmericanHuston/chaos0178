@@ -25,8 +25,8 @@ public class RobotPosVars {
     static int collection_position = 500;
     static int sliders_down = 40;
     static int sliders_up = 3450;
-    static int slider_above_bar_position = 1100;
-    static int slider_below_bar_position = 400;
+    static int slider_above_bar_position = 1800;
+    static int slider_below_bar_position = 1250;
     static int shoulder_bar_position = 200;
     static int shoulder_bar_velocity = 400;
 }
