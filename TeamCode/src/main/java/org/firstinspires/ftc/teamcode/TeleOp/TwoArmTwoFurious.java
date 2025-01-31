@@ -103,12 +103,12 @@ public class TwoArmTwoFurious extends OpMode {
         if (gamepad2.right_stick_x> 0.01|| gamepad2.right_stick_x < -0.01)  {
             int shoulder_position = Shoulder.getTargetPosition();
             int shoulder_change = (int)gamepad2.right_stick_x * 10;
-            desired_shoulder_position = shoulder_position + shoulder_change;;
+            desired_shoulder_position = shoulder_position + shoulder_change;
 
         }
 
         // wrist_position = gamepad2.left_stick_y;
-        if (gamepad2.y) { state = arm.armState.RESTING; }
+        if (gamepad2.y) { state = arm.armState.RESTING;}
         if (gamepad2.x) { state = arm.armState.BASKET; }
         if (gamepad2.a) { state = arm.armState.SPECIMEN; }
         if (gamepad2.b) { state = arm.armState.COLLECTION; }
