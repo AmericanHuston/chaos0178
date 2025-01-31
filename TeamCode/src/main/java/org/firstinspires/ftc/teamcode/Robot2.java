@@ -115,6 +115,7 @@ public class Robot2 {
     }
     public void setArmState(Robot2.armState armState){
         this.state = armState;
+        updateDesiredValues();
     }
 
     public Robot2.armState getArmState() {
@@ -166,7 +167,7 @@ public class Robot2 {
         }
     }
     //sets shoulder motor position need the right presets
-    public void arm(){
+    private void updateDesiredValues(){
         switch (state){
             case RESTING:
                 desired_shoulder_position = resting_position;
@@ -224,19 +225,19 @@ public class Robot2 {
         }
     }
 
-    public void ShoulderAction() {
+    public void shoulderAct() {
         Shoulder.setTargetPosition(desired_shoulder_position);
         Shoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Shoulder.setVelocity(desired_shoulder_velocity);
     }
-    public void WristAction() {
+    public void wristAct() {
         wrist.setPosition(desired_wrist_position);
     }
-    public void ClawAction() {
+    public void clawAct() {
         claw.setPosition(desired_claw_position);
         miniClaw.setPosition(desired_miniClaw_position);
     }
-    public void SliderAction() {
+    public void slidersAct() {
         SliderLeft.setTargetPosition(desired_slider_position);
         SliderRight.setTargetPosition(desired_slider_position);
         SliderLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -249,5 +250,11 @@ public class Robot2 {
             SliderLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             SliderRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
+    }
+    public void allAct(){
+        slidersAct();
+        shoulderAct();
+        wristAct();
+        clawAct();
     }
 }
