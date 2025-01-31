@@ -123,7 +123,7 @@ public class Robot2 {
     public boolean isClawOpen(){
         return(claw.getPosition() < 0.9);
     }
-    public double getWristPos(){
+    public double getWristPosition(){
         return wrist.getPosition();
     }
     public void resetIMU() {
