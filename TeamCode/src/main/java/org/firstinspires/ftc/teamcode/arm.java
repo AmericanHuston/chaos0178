@@ -187,7 +187,6 @@ public class arm extends LinearOpMode {
             if (gamepad2.dpad_down) { state = armState.posthang; }
             if (gamepad1.y){state = armState.wallgrab;}
             driving();
-            if (gamepad1.a) { pointAtBasket(); }
             arm();
             if (gamepad1.dpad_up) { sliderMove(50);}
             if (gamepad1.dpad_down) {sliderMove(-50);}
@@ -221,35 +220,30 @@ public class arm extends LinearOpMode {
             case BASKET:
                 desired_shoulder_position = basket_position;
                 desired_shoulder_velocity = BASKET_VELOCITY;
-                //desired_wrist_position = wristpos_basket;
                 desired_slider_position = slidersup;
                 desired_slider_velocity = Slidervelocitydown;
                 break;
             case SPECIMEN:
                 desired_shoulder_position = specimen_position;
                 desired_shoulder_velocity = SPECIMEN_VELOCITY;
-                //desired_wrist_position = wristpos_specimen;
                 desired_slider_position = slidersdown;
                 desired_slider_velocity = Slidervelocitydown;
                 break;
             case COLLECTION:
                 desired_shoulder_position = collection_position;
                 desired_shoulder_velocity = COLLECTION_VELOCITY;
-                //desired_wrist_position = wristpos_collection;
                 desired_slider_position = slidersdown;
                 desired_slider_velocity = Slidervelocitydown;
                 break;
             case above_bar:
                 desired_shoulder_position = shoulder_bar_position;
                 desired_shoulder_velocity = shoulder_bar_velotity;
-                //desired_wrist_position = wrist_bar_position;
                 desired_slider_position = slider_above_bar_position;
                 desired_slider_velocity = Slidervelocityup;
                 break;
             case below_bar:
                 desired_shoulder_position = shoulder_bar_position;
                 desired_shoulder_velocity = shoulder_bar_velotity;
-                //desired_wrist_position = wrist_bar_position;
                 desired_slider_position = slider_below_bar_position;
                 desired_slider_velocity = Slidervelocitydown;
                 break;
@@ -273,22 +267,6 @@ public class arm extends LinearOpMode {
     }
 
     //driving is working, field centric
-    private void pointAtBasket() {
-        double pointedAtBasket = -45.0;
-        pointAtAngle(pointedAtBasket);
-    }
-
-    private void pointAtAngle(double pointAt){
-        double MAXPOWER = 0.5;
-        double  Kp = kp;
-        double currentYaw = imu.getRobotYawPitchRollAngles().getYaw();
-        double power = Kp *(pointAt - currentYaw);
-        power = Range.clip(power, -MAXPOWER, MAXPOWER);
-        backLeftPower = power;
-        frontLeftPower = power;
-        backRightPower  = -power;
-        frontRightPower = -power;
-    }
     public void driving() {
         double y = gamepad1.left_stick_y / 2;
         double x = -gamepad1.left_stick_x / 2; //X is reversed
