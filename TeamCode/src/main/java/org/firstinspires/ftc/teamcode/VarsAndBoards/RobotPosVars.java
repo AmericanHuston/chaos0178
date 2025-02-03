@@ -29,4 +29,5 @@ public class RobotPosVars {
     static int slider_below_bar_position = 1250;
     static int shoulder_bar_position = 200;
     static int shoulder_bar_velocity = 400;
+    boolean changedClaw = false;
 }

@@ -75,6 +75,7 @@ public class arm extends LinearOpMode {
     public static double desired_slider_velocity;
     public static double desired_wrist_position = 0.5;
     public double botHeading;
+    public boolean changedClaw = false;
 
 
     IMU imu;
@@ -126,7 +127,6 @@ public class arm extends LinearOpMode {
         final double sliderSpeed = 0.35;
         state = armState.RESTING;
         boolean openClaw = true;
-        boolean changedClaw = false;
         boolean openWrist = true;
         boolean changedWrist = false;
 

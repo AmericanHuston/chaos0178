@@ -61,6 +61,8 @@ public class Robot2 {
     public static double desired_slider_velocity;
     public static double desired_wrist_position = 0.5;
     public double botHeading;
+    public boolean changedClaw = false;
+    public boolean changedWrist = false;
 
 
     IMU imu;
@@ -101,16 +103,8 @@ public class Robot2 {
         imu.initialize(parameters);
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
-        pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD.ordinal());
-        pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
-        pinpoint.resetPosAndIMU();
         final double sliderSpeed = 0.35;
         state = armState.RESTING;
-        boolean openClaw = true;
-        boolean changedClaw = false;
-        boolean openWrist = true;
-        boolean changedWrist = false;
     }
     public void setArmState(Robot2.armState armState){
         this.state = armState;
@@ -121,7 +115,7 @@ public class Robot2 {
         return this.state;
     }
     public boolean isClawOpen(){
-        return(claw.getPosition() < 0.9);
+        return(claw.getPosition() < 0.7);
     }
     public double getWristPosition(){
         return wrist.getPosition();
@@ -225,8 +219,10 @@ public class Robot2 {
     public void toggleClaw() {
         if (!isClawOpen()){
             desired_claw_position = CLAW_OPEN;
+            desired_miniClaw_position = CLAW_OPEN;
         } else {
             desired_claw_position = CLAW_CLOSED;
+            desired_miniClaw_position = CLAW_CLOSED;
         }
     }
 
@@ -240,6 +236,8 @@ public class Robot2 {
     }
     public void clawAct() {
         claw.setPosition(desired_claw_position);
+    }
+    public void miniClawAct() {
         miniClaw.setPosition(desired_miniClaw_position);
     }
     public void slidersAct() {
@@ -261,5 +259,6 @@ public class Robot2 {
         shoulderAct();
         wristAct();
         clawAct();
+        miniClawAct();
     }
 }
