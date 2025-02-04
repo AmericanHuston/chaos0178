@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.LED;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
@@ -16,6 +17,10 @@ public class Robot2 {
     public DcMotorEx SliderLeft;
     public DcMotorEx SliderRight;
     public DcMotorEx Shoulder;
+    public LED rightLEDRed;
+    public LED rightLEDGreen;
+    public LED leftLEDRed;
+    public LED leftLEDGreen;
     public enum armState{
         RESTING,
         BASKET,
@@ -105,10 +110,30 @@ public class Robot2 {
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         final double sliderSpeed = 0.35;
         state = armState.RESTING;
+        rightLEDRed = hardwareMap.get(LED.class, "rightLEDRed");
+        rightLEDGreen = hardwareMap.get(LED.class, "rightLEDGreen");
+        leftLEDRed = hardwareMap.get(LED.class, "leftLEDRed");
+        leftLEDGreen = hardwareMap.get(LED.class, "leftLEDGreen");
+        rightLEDGreen.off();
+        leftLEDGreen.off();
+        rightLEDRed.on();
+        leftLEDRed.on();
     }
     public void setArmState(Robot2.armState armState){
         this.state = armState;
         updateDesiredValues();
+    }
+    public void GreenOnLED () {
+        rightLEDRed.off();
+        leftLEDRed.off();
+        rightLEDGreen.on();
+        leftLEDGreen.on();
+    }
+    public void RedOnLED() {
+        rightLEDGreen.off();
+        leftLEDGreen.off();
+        rightLEDRed.on();
+        leftLEDRed.on();
     }
 
     public Robot2.armState getArmState() {

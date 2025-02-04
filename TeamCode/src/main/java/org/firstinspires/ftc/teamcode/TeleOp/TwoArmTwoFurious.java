@@ -40,6 +40,7 @@ public class TwoArmTwoFurious extends OpMode {
     @Override
     public void start() {
         follower.startTeleopDrive();
+        Robot.RedOnLED();
     }
 
     @Override
@@ -49,6 +50,7 @@ public class TwoArmTwoFurious extends OpMode {
 
         //Driving------------------
         if (gamepad1.a) {
+            Robot.GreenOnLED();
             ToSpecPickup = follower.pathBuilder()
                     .addPath(new BezierLine(new Point(startPose.getX(), startPose.getY()), new Point(SpecGrab)))
                     .setLinearHeadingInterpolation(startPose.getHeading(), SpecGrab.getHeading())
@@ -56,6 +58,7 @@ public class TwoArmTwoFurious extends OpMode {
             follower.followPath(ToSpecPickup);
         }
         if (gamepad1.b) {
+            Robot.GreenOnLED();
             ToBasket = follower.pathBuilder()
                     .addPath(new BezierLine(new Point(startPose.getX(), startPose.getY()), new Point(Basket)))
                     .setLinearHeadingInterpolation(startPose.getHeading(), Basket.getHeading())
@@ -64,6 +67,7 @@ public class TwoArmTwoFurious extends OpMode {
         }
         if (gamepad1.left_stick_button || gamepad1.right_stick_button) {
             follower.startTeleopDrive();
+            Robot.RedOnLED();
         }
         if (gamepad1.left_trigger > 0.01){
             follower.setTeleOpMovementVectors(-gamepad1.left_stick_y/4, -gamepad1.left_stick_x/4, -gamepad1.right_stick_x/4, false);
