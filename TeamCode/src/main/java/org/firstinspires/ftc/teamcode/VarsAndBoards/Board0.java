@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.VarsAndBoards;
 
 import static android.os.SystemClock.sleep;
-import static org.firstinspires.ftc.teamcode.VarsAndBoards.LocalUtils.*;
+import static org.firstinspires.ftc.teamcode.VarsAndBoards.Utils.LocalUtils.*;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
