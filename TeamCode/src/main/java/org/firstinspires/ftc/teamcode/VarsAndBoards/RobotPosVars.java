@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.VarsAndBoards;
 
+import org.firstinspires.ftc.teamcode.VarsAndBoards.Utils.Log;
+
 /**
  * Allows to change vital variables everywhere all at once... We'll see if its actually helpful.
  */

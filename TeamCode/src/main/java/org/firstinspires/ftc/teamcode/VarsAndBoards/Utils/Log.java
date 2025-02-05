@@ -7,6 +7,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
+import kotlin.Deprecated;
+import kotlin.ReplaceWith;
+
 /**
  * Created by Gabriel on 2018-01-03.
  * A simple way to log data to a file.
@@ -14,7 +17,7 @@ import java.io.Writer;
  * Almost all code is original, aside from some small changes
  * <a href="https://github.com/StPaulAcademy/HOMAR-FTC-Library/tree/master">Credit</a>
  */
-
+@Deprecated(message = "Now use DataLogger.java")
 public class Log {
     private static final String BASE_FOLDER_NAME = "FIRST";
     private Writer fileWriter;
