@@ -287,6 +287,14 @@ public class Robot2 {
             SliderRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
     }
+    public void sliderNoTouchAct() {
+        SliderLeft.setTargetPosition(desired_slider_position);
+        SliderRight.setTargetPosition(desired_slider_position);
+        SliderLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        SliderRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        SliderLeft.setVelocity(desired_slider_velocity);
+        SliderRight.setVelocity(desired_slider_velocity);
+    }
     public void allAct(){
         slidersAct();
         shoulderAct();
