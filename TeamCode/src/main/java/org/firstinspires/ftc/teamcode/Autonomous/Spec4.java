@@ -52,13 +52,13 @@ public class Spec4 extends OpMode {
     private final Pose OtherTapeHangRobot = new Pose(72,48, Math.toRadians(270));
     private final Pose SpecPrepStep1 = new Pose(32, 40, Math.toRadians(180));
     private final Pose SpecPrepStep2 = new Pose(56, 30, Math.toRadians(180));
-    private final Pose SpecimenCollect1 = new Pose(30, 20, Math.toRadians(180));
-    private final Pose SpecimenCollect2 = new Pose(58, 7, Math.toRadians(180));
+    private final Pose SpecimenCollect1 = new Pose(30, 23, Math.toRadians(180));
+    private final Pose SpecimenCollect2 = new Pose(58, 15, Math.toRadians(180));
     private final Pose littleBack = new Pose (25, 84, Math.toRadians(0));
     private final Pose littleRight = new Pose(37,70, Math.toRadians(0));
-    private final Pose BlockPush1 = new Pose(10, 33, Math.toRadians(180));
-    private final Pose BlockPush2 = new Pose(5, 24, Math.toRadians(180));
-    private final Pose SpecGrab = new Pose(10, 52, Math.toRadians(180));
+    private final Pose BlockPush1 = new Pose(10, 23, Math.toRadians(180));
+    private final Pose BlockPush2 = new Pose(5, 15, Math.toRadians(180));
+    private final Pose SpecGrab = new Pose(10, 36, Math.toRadians(180));
     private final Pose controlHangSpec = new Pose(21, 88);
     private PathChain square;
 
