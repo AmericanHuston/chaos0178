@@ -12,6 +12,8 @@ import com.qualcomm.robotcore.hardware.LED;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import org.firstinspires.ftc.teamcode.VarsAndBoards.Utils.Log;
+
 @Config
 public class Robot2 {
     public DcMotorEx SliderLeft;
@@ -69,7 +71,7 @@ public class Robot2 {
     public boolean changedClaw = false;
     public boolean changedWrist = false;
 
-
+    Log Logger = new Log("RobotState", false);
     IMU imu;
     DcMotor frontLeftMotor;
     DcMotor backLeftMotor;
@@ -82,6 +84,7 @@ public class Robot2 {
     GoBildaPinpointDriver pinpoint;
 
     public void init(HardwareMap hardwareMap) {
+
         imu = hardwareMap.get(IMU.class, "imu");
         sliderButton = hardwareMap.touchSensor.get("sliderButton");
         frontLeftMotor = hardwareMap.dcMotor.get("frontLeft");
@@ -119,6 +122,11 @@ public class Robot2 {
         rightLEDRed.on();
         leftLEDRed.on();
     }
+
+    public double getClawPosition(){
+        return claw.getPosition();
+    }
+
     public void setArmState(Robot2.armState armState){
         this.state = armState;
         updateDesiredValues();
@@ -285,5 +293,18 @@ public class Robot2 {
         wristAct();
         clawAct();
         miniClawAct();
+    }
+
+    public void LogRobotState(){
+        Logger.addData("shoulder:"+getShoulderPosition());
+        Logger.addData("armState:"+getArmState());
+        Logger.addData("wrist:"+getWristPosition());
+        Logger.addData("claw:"+getClawPosition());
+    }
+
+    public void LogRobotPosition(double x, double y, double heading){
+        Logger.addData("x:"+x);
+        Logger.addData("y:"+y);
+        Logger.addData("heading:"+heading);
     }
 }
