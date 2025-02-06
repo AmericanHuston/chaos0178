@@ -83,6 +83,7 @@ public class TwoArmTwoFurious extends OpMode {
         }
         if (gamepad2.right_trigger > 0.01) {
             robot.setClawPosition(Range.scale(gamepad2.right_trigger, 0.0, 1.0, 0.5, 0.99));
+            robot.setMiniClawPosition(Range.scale(gamepad2.right_trigger, 0.0, 1.0, 0.5, 0.99));
         }
         if(gamepad2.right_bumper && !robot.changedClaw){
             robot.toggleClaw();
@@ -144,7 +145,6 @@ public class TwoArmTwoFurious extends OpMode {
         //Rewrite above----------
 
         /* Telemetry Outputs of our Follower */
-        telemetry.addData("getLastPose", robot.getLastPose());
         telemetry.addData("X", follower.getPose().getX());
         telemetry.addData("Y", follower.getPose().getY());
         telemetry.addData("Heading in Degrees", Math.toDegrees(follower.getPose().getHeading()));

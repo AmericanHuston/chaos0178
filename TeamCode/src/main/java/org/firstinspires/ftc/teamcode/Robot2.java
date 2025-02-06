@@ -194,15 +194,19 @@ public class Robot2 {
     }
     public void openClaw(){
         desired_claw_position = 0.5;
+        claw.setPosition(desired_claw_position);
     }
     public void closeClaw(){
         desired_claw_position = 0.99;
+        claw.setPosition(desired_claw_position);
     }
     public void openMiniClaw(){
         desired_miniClaw_position = 0.5;
+        miniClaw.setPosition(desired_miniClaw_position);
     }
     public void closeMiniClaw(){
         desired_miniClaw_position = 0.99;
+        miniClaw.setPosition(desired_miniClaw_position);
     }
     public void wristVertical(){
         desired_wrist_position = 0.1;
