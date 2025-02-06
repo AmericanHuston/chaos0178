@@ -59,7 +59,7 @@ public class Spec4 extends OpMode {
     private final Point littleRightPoint = new Point(37,70);
     private final Pose BlockPush1 = new Pose(20, 20, Math.toRadians(180));
     private final Pose BlockPush2 = new Pose(20, 16, Math.toRadians(180));
-    private final Pose SpecGrab = new Pose(8.5, 37, Math.toRadians(190));
+    private final Pose SpecGrab = new Pose(8.5, 36, Math.toRadians(190));
     private final Pose CurvePoseSpecGrab = new Pose(61, 28, Math.toRadians(180));
     private final Point CurveSpecGrab = new Point(61, 28);
     private final Point controlSpecCollect1Step1 = new Point(8, 55);
@@ -195,8 +195,8 @@ public class Spec4 extends OpMode {
                 break;
             case 6: //pushes the samples in
                 if(!follower.isBusy()){
-                    follower.setMaxPower(0.75);
-                    follower.followPath(SpecCollect1);
+                    follower.setMaxPower(0.68);
+                    follower.followPath(SpecCollect1, true);
                     next_state();
                 }
                 break;
