@@ -49,16 +49,16 @@ public class Spec4 extends OpMode {
     private final Pose OtherHangSpecimen = new Pose(112,72,Math.toRadians(90));
     private final Pose TapeHangRobot = new Pose(72,96, Math.toRadians(90));
     private final Pose OtherTapeHangRobot = new Pose(72,48, Math.toRadians(270));
-    private final Pose SpecPrepStep1 = new Pose(70, 22, Math.toRadians(180));
+    private final Pose SpecPrepStep1 = new Pose(52, 24, Math.toRadians(180));
     private final Point SpecPrepStep1Point = new Point(70, 22);
-    private final Point SpecPrepStep2Point = new Point(15, 18);
-    private final Pose SpecPrepStep2 = new Pose(15, 18, Math.toRadians(180));
+    private final Point SpecPrepStep2Point = new Point(15, 20);
+    private final Pose SpecPrepStep2 = new Pose(15, 20, Math.toRadians(180));
     private final Point littleBackPoint = new Point (10, 24);
     private final Pose littleBack = new Pose (13, 24, Math.toRadians(180));
     private final Pose littleRight = new Pose(37,70, Math.toRadians(0));
     private final Pose BlockPush1 = new Pose(20, 20, Math.toRadians(180));
     private final Pose BlockPush2 = new Pose(20, 16, Math.toRadians(180));
-    private final Pose SpecGrab = new Pose(8.5, 24, Math.toRadians(180));
+    private final Pose SpecGrab = new Pose(8.5, 24, Math.toRadians(190));
     private final Pose CurvePoseSpecGrab = new Pose(61, 28, Math.toRadians(180));
     private final Point CurveSpecGrab = new Point(61, 28);
     private final Point controlSpecCollect1Step1 = new Point(8, 55);
@@ -146,13 +146,14 @@ public class Spec4 extends OpMode {
     @Override
     public void loop() {
         follower.update();
+        robot.setLastPose(follower.getPose());
         switch (autoState) {
-            case 0: //closes the claw than waits 0.7 seconds before moving to the next step
+            case 0: //closes the claw than waits 1.0 seconds before moving to the next step
                 robot.closeMiniClaw();
                 robot.closeClaw();
                 robot.miniClawAct();
                 robot.clawAct();
-                if (state_timer.getElapsedTimeSeconds() > 0.7) {
+                if (!robot.isMiniClawOpen()) {
                     next_state();
                 }
                 break;
@@ -191,7 +192,7 @@ public class Spec4 extends OpMode {
                 robot.openMiniClaw();
                 robot.miniClawAct();
                 robot.clawAct();
-                if(robot.isClawOpen()) {next_state();}
+                if(robot.isMiniClawOpen()) {next_state();}
                 break;
             case 6: //pushes the first sample in
                 if(!follower.isBusy()){
@@ -206,13 +207,13 @@ public class Spec4 extends OpMode {
                 robot.allAct();
                 next_state();
                 break;
-            case 8: //closes the claw than waits 0.7 seconds before moving to the next step
+            case 8: //closes the claw than waits 1.0 seconds before moving to the next step
                 if(!follower.isBusy()) {
                     robot.closeMiniClaw();
                     robot.closeClaw();
                     robot.miniClawAct();
                     robot.clawAct();
-                    if (state_timer.getElapsedTimeSeconds() > 0.7) {
+                    if (!robot.isMiniClawOpen()) {
                         next_state();
                     }
                 }
@@ -254,7 +255,7 @@ public class Spec4 extends OpMode {
                     robot.openMiniClaw();
                     robot.miniClawAct();
                     robot.clawAct();
-                    if(robot.isClawOpen()) {
+                    if(robot.isMiniClawOpen()) {
                         next_state();
                     }
                 }
@@ -271,13 +272,13 @@ public class Spec4 extends OpMode {
                 robot.allAct();
                 next_state();
                 break;
-            case 16: //closes the claw than waits 0.7 seconds before moving to the next step
+            case 16: //closes the claw than waits 1.0 seconds before moving to the next step
                 if(!follower.isBusy()) {
                     robot.closeMiniClaw();
                     robot.closeClaw();
                     robot.miniClawAct();
                     robot.clawAct();
-                    if (state_timer.getElapsedTimeSeconds() > 0.7) {
+                    if (!robot.isMiniClawOpen()) {
                         next_state();
                     }
                 }
@@ -318,7 +319,7 @@ public class Spec4 extends OpMode {
                     robot.openMiniClaw();
                     robot.miniClawAct();
                     robot.clawAct();
-                    if(robot.isClawOpen()) {
+                    if(robot.isMiniClawOpen()) {
                         next_state();
                     }
                 }
@@ -335,13 +336,13 @@ public class Spec4 extends OpMode {
                 robot.allAct();
                 next_state();
                 break;
-            case 24: //closes the claw than waits 0.7 seconds before moving to the next step
+            case 24: //closes the claw than waits 1.0 seconds before moving to the next step
                 if(!follower.isBusy()) {
                     robot.closeMiniClaw();
                     robot.closeClaw();
                     robot.miniClawAct();
                     robot.clawAct();
-                    if (state_timer.getElapsedTimeSeconds() > 0.7) {
+                    if (!robot.isMiniClawOpen()) {
                         next_state();
                     }
                 }
@@ -382,7 +383,7 @@ public class Spec4 extends OpMode {
                     robot.openMiniClaw();
                     robot.miniClawAct();
                     robot.clawAct();
-                    if(robot.isClawOpen()) {
+                    if(robot.isMiniClawOpen()) {
                         next_state();
                     }
                 }

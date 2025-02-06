@@ -335,26 +335,26 @@ public class SpecimenAuto3 extends OpMode {
                 break;
 //            case 19:
 //                if(!follower.isBusy()){
-//                    board.setArmState(Board0.armStates.COLLECTION);
-//                    board.stateMachinesThink(Board0.stateMachineAct.ARM);
-//                    board.stateMachinesAct(Board0.stateMachineAct.ARM);
+//                    robot.setArmState(Board0.armStates.COLLECTION);
+//                    robot.stateMachinesThink(Board0.stateMachineAct.ARM);
+//                    robot.stateMachinesAct(Board0.stateMachineAct.ARM);
 //                    if (state_timer.getElapsedTimeSeconds() > 1.5) {
 //                        next_state();
 //                    }
 //                }
 //                break;
 //            case 20: //opens the claw
-//                board.setClawState(Board0.clawPositions.CLAW_OPEN);
-//                board.stateMachinesThink(Board0.stateMachineAct.CLAW);
-//                board.stateMachinesAct(Board0.stateMachineAct.CLAW);
+//                robot.setClawState(Board0.clawPositions.CLAW_OPEN);
+//                robot.stateMachinesThink(Board0.stateMachineAct.CLAW);
+//                robot.stateMachinesAct(Board0.stateMachineAct.CLAW);
 //                if(state_timer.getElapsedTimeSeconds() > 1.0){
 //                    next_state();
 //                }
 //                break;
 //            case 21: //goes to resting mode
-//                board.setArmState(Board0.armStates.RESTING);
-//                board.stateMachinesThink(Board0.stateMachineAct.ARM);
-//                board.stateMachinesAct(Board0.stateMachineAct.ARM);
+//                robot.setArmState(Board0.armStates.RESTING);
+//                robot.stateMachinesThink(Board0.stateMachineAct.ARM);
+//                robot.stateMachinesAct(Board0.stateMachineAct.ARM);
 //                next_state();
 //                break;
 //            case 28: //parks!

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 
 import com.acmerobotics.dashboard.config.Config;
+import com.pedropathing.localization.Pose;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -67,6 +68,7 @@ public class Robot2 {
     public static int desired_slider_position;
     public static double desired_slider_velocity;
     public static double desired_wrist_position = 0.5;
+    private static Pose lastPose;
     public double botHeading;
     public boolean changedClaw = false;
     public boolean changedWrist = false;
@@ -123,6 +125,13 @@ public class Robot2 {
         leftLEDRed.on();
     }
 
+    public static void setLastPose(Pose savePose){
+        lastPose = savePose;
+    }
+    public static Pose getLastPose(){
+        return lastPose;
+    }
+
     public double getClawPosition(){
         return claw.getPosition();
     }
@@ -157,6 +166,9 @@ public class Robot2 {
     }
     public boolean isClawOpen(){
         return(claw.getPosition() < 0.7);
+    }
+    public boolean isMiniClawOpen(){
+        return(miniClaw.getPosition() < 0.85);
     }
     public double getWristPosition(){
         return wrist.getPosition();
