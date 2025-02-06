@@ -6,20 +6,22 @@ import java.util.*;
 import com.opencsv.*;
 
 public class DataLogger {
-    static List<String[]> allData = new ArrayList<String[]>();
-    static List<String[]> readData;
+    List<String[]> allData = new ArrayList<>();
+    List<String[]> readData;
     /**
      * +1 Overload Default Value is FIRST directory
+     * Basically always use the default
      **/
-    public static void update(){
-        update(Environment.getExternalStorageDirectory().getPath()+"/FIRST");
+    public void update(){
+        update(Environment.getExternalStorageDirectory().getPath()+"/FIRST/PosLog.csv");
     }
 
     /**
      * Overload
+     * Use standard update() with no params
      * @param output File to write out to
      */
-    public static void update(String output)
+    public void update(String output)
     {
         File file = new File(output);
         try {
@@ -32,9 +34,7 @@ public class DataLogger {
 
             writer.writeAll(allData);
 
-            // closing writer connection
             writer.close();
-            allData.clear();
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -42,8 +42,7 @@ public class DataLogger {
     }
 
     public void addData(String data) {
-        String[] s = data.split("");
-        addData(s);
+        addData(new String[] {data});
     }
     public void addData(String[] data) {
         allData.add(data);
@@ -73,11 +72,15 @@ public class DataLogger {
         addData(String.valueOf(data));
     }
 
+    /**
+     * REMEMBER THAT ARRAYS START AT 0 AAAA
+     * @return returns a list of strings
+     */
+    public List<String[]> read(){
+        return read(Environment.getExternalStorageDirectory().getPath()+"/FIRST/PosLog.csv");
+    }
     public List<String[]> read(String file)
     {
-        if (!readData.isEmpty()){
-            readData.clear();
-        }
         try {
             FileReader filereader = new FileReader(file);
             CSVParser parser = new CSVParserBuilder().withSeparator(';').build();
@@ -90,10 +93,17 @@ public class DataLogger {
         catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return readData;
     }
+
+    /**
+     * ARRAYS START AT 0
+     * @param line which line to look on - start at 0
+     * @param cell which cell to look on - start at 0
+     * @return returns a single string
+     */
     public String read(int line, int cell){
-        String[] lineData = readData.get(line); //On this line
+        String[] lineData = read().get(line); //On this line
         return lineData[cell]; //At this position
     }
 }

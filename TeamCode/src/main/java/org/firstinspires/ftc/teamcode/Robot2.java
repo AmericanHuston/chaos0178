@@ -318,11 +318,13 @@ public class Robot2 {
         Logger.addData(getClawPosition());
         Logger.addData(getMiniClawPosition());
         Logger.addData(getSlidersPosition());
+        Logger.update();
     }
 
     public void LogRobotPosition(double x, double y, double heading){
         Logger.addData(x);
         Logger.addData(y);
         Logger.addData(heading);
+        Logger.update();
     }
 }
