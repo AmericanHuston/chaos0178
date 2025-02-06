@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 
 import com.acmerobotics.dashboard.config.Config;
+import com.pedropathing.localization.Pose;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -54,7 +55,7 @@ public class Robot2 {
     public static double MAX_POS     =  1.0;     // Maximum rotational position
     public static double MIN_POS     =  0.0;// Minimum rotational position
     public static int slider_above_bar_position = 1800;
-    public static int slider_below_bar_position = 1225;
+    public static int slider_below_bar_position = 1275;
     public static int shoulder_bar_position = 100;
     //public static double wrist_bar_position = 0.39;
     public static int shoulder_bar_velotity = 200;
@@ -67,6 +68,7 @@ public class Robot2 {
     public static int desired_slider_position;
     public static double desired_slider_velocity;
     public static double desired_wrist_position = 0.5;
+    private static Pose lastPose;
     public double botHeading;
     public boolean changedClaw = false;
     public boolean changedWrist = false;
@@ -123,6 +125,13 @@ public class Robot2 {
         leftLEDRed.on();
     }
 
+    public static void setLastPose(Pose savePose){
+        lastPose = savePose;
+    }
+    public static Pose getLastPose(){
+        return lastPose;
+    }
+
     public double getClawPosition(){
         return claw.getPosition();
     }
@@ -158,6 +167,9 @@ public class Robot2 {
     public boolean isClawOpen(){
         return(claw.getPosition() < 0.7);
     }
+    public boolean isMiniClawOpen(){
+        return(miniClaw.getPosition() < 0.85);
+    }
     public double getWristPosition(){
         return wrist.getPosition();
     }
@@ -182,15 +194,19 @@ public class Robot2 {
     }
     public void openClaw(){
         desired_claw_position = 0.5;
+        claw.setPosition(desired_claw_position);
     }
     public void closeClaw(){
         desired_claw_position = 0.99;
+        claw.setPosition(desired_claw_position);
     }
     public void openMiniClaw(){
         desired_miniClaw_position = 0.5;
+        miniClaw.setPosition(desired_miniClaw_position);
     }
     public void closeMiniClaw(){
         desired_miniClaw_position = 0.99;
+        miniClaw.setPosition(desired_miniClaw_position);
     }
     public void wristVertical(){
         desired_wrist_position = 0.1;

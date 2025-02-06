@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+/*package org.firstinspires.ftc.teamcode.Autonomous;
 
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -14,13 +14,14 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Robot2;
 import org.firstinspires.ftc.teamcode.VarsAndBoards.Board0;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.FConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
 
 @Autonomous(name = "BasketAuto", group = "PedroAutos")
 public class BasketAuto extends OpMode {
-    Board0 board = new Board0();
+    Robot2 robot = new Robot2();
     private Follower follower;
     private Timer state_timer;
     private Timer Op_mode_timer;
@@ -65,7 +66,7 @@ public class BasketAuto extends OpMode {
 
     @Override
     public void init() {
-        board.init(hardwareMap);
+        robot.init(hardwareMap);
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
         follower.setStartingPose(StartingPose);
@@ -137,19 +138,20 @@ public class BasketAuto extends OpMode {
     @Override
     public void loop() {
         follower.update();
+        robot.setLastPose(follower.getPose());
         switch (autoState) {
             case 0: //closes the claw than waits 0.5 seconds before moving to the next step
-                board.setClawState(Board0.clawPositions.CLAW_CLOSED);
-                board.stateMachinesThink(Board0.stateMachineAct.CLAW);
-                board.stateMachinesAct(Board0.stateMachineAct.CLAW);
+                robot.setClawState(Board0.clawPositions.CLAW_CLOSED);
+                robot.stateMachinesThink(Board0.stateMachineAct.CLAW);
+                robot.stateMachinesAct(Board0.stateMachineAct.CLAW);
                 if (state_timer.getElapsedTimeSeconds() > 1.0) {
                     next_state();
                 }
                 break;
             case 1: //raises the sliders than waits 1.5 seconds
-                board.setArmState(Board0.armStates.BASKET);
-                board.stateMachinesThink(Board0.stateMachineAct.ARM);
-                board.stateMachinesAct(Board0.stateMachineAct.ARM);
+                robot.setArmState(Board0.armStates.BASKET);
+                robot.stateMachinesThink(Board0.stateMachineAct.ARM);
+                robot.stateMachinesAct(Board0.stateMachineAct.ARM);
                 if (state_timer.getElapsedTimeSeconds() > 1.5) {
                     next_state();
                 }
@@ -163,9 +165,9 @@ public class BasketAuto extends OpMode {
                 break;
             case 3://drops the sample in the basket
                 if(!follower.isBusy()){
-                    board.setClawState(Board0.clawPositions.CLAW_OPEN);
-                    board.stateMachinesThink(Board0.stateMachineAct.CLAW);
-                    board.stateMachinesAct(Board0.stateMachineAct.ARM);
+                    robot.setClawState(Board0.clawPositions.CLAW_OPEN);
+                    robot.stateMachinesThink(Board0.stateMachineAct.CLAW);
+                    robot.stateMachinesAct(Board0.stateMachineAct.ARM);
                     if(state_timer.getElapsedTimeSeconds() > 1) {
                         next_state();
                     }
@@ -181,9 +183,9 @@ public class BasketAuto extends OpMode {
                 break;
             case 5: //moves the arm to resting so we don't tip
                 if (!follower.isBusy()){
-                    board.setArmState(Board0.armStates.RESTING);
-                    board.stateMachinesThink(Board0.stateMachineAct.ARM);
-                    board.stateMachinesAct(Board0.stateMachineAct.ARM);
+                    robot.setArmState(Board0.armStates.RESTING);
+                    robot.stateMachinesThink(Board0.stateMachineAct.ARM);
+                    robot.stateMachinesAct(Board0.stateMachineAct.ARM);
                     next_state();
                 }
                 break;
@@ -195,26 +197,26 @@ public class BasketAuto extends OpMode {
                 break;
             case 7: //arm to the collection position
                 if(!follower.isBusy()){
-                    board.setArmState(Board0.armStates.COLLECTION);
-                    board.stateMachinesThink(Board0.stateMachineAct.ARM);
-                    board.stateMachinesAct(Board0.stateMachineAct.ARM);
+                    robot.setArmState(Board0.armStates.COLLECTION);
+                    robot.stateMachinesThink(Board0.stateMachineAct.ARM);
+                    robot.stateMachinesAct(Board0.stateMachineAct.ARM);
                     if (state_timer.getElapsedTimeSeconds() > 3.0) {
                         next_state();
                     }
                 }
                 break;
             case 8: //grabs the sample
-                board.setClawState(Board0.clawPositions.CLAW_CLOSED);
-                board.stateMachinesThink(Board0.stateMachineAct.CLAW);
-                board.stateMachinesAct(Board0.stateMachineAct.CLAW);
+                robot.setClawState(Board0.clawPositions.CLAW_CLOSED);
+                robot.stateMachinesThink(Board0.stateMachineAct.CLAW);
+                robot.stateMachinesAct(Board0.stateMachineAct.CLAW);
                 if(state_timer.getElapsedTimeSeconds() > 0.5){
                     next_state();
                 }
                 break;
             case 9: //sets the arm to the basket position
-                board.setArmState(Board0.armStates.BASKET);
-                board.stateMachinesThink(Board0.stateMachineAct.ARM);
-                board.stateMachinesAct(Board0.stateMachineAct.ARM);
+                robot.setArmState(Board0.armStates.BASKET);
+                robot.stateMachinesThink(Board0.stateMachineAct.ARM);
+                robot.stateMachinesAct(Board0.stateMachineAct.ARM);
                 if (state_timer.getElapsedTimeSeconds() > 1.0){
                     next_state();
                 }
@@ -228,9 +230,9 @@ public class BasketAuto extends OpMode {
                 break;
             case 11://drops the sample in the bucket
                 if (!follower.isBusy() && state_timer.getElapsedTimeSeconds() > 1){
-                    board.setClawState(Board0.clawPositions.CLAW_OPEN);
-                    board.stateMachinesThink(Board0.stateMachineAct.CLAW);
-                    board.stateMachinesAct(Board0.stateMachineAct.CLAW);
+                    robot.setClawState(Board0.clawPositions.CLAW_OPEN);
+                    robot.stateMachinesThink(Board0.stateMachineAct.CLAW);
+                    robot.stateMachinesAct(Board0.stateMachineAct.CLAW);
                     if(state_timer.getElapsedTimeSeconds() > 1.5){
                         next_state();
                     }
@@ -251,26 +253,26 @@ public class BasketAuto extends OpMode {
                 break;
             case 14: //arm to the collection position
                 if(!follower.isBusy()){
-                    board.setArmState(Board0.armStates.COLLECTION);
-                    board.stateMachinesThink(Board0.stateMachineAct.ARM);
-                    board.stateMachinesAct(Board0.stateMachineAct.ARM);
+                    robot.setArmState(Board0.armStates.COLLECTION);
+                    robot.stateMachinesThink(Board0.stateMachineAct.ARM);
+                    robot.stateMachinesAct(Board0.stateMachineAct.ARM);
                     if (state_timer.getElapsedTimeSeconds() > 5.3) {
                         next_state();
                     }
                 }
                 break;
             case 15: //grabs the second sample
-                board.setClawState(Board0.clawPositions.CLAW_CLOSED);
-                board.stateMachinesThink(Board0.stateMachineAct.CLAW);
-                board.stateMachinesAct(Board0.stateMachineAct.CLAW);
+                robot.setClawState(Board0.clawPositions.CLAW_CLOSED);
+                robot.stateMachinesThink(Board0.stateMachineAct.CLAW);
+                robot.stateMachinesAct(Board0.stateMachineAct.CLAW);
                 if(state_timer.getElapsedTimeSeconds() > 0.5){
                     next_state();
                 }
                 break;
             case 16: //sets the arm to the basket position
-                board.setArmState(Board0.armStates.BASKET);
-                board.stateMachinesThink(Board0.stateMachineAct.ARM);
-                board.stateMachinesAct(Board0.stateMachineAct.ARM);
+                robot.setArmState(Board0.armStates.BASKET);
+                robot.stateMachinesThink(Board0.stateMachineAct.ARM);
+                robot.stateMachinesAct(Board0.stateMachineAct.ARM);
                 if (state_timer.getElapsedTimeSeconds() > 1.0){
                     next_state();
                 }
@@ -283,9 +285,9 @@ public class BasketAuto extends OpMode {
                 break;
             case 18://drops the sample in the bucket
                 if (!follower.isBusy()){
-                    board.setClawState(Board0.clawPositions.CLAW_OPEN);
-                    board.stateMachinesThink(Board0.stateMachineAct.CLAW);
-                    board.stateMachinesAct(Board0.stateMachineAct.CLAW);
+                    robot.setClawState(Board0.clawPositions.CLAW_OPEN);
+                    robot.stateMachinesThink(Board0.stateMachineAct.CLAW);
+                    robot.stateMachinesAct(Board0.stateMachineAct.CLAW);
                     if(state_timer.getElapsedTimeSeconds() > 1){
                         next_state();
                     }
@@ -299,9 +301,9 @@ public class BasketAuto extends OpMode {
                 break;
             case 20: //arm in resting for initialization
                 if(state_timer.getElapsedTimeSeconds() > 1.5){
-                    board.setArmState(Board0.armStates.RESTING);
-                    board.stateMachinesThink(Board0.stateMachineAct.ARM);
-                    board.stateMachinesAct(Board0.stateMachineAct.ARM);
+                    robot.setArmState(Board0.armStates.RESTING);
+                    robot.stateMachinesThink(Board0.stateMachineAct.ARM);
+                    robot.stateMachinesAct(Board0.stateMachineAct.ARM);
                     next_state();
                 }
                 break;
@@ -312,4 +314,4 @@ public class BasketAuto extends OpMode {
 
         //follower.telemetryDebug(telemetryA);
     }
-}
+}*/
