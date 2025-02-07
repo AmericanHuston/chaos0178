@@ -42,12 +42,12 @@ public class TwoArmTwoFurious extends OpMode {
 
     @Override
     public void loop() {
+        robot.AllLEDOff();
         follower.setTeleOpMovementVectors(-gamepad1.left_stick_y/2, -gamepad1.left_stick_x/2, -gamepad1.right_stick_x/2, false);
         follower.update();
 
         //Driving------------------
         if (gamepad1.a) {
-            robot.AllLEDOff();
             robot.GreenOnLED();
             ToSpecPickup = follower.pathBuilder()
                     .addPath(new BezierLine(new Point(startPose.getX(), startPose.getY()), new Point(SpecGrab)))
@@ -56,7 +56,6 @@ public class TwoArmTwoFurious extends OpMode {
             follower.followPath(ToSpecPickup);
         }
         if (gamepad1.b) {
-            robot.AllLEDOff();
             robot.GreenOnLED();
             ToBasket = follower.pathBuilder()
                     .addPath(new BezierLine(new Point(startPose.getX(), startPose.getY()), new Point(Basket)))

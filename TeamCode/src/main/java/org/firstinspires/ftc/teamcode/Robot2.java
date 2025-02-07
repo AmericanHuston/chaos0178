@@ -123,7 +123,6 @@ public class Robot2 {
         rightLEDGreen = hardwareMap.get(LED.class, "rightLEDGreen");
         leftLEDRed = hardwareMap.get(LED.class, "leftLEDRed");
         leftLEDGreen = hardwareMap.get(LED.class, "leftLEDGreen");
-        AllLEDOff();
     }
 
     public static void setLastPose(Pose savePose){
