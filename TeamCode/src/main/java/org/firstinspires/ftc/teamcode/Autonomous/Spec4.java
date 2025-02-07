@@ -47,7 +47,7 @@ public class Spec4 extends OpMode {
     private final Pose OtherObservation = new Pose(120, 120, Math.toRadians(90));
     private final Pose OtherBasket = new Pose(120, 24, Math.toRadians(135));
     private final Pose Observation = new Pose(8,40, Math.toRadians(0));
-    private final Pose HangSpecimen = new Pose(35,74, Math.toRadians(0));
+    private final Pose HangSpecimen = new Pose(36,74, Math.toRadians(0));
     private final Pose OtherHangSpecimen = new Pose(112,72,Math.toRadians(90));
     private final Pose TapeHangRobot = new Pose(72,96, Math.toRadians(90));
     private final Pose OtherTapeHangRobot = new Pose(72,48, Math.toRadians(270));
@@ -161,7 +161,7 @@ public class Spec4 extends OpMode {
             case 0: //closes the claw
                 robot.closeMiniClaw();
                 robot.closeClaw();
-                if (state_timer.getElapsedTimeSeconds()  > 0.7) {
+                if (state_timer.getElapsedTimeSeconds()  > 0.8) {
                     next_state();
                 }
                 break;
@@ -175,7 +175,7 @@ public class Spec4 extends OpMode {
                 break;
             case 2: //drives to the bar
                 if(!follower.isBusy()) {
-                    follower.setMaxPower(0.76);
+                    follower.setMaxPower(0.7);
                     follower.followPath(specimenHang1, true);
                     next_state();
                 }
@@ -238,7 +238,7 @@ public class Spec4 extends OpMode {
                 break;
             case 11: //drives to the bar
                 if(!follower.isBusy()) {
-                    follower.setMaxPower(0.95);
+                    follower.setMaxPower(0.93);
                     follower.followPath(specimenHang2, true);
                     next_state();
                 }
