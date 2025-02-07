@@ -47,7 +47,7 @@ public class Spec4 extends OpMode {
     private final Pose OtherObservation = new Pose(120, 120, Math.toRadians(90));
     private final Pose OtherBasket = new Pose(120, 24, Math.toRadians(135));
     private final Pose Observation = new Pose(8,40, Math.toRadians(0));
-    private final Pose HangSpecimen = new Pose(37,74, Math.toRadians(0));
+    private final Pose HangSpecimen = new Pose(35,74, Math.toRadians(0));
     private final Pose OtherHangSpecimen = new Pose(112,72,Math.toRadians(90));
     private final Pose TapeHangRobot = new Pose(72,96, Math.toRadians(90));
     private final Pose OtherTapeHangRobot = new Pose(72,48, Math.toRadians(270));
@@ -61,7 +61,7 @@ public class Spec4 extends OpMode {
     private final Point littleRightPoint = new Point(37,70);
     private final Pose BlockPush1 = new Pose(20, 20, Math.toRadians(180));
     private final Pose BlockPush2 = new Pose(20, 16, Math.toRadians(180));
-    private final Pose SpecGrab = new Pose(8.5, 36, Math.toRadians(190));
+    private final Pose SpecGrab = new Pose(8.8, 36, Math.toRadians(180));
     private final Pose CurvePoseSpecGrab = new Pose(61, 28, Math.toRadians(180));
     private final Point CurveSpecGrab = new Point(61, 28);
     private final Point controlSpecCollect1Step1 = new Point(8, 55);
@@ -161,21 +161,21 @@ public class Spec4 extends OpMode {
             case 0: //closes the claw
                 robot.closeMiniClaw();
                 robot.closeClaw();
-                if (state_timer.getElapsedTimeSeconds()  > 0.5) {
+                if (state_timer.getElapsedTimeSeconds()  > 0.7) {
                     next_state();
                 }
                 break;
             case 1: //raises the arm and sliders to the above bar position
                 robot.setArmState(Robot2.armState.ABOVE_BAR);
                 robot.sliderNoTouchAct();
-                robot.allAct();
-                if(state_timer.getElapsedTimeSeconds() > 0.2) {
+                if(state_timer.getElapsedTimeSeconds() > 0.1) {
+                    robot.allAct();
                     next_state();
                 }
                 break;
             case 2: //drives to the bar
                 if(!follower.isBusy()) {
-                    follower.setMaxPower(0.75);
+                    follower.setMaxPower(0.76);
                     follower.followPath(specimenHang1, true);
                     next_state();
                 }
@@ -185,7 +185,7 @@ public class Spec4 extends OpMode {
                     robot.setArmState(Robot2.armState.BELOW_BAR);
                     robot.sliderNoTouchAct();
                     robot.allAct();
-                    if (state_timer.getElapsedTimeSeconds() > 2.01) {
+                    if (state_timer.getElapsedTimeSeconds() > 2.2) {
                         next_state();
                     }
                 }
@@ -231,14 +231,14 @@ public class Spec4 extends OpMode {
             case 10: //raises the arm and sliders to the above bar position
                 robot.setArmState(Robot2.armState.ABOVE_BAR);
                 robot.sliderNoTouchAct();
-                robot.allAct();
                 if(state_timer.getElapsedTimeSeconds() > 0.1) {
+                    robot.allAct();
                     next_state();
                 }
                 break;
             case 11: //drives to the bar
                 if(!follower.isBusy()) {
-                    follower.setMaxPower(1.0);
+                    follower.setMaxPower(0.95);
                     follower.followPath(specimenHang2, true);
                     next_state();
                 }
@@ -263,7 +263,7 @@ public class Spec4 extends OpMode {
                 if(!follower.isBusy()){
                     robot.openClaw();
                     robot.openMiniClaw();
-                    if(state_timer.getElapsedTimeSeconds() > 0.45) {
+                    if(state_timer.getElapsedTimeSeconds() > 0.2) {
                         next_state();
                     }
                 }
@@ -290,8 +290,8 @@ public class Spec4 extends OpMode {
             case 18: //raises the arm and sliders to the above bar position
                 robot.setArmState(Robot2.armState.ABOVE_BAR);
                 robot.sliderNoTouchAct();
-                robot.allAct();
                 if(state_timer.getElapsedTimeSeconds() > 0.1) {
+                    robot.allAct();
                     next_state();
                 }
                 break;
@@ -321,7 +321,7 @@ public class Spec4 extends OpMode {
                 if(!follower.isBusy()){
                     robot.openClaw();
                     robot.openMiniClaw();
-                    if(state_timer.getElapsedTimeSeconds() > 0.45) {
+                    if(state_timer.getElapsedTimeSeconds() > 0.2) {
                         next_state();
                     }
                 }
@@ -348,8 +348,8 @@ public class Spec4 extends OpMode {
             case 26: //raises the arm and sliders to the above bar position
                 robot.setArmState(Robot2.armState.ABOVE_BAR);
                 robot.sliderNoTouchAct();
-                robot.allAct();
                 if(state_timer.getElapsedTimeSeconds() > 0.1) {
+                    robot.allAct();
                     next_state();
                 }
                 break;
@@ -379,7 +379,7 @@ public class Spec4 extends OpMode {
                 if(!follower.isBusy()){
                     robot.openClaw();
                     robot.openMiniClaw();
-                    if(state_timer.getElapsedTimeSeconds() > 0.45) {
+                    if(state_timer.getElapsedTimeSeconds() > 0.2) {
                         next_state();
                     }
                 }
