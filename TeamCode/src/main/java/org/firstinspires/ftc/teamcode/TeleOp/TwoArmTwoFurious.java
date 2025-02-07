@@ -37,9 +37,7 @@ public class TwoArmTwoFurious extends OpMode {
 
     @Override
     public void start() {
-        follower.startTeleopDrive();
-        robot.AllLEDOff();
-    }
+        follower.startTeleopDrive();}
 
     @Override
     public void loop() {
