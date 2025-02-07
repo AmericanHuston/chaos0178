@@ -1,30 +1,33 @@
-package org.firstinspires.ftc.teamcode.TeleOp.TestFiles;
+package org.firstinspires.ftc.teamcode.TestFiles;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name="TeleUpdateTest", group="TeleOp")
+@Autonomous(name="AutoTest", group="Autonomous")
 @Config
 @Disabled
-public class TeleUpdateTest extends LinearOpMode {
-    public void runOpMode() {
-        float triggerPos;
-        //Don't edit code below this point
+public class AutoTest extends LinearOpMode {
+
+    @Override
+    public void runOpMode() throws InterruptedException {
+        //Start of fancy stuff
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
         dashboard.updateConfig();
-        //Don't edit code above this point
+        //Done with the fancy stuff
         waitForStart();
-        while (opModeIsActive()) {
-            if (this.gamepad1.left_trigger != 0.0) {
-                triggerPos = this.gamepad1.left_trigger;
-                telemetry.addData("position", triggerPos);
+        int i = 0;
+        while(opModeIsActive()){
+            for (; i < 10000000; i++) {
+                idle();
+                telemetry.addData("CountingUp", i);
                 telemetry.update();
             }
+            requestOpModeStop();
         }
     }
 }

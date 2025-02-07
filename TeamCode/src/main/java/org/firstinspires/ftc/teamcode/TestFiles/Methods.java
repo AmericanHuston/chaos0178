@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.TeleOp.TestFiles;
+package org.firstinspires.ftc.teamcode.TestFiles;
 
 public class Methods {
     public static int Adding(int var1, int var2){

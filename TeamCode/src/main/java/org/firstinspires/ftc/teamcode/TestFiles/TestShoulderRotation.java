@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.TeleOp.TestFiles;
+package org.firstinspires.ftc.teamcode.TestFiles;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
@@ -27,8 +28,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
  */
 @Config
 @Disabled
-@TeleOp(name = "Test: Shoulder Motor", group = "Test")
-public class TestShoulderMotor extends LinearOpMode {
+@TeleOp(name = "Test: Shoulder Rotation", group = "Test")
+public class TestShoulderRotation extends LinearOpMode {
 
     static final double INCREMENT   = 0.1;     // amount to slew servo each CYCLE_MS cycle
     static final int    CYCLE_MS    =   100;     // period of each cycle
@@ -51,7 +52,6 @@ public class TestShoulderMotor extends LinearOpMode {
         // Change the text in quotes to match any servo name on your robot.
         shoulder = hardwareMap.get(DcMotorEx.class, "Shoulder");
         shoulder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        shoulder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
         // Wait for the start button
@@ -61,8 +61,28 @@ public class TestShoulderMotor extends LinearOpMode {
         // Scan servo till stop pressed.
         while(opModeIsActive()){
 
-            position = gamepad2.left_stick_y;
 
+            if (gamepad2.right_bumper) {
+                MAX_POS += 1;
+            }
+            if (gamepad2.left_bumper) {
+                MAX_POS -= 1;
+            }
+
+            if (gamepad2.dpad_left) {
+                shoulderPower -= 0.01;
+            }
+            if (gamepad2.dpad_up) {
+                MAX_POS += 1;
+            }
+            if (gamepad2.dpad_right) {
+                shoulderPower += -0.01;
+            }
+            if (gamepad2.dpad_down) {
+                MAX_POS -= 1;
+            }
+
+            position = Range.scale(gamepad2.left_stick_y, -1.0, 1.0, 0, MAX_POS);
             // Display the current value
             telemetry.addData("Target Position", "%5.2f", position);
             telemetry.addData("MotorCurrent ", shoulder.getCurrent(CurrentUnit.AMPS));
@@ -73,8 +93,11 @@ public class TestShoulderMotor extends LinearOpMode {
             telemetry.update();
 
             // Set the servo to the new position and pause;
-            shoulder.setPower(position);
-
+            shoulder.setTargetPosition((int)position);
+            shoulder.setPower(shoulderPower);
+            shoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            sleep(CYCLE_MS);
+            idle();
         }
 
         // Signal done;
