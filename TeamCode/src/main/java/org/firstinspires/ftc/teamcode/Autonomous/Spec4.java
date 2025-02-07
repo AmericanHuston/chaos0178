@@ -151,6 +151,7 @@ public class Spec4 extends OpMode {
 
     @Override
     public void loop() {
+        robot.GreenOnLED();
         follower.update();
         robot.setLastPose(follower.getPose());
         telemetry.addData("Current Pose", follower.getPose());
