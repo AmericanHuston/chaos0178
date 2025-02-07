@@ -54,7 +54,7 @@ public class Robot2 {
     public static int slidersup = 3450;
     public static double MAX_POS     =  1.0;     // Maximum rotational position
     public static double MIN_POS     =  0.0;// Minimum rotational position
-    public static int slider_above_bar_position = 1800;
+    public static int slider_above_bar_position = 1900;
     public static int slider_below_bar_position = 1275;
     public static int shoulder_bar_position = 100;
     //public static double wrist_bar_position = 0.39;

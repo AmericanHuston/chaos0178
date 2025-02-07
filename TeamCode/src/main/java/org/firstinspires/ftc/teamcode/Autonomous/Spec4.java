@@ -51,10 +51,10 @@ public class Spec4 extends OpMode {
     private final Pose OtherTapeHangRobot = new Pose(72,48, Math.toRadians(270));
     private final Pose SpecPrepStep1 = new Pose(52, 24, Math.toRadians(180));
     private final Point SpecPrepStep1Point = new Point(70, 22);
-    private final Point SpecPrepStep2Point = new Point(15, 20);
-    private final Pose SpecPrepStep2 = new Pose(15, 20, Math.toRadians(180));
-    private final Point littleBackPoint = new Point (15, 24);
-    private final Pose littleBack = new Pose (15, 24, Math.toRadians(180));
+    private final Point SpecPrepStep2Point = new Point(20, 20);
+    private final Pose SpecPrepStep2 = new Pose(20, 20, Math.toRadians(180));
+    private final Point littleBackPoint = new Point (20, 24);
+    private final Pose littleBack = new Pose (20, 24, Math.toRadians(180));
     private final Pose littleRight = new Pose(37,70, Math.toRadians(0));
     private final Point littleRightPoint = new Point(37,70);
     private final Pose BlockPush1 = new Pose(20, 20, Math.toRadians(180));
@@ -108,6 +108,8 @@ public class Spec4 extends OpMode {
         SpecCollect1 = follower.pathBuilder()
                 .addBezierCurve(littleRightPoint, controlSpecCollect1Step1, CurveSpecGrab)
                 .setLinearHeadingInterpolation(littleRight.getHeading(), CurvePoseSpecGrab.getHeading())
+                .build();
+        BlockToBase1 = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(CurvePoseSpecGrab), new Point(littleBack)))
                 .setLinearHeadingInterpolation(CurvePoseSpecGrab.getHeading(), littleBack.getHeading())
                 .addPath(new BezierLine(new Point(littleBack), new Point(SpecPrepStep1)))
@@ -168,6 +170,7 @@ public class Spec4 extends OpMode {
                 break;
             case 2: //drives to the bar
                 if(!follower.isBusy()) {
+                    follower.setMaxPower(0.9);
                     follower.followPath(specimenHang1, true);
                     next_state();
                 }
@@ -195,12 +198,19 @@ public class Spec4 extends OpMode {
                 break;
             case 6: //pushes the samples in
                 if(!follower.isBusy()){
-                    follower.setMaxPower(0.68);
+                    follower.setMaxPower(0.8);
                     follower.followPath(SpecCollect1, true);
                     next_state();
                 }
                 break;
-            case 7: //goes to resting
+            case 7:
+                if(!follower.isBusy()){
+                    follower.setMaxPower(1.0);
+                    follower.followPath(BlockToBase1, true);
+                    next_state();
+                }
+                break;
+            case 8: //goes to resting
                 robot.setArmState(Robot2.armState.RESTING);
                 robot.sliderNoTouchAct();
                 robot.allAct();
@@ -208,12 +218,12 @@ public class Spec4 extends OpMode {
                     next_state();
                 }
                 break;
-            case 8: //closes the claw
+            case 9: //closes the claw
                 robot.closeMiniClaw();
                 robot.closeClaw();
                 if (state_timer.getElapsedTimeSeconds() > 0.7) {next_state();}
                 break;
-            case 9: //raises the arm and sliders to the above bar position
+            case 10: //raises the arm and sliders to the above bar position
                 robot.setArmState(Robot2.armState.ABOVE_BAR);
                 robot.sliderNoTouchAct();
                 robot.allAct();
@@ -221,14 +231,14 @@ public class Spec4 extends OpMode {
                     next_state();
                 }
                 break;
-            case 10: //drives to the bar
+            case 11: //drives to the bar
                 if(!follower.isBusy()) {
                     follower.setMaxPower(1.0);
                     follower.followPath(specimenHang2, true);
                     next_state();
                 }
                 break;
-            case 11: //clips the specimen
+            case 12: //clips the specimen
                 if(!follower.isBusy()) {
                     robot.setArmState(Robot2.armState.BELOW_BAR);
                     robot.sliderNoTouchAct();
@@ -238,13 +248,13 @@ public class Spec4 extends OpMode {
                     }
                 }
                 break;
-            case 12: //nudges the specimen on the bar a little right
+            case 13: //nudges the specimen on the bar a little right
                 if (!follower.isBusy()){
                     follower.followPath(JustRight);
                     next_state();
                 }
                 break;
-            case 13: //releases the claw
+            case 14: //releases the claw
                 if(!follower.isBusy()){
                     robot.openClaw();
                     robot.openMiniClaw();
@@ -253,13 +263,13 @@ public class Spec4 extends OpMode {
                     }
                 }
                 break;
-            case 14: //goes to the collection position
+            case 15: //goes to the collection position
                 if(!follower.isBusy()){
                     follower.followPath(Park);
                     next_state();
                 }
                 break;
-            case 15: //goes to resting
+            case 16: //goes to resting
                 robot.setArmState(Robot2.armState.RESTING);
                 robot.sliderNoTouchAct();
                 robot.allAct();
@@ -267,12 +277,12 @@ public class Spec4 extends OpMode {
                     next_state();
                 }
                 break;
-            case 16: //closes the claw
+            case 17: //closes the claw
                 robot.closeMiniClaw();
                 robot.closeClaw();
                 if (state_timer.getElapsedTimeSeconds() > 0.7) {next_state();}
                 break;
-            case 17: //raises the arm and sliders to the above bar position
+            case 18: //raises the arm and sliders to the above bar position
                 robot.setArmState(Robot2.armState.ABOVE_BAR);
                 robot.sliderNoTouchAct();
                 robot.allAct();
@@ -280,13 +290,13 @@ public class Spec4 extends OpMode {
                     next_state();
                 }
                 break;
-            case 18: //drives to the bar
+            case 19: //drives to the bar
                 if(!follower.isBusy()) {
                     follower.followPath(specimenHang2, true);
                     next_state();
                 }
                 break;
-            case 19: //clips the specimen
+            case 20: //clips the specimen
                 if(!follower.isBusy()) {
                     robot.setArmState(Robot2.armState.BELOW_BAR);
                     robot.sliderNoTouchAct();
@@ -296,13 +306,13 @@ public class Spec4 extends OpMode {
                     }
                 }
                 break;
-            case 20: //nudges the specimen on the bar a little right
+            case 21: //nudges the specimen on the bar a little right
                 if (!follower.isBusy()){
                     follower.followPath(JustRight);
                     next_state();
                 }
                 break;
-            case 21: //releases the claw
+            case 22: //releases the claw
                 if(!follower.isBusy()){
                     robot.openClaw();
                     robot.openMiniClaw();
@@ -311,13 +321,13 @@ public class Spec4 extends OpMode {
                     }
                 }
                 break;
-            case 22: //goes to the collection position
+            case 23: //goes to the collection position
                 if(!follower.isBusy()){
                     follower.followPath(Park);
                     next_state();
                 }
                 break;
-            case 23: //goes to resting
+            case 24: //goes to resting
                 robot.setArmState(Robot2.armState.RESTING);
                 robot.sliderNoTouchAct();
                 robot.allAct();
@@ -325,12 +335,12 @@ public class Spec4 extends OpMode {
                     next_state();
                 }
                 break;
-            case 24: //closes the claw
+            case 25: //closes the claw
                 robot.closeMiniClaw();
                 robot.closeClaw();
                 if (state_timer.getElapsedTimeSeconds() > 0.7) {next_state();}
                 break;
-            case 25: //raises the arm and sliders to the above bar position
+            case 26: //raises the arm and sliders to the above bar position
                 robot.setArmState(Robot2.armState.ABOVE_BAR);
                 robot.sliderNoTouchAct();
                 robot.allAct();
@@ -338,13 +348,13 @@ public class Spec4 extends OpMode {
                     next_state();
                 }
                 break;
-            case 26: //drives to the bar
+            case 27: //drives to the bar
                 if(!follower.isBusy()) {
                     follower.followPath(specimenHang2, true);
                     next_state();
                 }
                 break;
-            case 27: //clips the specimen
+            case 28: //clips the specimen
                 if(!follower.isBusy()) {
                     robot.setArmState(Robot2.armState.BELOW_BAR);
                     robot.sliderNoTouchAct();
@@ -354,13 +364,13 @@ public class Spec4 extends OpMode {
                     }
                 }
                 break;
-            case 28: //nudges the specimen on the bar a little right
+            case 29: //nudges the specimen on the bar a little right
                 if (!follower.isBusy()){
                     follower.followPath(JustRight);
                     next_state();
                 }
                 break;
-            case 29: //releases the claw
+            case 30: //releases the claw
                 if(!follower.isBusy()){
                     robot.openClaw();
                     robot.openMiniClaw();
@@ -369,7 +379,7 @@ public class Spec4 extends OpMode {
                     }
                 }
                 break;
-            case 30: //goes to the collection position
+            case 31: //goes to the collection position
                 if(!follower.isBusy()){
                     follower.followPath(Park);
                     next_state();
