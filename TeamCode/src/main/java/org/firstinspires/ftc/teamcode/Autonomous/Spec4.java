@@ -49,12 +49,12 @@ public class Spec4 extends OpMode {
     private final Pose OtherHangSpecimen = new Pose(112,72,Math.toRadians(90));
     private final Pose TapeHangRobot = new Pose(72,96, Math.toRadians(90));
     private final Pose OtherTapeHangRobot = new Pose(72,48, Math.toRadians(270));
-    private final Pose SpecPrepStep1 = new Pose(52, 24, Math.toRadians(180));
+    private final Pose SpecPrepStep1 = new Pose(52, 25, Math.toRadians(180));
     private final Point SpecPrepStep1Point = new Point(70, 22);
-    private final Point SpecPrepStep2Point = new Point(20, 20);
-    private final Pose SpecPrepStep2 = new Pose(20, 20, Math.toRadians(180));
-    private final Point littleBackPoint = new Point (20, 24);
-    private final Pose littleBack = new Pose (20, 24, Math.toRadians(180));
+    private final Point SpecPrepStep2Point = new Point(25, 20);
+    private final Pose SpecPrepStep2 = new Pose(25, 20, Math.toRadians(180));
+    private final Point littleBackPoint = new Point (25, 24);
+    private final Pose littleBack = new Pose (25, 24, Math.toRadians(180));
     private final Pose littleRight = new Pose(37,70, Math.toRadians(0));
     private final Point littleRightPoint = new Point(37,70);
     private final Pose BlockPush1 = new Pose(20, 20, Math.toRadians(180));
@@ -180,7 +180,7 @@ public class Spec4 extends OpMode {
                     robot.setArmState(Robot2.armState.BELOW_BAR);
                     robot.sliderNoTouchAct();
                     robot.allAct();
-                    if (state_timer.getElapsedTimeSeconds() > 2.0) {
+                    if (state_timer.getElapsedTimeSeconds() > 2.2) {
                         next_state();
                     }
                 }
@@ -198,15 +198,15 @@ public class Spec4 extends OpMode {
                 break;
             case 6: //pushes the samples in
                 if(!follower.isBusy()){
-                    follower.setMaxPower(0.8);
+                    follower.setMaxPower(0.9);
                     follower.followPath(SpecCollect1);
                     next_state();
                 }
                 break;
             case 7:
                 if(!follower.isBusy()){
-                    follower.setMaxPower(1.0);
-                    follower.followPath(BlockToBase1, true);
+                    follower.setMaxPower(0.9);
+                    follower.followPath(BlockToBase1);
                     next_state();
                 }
                 break;
@@ -233,7 +233,7 @@ public class Spec4 extends OpMode {
                 break;
             case 11: //drives to the bar
                 if(!follower.isBusy()) {
-                    follower.setMaxPower(0.68);
+                    follower.setMaxPower(1.0);
                     follower.followPath(specimenHang2, true);
                     next_state();
                 }
