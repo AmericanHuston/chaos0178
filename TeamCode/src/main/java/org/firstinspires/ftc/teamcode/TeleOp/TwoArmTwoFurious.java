@@ -38,11 +38,11 @@ public class TwoArmTwoFurious extends OpMode {
     @Override
     public void start() {
         follower.startTeleopDrive();
+        robot.AllLEDOff();
     }
 
     @Override
     public void loop() {
-        robot.AllLEDOff();
         follower.setTeleOpMovementVectors(-gamepad1.left_stick_y/2, -gamepad1.left_stick_x/2, -gamepad1.right_stick_x/2, false);
         follower.update();
 
