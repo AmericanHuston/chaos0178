@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import static java.lang.Double.valueOf;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.localization.Pose;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
@@ -14,6 +16,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.VarsAndBoards.Utils.DataLogger;
+
+import java.util.ArrayList;
 
 @Config
 public class Robot2 {
@@ -144,7 +148,7 @@ public class Robot2 {
         return miniClaw.getPosition();
     }
 
-    public void setArmState(Robot2.armState armState){
+    public void setArmState(armState armState){
         this.state = armState;
         updateDesiredValues();
     }
@@ -161,7 +165,7 @@ public class Robot2 {
         leftLEDRed.on();
     }
 
-    public Robot2.armState getArmState() {
+    public armState getArmState() {
         return this.state;
     }
     public boolean isClawOpen(){
@@ -328,11 +332,17 @@ public class Robot2 {
     }
 
     public void LogRobotState(){
+        //Shoulder
         Logger.addData(getShoulderPosition());
+        //State
         Logger.addData(getArmState().toString());
+        //Wrist (unnecessary)
         Logger.addData(getWristPosition());
+        //Claw (unnecessary)
         Logger.addData(getClawPosition());
+        //MiniClaw (unnecessary)
         Logger.addData(getMiniClawPosition());
+        //Sliders
         Logger.addData(getSlidersPosition());
         Logger.update();
     }
@@ -342,5 +352,19 @@ public class Robot2 {
         Logger.addData(y);
         Logger.addData(heading);
         Logger.update();
+    }
+
+    public int[] getLastLoggedRobotPosition(){
+        int[] Result = new int[3];
+        Result[0] = Integer.parseInt(Logger.read(6,0));
+        Result[1] = Integer.parseInt(Logger.read(7,0));
+        Result[2] = Integer.parseInt(Logger.read(8,0));
+        return Result;
+    }
+
+    public void getLastLoggedRobotState(){
+        //current shoulder position = Logger.read(0,0);
+        this.state = armState.valueOf(Logger.read(1,0));
+        //current slider position == Logger.read(5,0);
     }
 }
