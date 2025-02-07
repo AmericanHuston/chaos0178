@@ -32,7 +32,7 @@ public class TwoArmTwoFurious extends OpMode {
         robot.init(hardwareMap);
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
-        follower.setStartingPose(robot.getLastPose()); //old
+        follower.setStartingPose(robot.getLastPose());
     }
 
     @Override
