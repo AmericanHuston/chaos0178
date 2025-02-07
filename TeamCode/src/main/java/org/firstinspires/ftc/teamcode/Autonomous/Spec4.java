@@ -194,12 +194,12 @@ public class Spec4 extends OpMode {
             case 5: //releases the claw
                 robot.openClaw();
                 robot.openMiniClaw();
-                if(state_timer.getElapsedTimeSeconds() > 0.5) {next_state();}
+                if(state_timer.getElapsedTimeSeconds() > 0.8) {next_state();}
                 break;
             case 6: //pushes the samples in
                 if(!follower.isBusy()){
                     follower.setMaxPower(0.8);
-                    follower.followPath(SpecCollect1, true);
+                    follower.followPath(SpecCollect1);
                     next_state();
                 }
                 break;
@@ -233,7 +233,7 @@ public class Spec4 extends OpMode {
                 break;
             case 11: //drives to the bar
                 if(!follower.isBusy()) {
-                    follower.setMaxPower(1.0);
+                    follower.setMaxPower(0.68);
                     follower.followPath(specimenHang2, true);
                     next_state();
                 }
@@ -258,7 +258,7 @@ public class Spec4 extends OpMode {
                 if(!follower.isBusy()){
                     robot.openClaw();
                     robot.openMiniClaw();
-                    if(state_timer.getElapsedTimeSeconds() > 0.5) {
+                    if(state_timer.getElapsedTimeSeconds() > 0.8) {
                         next_state();
                     }
                 }
@@ -316,7 +316,7 @@ public class Spec4 extends OpMode {
                 if(!follower.isBusy()){
                     robot.openClaw();
                     robot.openMiniClaw();
-                    if(state_timer.getElapsedTimeSeconds() > 0.5) {
+                    if(state_timer.getElapsedTimeSeconds() > 0.8) {
                         next_state();
                     }
                 }
@@ -374,7 +374,7 @@ public class Spec4 extends OpMode {
                 if(!follower.isBusy()){
                     robot.openClaw();
                     robot.openMiniClaw();
-                    if(state_timer.getElapsedTimeSeconds() > 0.5) {
+                    if(state_timer.getElapsedTimeSeconds() > 0.8) {
                         next_state();
                     }
                 }
