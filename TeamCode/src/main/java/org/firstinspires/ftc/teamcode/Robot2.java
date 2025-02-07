@@ -123,10 +123,7 @@ public class Robot2 {
         rightLEDGreen = hardwareMap.get(LED.class, "rightLEDGreen");
         leftLEDRed = hardwareMap.get(LED.class, "leftLEDRed");
         leftLEDGreen = hardwareMap.get(LED.class, "leftLEDGreen");
-        rightLEDGreen.off();
-        leftLEDGreen.off();
-        rightLEDRed.on();
-        leftLEDRed.on();
+        AllLEDOff();
     }
 
     public static void setLastPose(Pose savePose){
@@ -153,16 +150,26 @@ public class Robot2 {
         updateDesiredValues();
     }
     public void GreenOnLED () {
-        rightLEDRed.off();
-        leftLEDRed.off();
         rightLEDGreen.on();
         leftLEDGreen.on();
     }
     public void RedOnLED() {
-        rightLEDGreen.off();
-        leftLEDGreen.off();
         rightLEDRed.on();
         leftLEDRed.on();
+    }
+    public void RedOffLED(){
+        rightLEDRed.off();
+        leftLEDRed.off();
+    }
+    public void GreenOffLED(){
+        rightLEDGreen.off();
+        leftLEDGreen.off();
+    }
+    public void AllLEDOff(){
+        rightLEDGreen.off();
+        rightLEDRed.off();
+        leftLEDGreen.off();
+        leftLEDRed.off();
     }
 
     public armState getArmState() {
