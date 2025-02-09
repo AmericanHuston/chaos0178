@@ -41,14 +41,14 @@ public class DataReader {
      * @param cell which cell to look on - start at 0
      * @return returns a single string
      */
-    public String readCell(int line, int cell){
+    public String read(int line, int cell){
         return read().get(line)[cell]; //On this line, at this position "[]"
     }
     /**
      * @param line The line to read from (starts at 0)
      * @return Returns a String
      */
-    public String readLine(int line){
+    public String read(int line){
         StringBuilder result = new StringBuilder();
         String[] lineData = read().get(line);
         for (String lineDatum : lineData) {

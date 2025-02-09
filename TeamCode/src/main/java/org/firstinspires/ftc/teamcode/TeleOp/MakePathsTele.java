@@ -7,13 +7,22 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.Robot2;
 import org.firstinspires.ftc.teamcode.VarsAndBoards.Utils.DataLogger;
+import org.firstinspires.ftc.teamcode.VarsAndBoards.Utils.DataReader;
+import org.firstinspires.ftc.teamcode.VarsAndBoards.Utils.PoseComposer;
+import org.firstinspires.ftc.teamcode.VarsAndBoards.Utils.WriteToTextFile;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.FConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
+
+import java.io.IOException;
+import java.util.List;
 
 public class MakePathsTele extends OpMode {
 
     private Follower follower;
     private DataLogger Logger;
+    private PoseComposer Composer;
+    private DataReader Reader;
+    private WriteToTextFile Writer;
 
     Robot2 robot = new Robot2();
 
@@ -51,6 +60,12 @@ public class MakePathsTele extends OpMode {
                     .buildString()
             );
             Logger.update();
+            List<String> listOfStrings = Composer.ComposePose(Reader.read());
+            try {
+                Writer.writeToFile(listOfStrings);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
