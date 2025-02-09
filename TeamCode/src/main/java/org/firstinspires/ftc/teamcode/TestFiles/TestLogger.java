@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.VarsAndBoards.Utils.DataLogger;
+import org.firstinspires.ftc.teamcode.VarsAndBoards.Utils.DataReader;
 
 @Autonomous(name = "TestLogger", group = "Tests")
 public class TestLogger extends OpMode {
@@ -20,13 +21,14 @@ public class TestLogger extends OpMode {
     public void loop() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         DataLogger Logger = new DataLogger();
+        DataReader Reader = new DataReader();
         Logger.addData(new String[] {"HelloWorld!", "What's up?"});
         Logger.update();
         Logger.addData(new String[]{"The second line", "Awe yeah man"});
         Logger.update();
         telemetry.addData("Dir: ", Environment.getExternalStorageDirectory().getPath());
         sleep(1000);
-        telemetry.addData("Info", Logger.read(0,0));
+        telemetry.addData("Info", Reader.read(0,0));
         telemetry.update();
         return;
     }

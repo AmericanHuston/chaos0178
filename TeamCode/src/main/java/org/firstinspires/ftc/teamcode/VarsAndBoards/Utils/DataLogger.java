@@ -1,13 +1,18 @@
 package org.firstinspires.ftc.teamcode.VarsAndBoards.Utils;
 
 import android.os.Environment;
+
 import java.io.*;
 import java.util.*;
 import com.opencsv.*;
 
 public class DataLogger {
     List<String[]> allData = new ArrayList<>();
-    List<String[]> readData;
+    String constructionString;
+
+    public DataLogger(){
+    }
+
     /**
      * +1 Overload Default Value is FIRST directory
      * Basically always use the default
@@ -41,6 +46,10 @@ public class DataLogger {
         }
     }
 
+    /**
+     * Use for when you only want to have one piece of information per line
+     * @param data The stuff you want to put in
+     */
     public void addData(String data) {
         addData(new String[] {data});
     }
@@ -72,38 +81,48 @@ public class DataLogger {
         addData(String.valueOf(data));
     }
 
-    /**
-     * REMEMBER THAT ARRAYS START AT 0 AAAA
-     * @return returns a list of strings
-     */
-    public List<String[]> read(){
-        return read(Environment.getExternalStorageDirectory().getPath()+"/FIRST/PosLog.csv");
+    public DataLogger stringBuilder(String data) {
+        this.constructionString += data + ';';
+        return this;
     }
-    public List<String[]> read(String file)
-    {
-        try {
-            FileReader filereader = new FileReader(file);
-            CSVParser parser = new CSVParserBuilder().withSeparator(';').build();
-            CSVReader csvReader = new CSVReaderBuilder(filereader)
-                    .withCSVParser(parser)
-                    .build();
-            readData = csvReader.readAll();
-            return readData;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        return readData;
+    public DataLogger stringBuilder(String[] data) {
+        stringBuilder(data);
+        return this;
+    }
+    public DataLogger stringBuilder(boolean data) {
+        stringBuilder(String.valueOf(data));
+        return this;
+    }
+    public DataLogger stringBuilder(byte data) {
+        stringBuilder(String.valueOf(data));
+        return this;
+    }
+    public DataLogger stringBuilder(char data) {
+        stringBuilder(String.valueOf(data));
+        return this;
+    }
+    public DataLogger stringBuilder(short data) {
+        stringBuilder(String.valueOf(data));
+        return this;
+    }
+    public DataLogger stringBuilder(int data) {
+        stringBuilder(String.valueOf(data));
+        return this;
+    }
+    public DataLogger stringBuilder(long data) {
+        stringBuilder(String.valueOf(data));
+        return this;
+    }
+    public DataLogger stringBuilder(float data) {
+        stringBuilder(String.valueOf(data));
+        return this;
+    }
+    public DataLogger stringBuilder(double data) {
+        stringBuilder(String.valueOf(data));
+        return this;
     }
 
-    /**
-     * ARRAYS START AT 0
-     * @param line which line to look on - start at 0
-     * @param cell which cell to look on - start at 0
-     * @return returns a single string
-     */
-    public String read(int line, int cell){
-        String[] lineData = read().get(line); //On this line
-        return lineData[cell]; //At this position
+    public String buildString(){
+        return this.constructionString;
     }
 }

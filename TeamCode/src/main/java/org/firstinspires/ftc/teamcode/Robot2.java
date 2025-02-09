@@ -16,6 +16,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.VarsAndBoards.Utils.DataLogger;
+import org.firstinspires.ftc.teamcode.VarsAndBoards.Utils.DataReader;
 
 import java.util.ArrayList;
 
@@ -78,6 +79,7 @@ public class Robot2 {
     public boolean changedWrist = false;
 
     DataLogger Logger = new DataLogger();
+    DataReader Reader = new DataReader();
     IMU imu;
     DcMotor frontLeftMotor;
     DcMotor backLeftMotor;
@@ -362,15 +364,15 @@ public class Robot2 {
 
     public int[] getLastLoggedRobotPosition(){
         int[] Result = new int[3];
-        Result[0] = Integer.parseInt(Logger.read(6,0));
-        Result[1] = Integer.parseInt(Logger.read(7,0));
-        Result[2] = Integer.parseInt(Logger.read(8,0));
+        Result[0] = Integer.parseInt(Reader.read(6,0));
+        Result[1] = Integer.parseInt(Reader.read(7,0));
+        Result[2] = Integer.parseInt(Reader.read(8,0));
         return Result;
     }
 
     public void getLastLoggedRobotState(){
         //current shoulder position = Logger.read(0,0);
-        this.state = armState.valueOf(Logger.read(1,0));
+        this.state = armState.valueOf(Reader.read(1,0));
         //current slider position == Logger.read(5,0);
     }
 }
