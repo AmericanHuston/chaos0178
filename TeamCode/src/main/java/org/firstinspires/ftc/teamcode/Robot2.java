@@ -217,7 +217,7 @@ public class Robot2 {
         miniClaw.setPosition(desired_miniClaw_position);
     }
     public void closeMiniClaw(){
-        desired_miniClaw_position = 0.99;
+        desired_miniClaw_position = 0.89;
         miniClaw.setPosition(desired_miniClaw_position);
     }
     public void wristVertical(){
