@@ -4,6 +4,7 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Robot2;
 import org.firstinspires.ftc.teamcode.VarsAndBoards.Utils.DataLogger;
@@ -16,6 +17,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
 import java.io.IOException;
 import java.util.List;
 
+@TeleOp(name = "MakePathsTele", group = "PathMakers")
 public class MakePathsTele extends OpMode {
 
     private Follower follower;
@@ -47,20 +49,14 @@ public class MakePathsTele extends OpMode {
 
         if (gamepad1.a){
             Logger.addData(
-                    follower.getPose().getX() + ';' +
-                    follower.getPose().getY() + ';' +
-                    follower.getPose().getHeading() + ';'
-            );
-            telemetry.addData("Last Added Pose", follower.getPose().toString());
-            Logger.update();
-            Logger.addData(
-                Logger.stringBuilder(follower.getPose().getX())
-                    .stringBuilder(follower.getPose().getY())
-                    .stringBuilder(follower.getPose().getHeading())
-                    .buildString()
+                    Logger.stringBuilder(follower.getPose().getX())
+                          .stringBuilder(follower.getPose().getY())
+                          .stringBuilder(follower.getPose().getHeading())
+                          .buildString()
             );
             Logger.update();
             List<String> listOfStrings = Composer.ComposePose(Reader.read());
+            telemetry.addData("Last Added Pose", follower.getPose().toString());
             try {
                 Writer.writeToFile(listOfStrings);
             } catch (IOException e) {
