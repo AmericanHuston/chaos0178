@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.pedropathing.follower.Follower;
+import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -34,7 +35,7 @@ public class MakePathsTele extends OpMode {
         Constants.setConstants(FConstants.class, LConstants.class);
         Logger = new DataLogger();
         follower = new Follower(hardwareMap);
-        follower.setStartingPose(robot.getLastPose());
+        follower.setStartingPose(new Pose(8, 72, 0));
     }
 
     @Override
