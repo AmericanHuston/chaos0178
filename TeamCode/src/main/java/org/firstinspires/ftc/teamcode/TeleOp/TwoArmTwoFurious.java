@@ -76,7 +76,7 @@ public class TwoArmTwoFurious extends OpMode {
 
         //Rewrite below----------
         if (gamepad1.back) {
-            follower.
+            // Reset IMU.  This is currently a private function inside the follower
         }
         if (gamepad2.right_trigger > 0.01) {
             robot.setClawPosition(Range.scale(gamepad2.right_trigger, 0.0, 1.0, 0.5, 0.99));
