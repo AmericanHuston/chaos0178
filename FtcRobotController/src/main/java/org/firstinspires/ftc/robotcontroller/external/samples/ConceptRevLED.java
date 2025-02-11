@@ -51,15 +51,14 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.LED;
 
 @TeleOp(name = "Concept: RevLED", group = "Concept")
-@Disabled
 public class ConceptRevLED extends OpMode {
     LED frontLED_red;
     LED frontLED_green;
 
     @Override
     public void init() {
-        frontLED_green = hardwareMap.get(LED.class, "front_led_green");
-        frontLED_red = hardwareMap.get(LED.class, "front_led_red");
+        frontLED_green = hardwareMap.get(LED.class, "leftLEDGreen");
+        frontLED_red = hardwareMap.get(LED.class, "leftLEDRed");
     }
 
     @Override

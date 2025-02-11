@@ -18,8 +18,6 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 import org.firstinspires.ftc.teamcode.VarsAndBoards.Utils.DataLogger;
 import org.firstinspires.ftc.teamcode.VarsAndBoards.Utils.DataReader;
 
-import java.util.ArrayList;
-
 @Config
 public class Robot2 {
     public DcMotorEx SliderLeft;
@@ -73,7 +71,9 @@ public class Robot2 {
     public static int desired_slider_position;
     public static double desired_slider_velocity;
     public static double desired_wrist_position = 0.5;
-    private static Pose lastPose;
+    boolean desired_green_LED_on = false;
+    boolean desired_red_LED_on = false;
+    private static Pose lastPose = new Pose(24,24, Math.toRadians(0));
     public double botHeading;
     public boolean changedClaw = false;
     public boolean changedWrist = false;
@@ -150,27 +150,28 @@ public class Robot2 {
         this.state = armState;
         updateDesiredValues();
     }
-    public void GreenOnLED () {
-        rightLEDGreen.on();
-        leftLEDGreen.on();
+    public void setGreenLED(boolean light_on) {
+        if (light_on) {
+            rightLEDGreen.on();
+            leftLEDGreen.on();
+        } else {
+            rightLEDGreen.off();
+            leftLEDGreen.off();
+        }
     }
-    public void RedOnLED() {
-        rightLEDRed.on();
-        leftLEDRed.on();
+
+    public void setRedLED(boolean light_on) {
+        if (light_on) {
+            rightLEDRed.on();
+            leftLEDRed.on();
+        } else {
+            rightLEDRed.off();
+            leftLEDRed.off();
+        }
     }
-    public void RedOffLED(){
-        rightLEDRed.off();
-        leftLEDRed.off();
-    }
-    public void GreenOffLED(){
-        rightLEDGreen.off();
-        leftLEDGreen.off();
-    }
-    public void AllLEDOff(){
-        rightLEDGreen.off();
-        rightLEDRed.off();
-        leftLEDGreen.off();
-        leftLEDRed.off();
+    public void setAllLEDOff(){
+        setRedLED(false);
+        setGreenLED(false);
     }
 
     public armState getArmState() {
@@ -207,18 +208,22 @@ public class Robot2 {
     public void openClaw(){
         desired_claw_position = 0.5;
         claw.setPosition(desired_claw_position);
+        desired_red_LED_on = false;
     }
     public void closeClaw(){
         desired_claw_position = 0.99;
         claw.setPosition(desired_claw_position);
+        desired_red_LED_on = true;
     }
     public void openMiniClaw(){
         desired_miniClaw_position = 0.5;
         miniClaw.setPosition(desired_miniClaw_position);
+        desired_green_LED_on = false;
     }
     public void closeMiniClaw(){
         desired_miniClaw_position = 0.89;
         miniClaw.setPosition(desired_miniClaw_position);
+        desired_green_LED_on= true;
     }
     public void wristVertical(){
         desired_wrist_position = 0.1;

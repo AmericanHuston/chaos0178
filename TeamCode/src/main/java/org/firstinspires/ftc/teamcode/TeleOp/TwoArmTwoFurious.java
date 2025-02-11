@@ -32,7 +32,7 @@ public class TwoArmTwoFurious extends OpMode {
         robot.init(hardwareMap);
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
-        follower.setStartingPose(robot.getLastPose());
+        follower.setStartingPose(Robot2.getLastPose());
     }
 
     @Override
@@ -43,10 +43,10 @@ public class TwoArmTwoFurious extends OpMode {
     public void loop() {
         follower.setTeleOpMovementVectors(-gamepad1.left_stick_y/2, -gamepad1.left_stick_x/2, -gamepad1.right_stick_x/2, false);
         follower.update();
-
+        robot.setAllLEDOff();
         //Driving------------------
         if (gamepad1.a) {
-            robot.GreenOnLED();
+            robot.setGreenLED(true);
             ToSpecPickup = follower.pathBuilder()
                     .addPath(new BezierLine(new Point(startPose.getX(), startPose.getY()), new Point(SpecGrab)))
                     .setLinearHeadingInterpolation(startPose.getHeading(), SpecGrab.getHeading())
@@ -54,7 +54,7 @@ public class TwoArmTwoFurious extends OpMode {
             follower.followPath(ToSpecPickup);
         }
         if (gamepad1.b) {
-            robot.GreenOnLED();
+            robot.setGreenLED(true);
             ToBasket = follower.pathBuilder()
                     .addPath(new BezierLine(new Point(startPose.getX(), startPose.getY()), new Point(Basket)))
                     .setLinearHeadingInterpolation(startPose.getHeading(), Basket.getHeading())
@@ -76,7 +76,7 @@ public class TwoArmTwoFurious extends OpMode {
 
         //Rewrite below----------
         if (gamepad1.back) {
-            robot.resetIMU();
+            follower.
         }
         if (gamepad2.right_trigger > 0.01) {
             robot.setClawPosition(Range.scale(gamepad2.right_trigger, 0.0, 1.0, 0.5, 0.99));
@@ -138,8 +138,8 @@ public class TwoArmTwoFurious extends OpMode {
         if (gamepad1.dpad_down) {
             robot.sliderMove(-50);
         }
-        if (robot.getClawPosition() >= 0.99){
-            robot.RedOnLED();
+        if (robot.getClawPosition() >= 0.70){
+            robot.setRedLED(true);
         }
         robot.allAct();
         //Rewrite above----------
