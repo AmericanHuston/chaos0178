@@ -19,8 +19,8 @@ public class TwoArmTwoFurious extends OpMode {
 
     private Follower follower;
     private final Pose startPose = new Pose(8, 72, 0);
-    private final Pose SpecGrab = new Pose(11, 36, Math.toRadians(180));
-    private final Pose Basket = new Pose(20, 126, Math.toRadians(130));
+    private final Pose SpecGrab = new Pose(20, 35, Math.toRadians(180));
+    private final Pose Basket = new Pose(20, 142.5, Math.toRadians(130));
     private final Pose HangLeft = new Pose( 80, 95, Math.toRadians(270));
     private final Pose HangRight = new Pose( 57, 95, Math.toRadians(270));
 
@@ -49,17 +49,21 @@ public class TwoArmTwoFurious extends OpMode {
         //Driving------------------
         if (gamepad1.a) {
             robot.setGreenLED(true);
+            Pose i_am_here = follower.getPose();
+            telemetry.addData("i_am_here", i_am_here);
             ToSpecPickup = follower.pathBuilder()
-                    .addPath(new BezierLine(new Point(startPose.getX(), startPose.getY()), new Point(SpecGrab)))
-                    .setLinearHeadingInterpolation(startPose.getHeading(), SpecGrab.getHeading())
+                    .addPath(new BezierLine(new Point(i_am_here.getX(), i_am_here.getY()), new Point(SpecGrab)))
+                    .setLinearHeadingInterpolation(i_am_here.getHeading(), SpecGrab.getHeading())
                     .build();
             follower.followPath(ToSpecPickup);
         }
         if (gamepad1.b) {
             robot.setGreenLED(true);
+            Pose i_am_here = follower.getPose();
+            telemetry.addData("i_am_here", i_am_here);
             ToBasket = follower.pathBuilder()
-                    .addPath(new BezierLine(new Point(startPose.getX(), startPose.getY()), new Point(Basket)))
-                    .setLinearHeadingInterpolation(startPose.getHeading(), Basket.getHeading())
+                    .addPath(new BezierLine(new Point(i_am_here.getX(), i_am_here.getY()), new Point(Basket)))
+                    .setLinearHeadingInterpolation(i_am_here.getHeading(), Basket.getHeading())
                     .build();
             follower.followPath(ToBasket);
         }
