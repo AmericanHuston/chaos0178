@@ -51,11 +51,11 @@ public class BasketAuto extends OpMode {
     private final Pose littleBack = new Pose(20, 110, Math.toRadians(130));
     private final Pose sample1  = new Pose(24.5, 124, Math.toRadians(0));
     private final Pose sample2 = new Pose(24.5,114, Math.toRadians(0));
-    private final Pose sample3 = new Pose(46, 117, Math.toRadians(90));
+    private final Pose sample3 = new Pose(45.5, 116.8, Math.toRadians(90));
     private final Pose hangBar = new Pose(80,90, Math.toRadians(270));
-    private final Point littleBackPoint = new Point(20, 100);
-    private final Point hangBarPoint = new Point(80, 90);
-    private final Point parkControlPoint = new Point(60, 140);
+    private final Point BasketPoint = new Point(13.5, 122.5);
+    private final Point hangBarPoint = new Point(60, 95);
+    private final Point parkControlPoint = new Point(64, 118);
 
     private PathChain square;
 
@@ -80,8 +80,8 @@ public class BasketAuto extends OpMode {
         Op_mode_timer.resetTimer();
 
         park = follower.pathBuilder()
-                .addBezierCurve(littleBackPoint, parkControlPoint, hangBarPoint)
-                .setLinearHeadingInterpolation(littleBack.getHeading(), hangBar.getHeading())
+                .addBezierCurve(BasketPoint, parkControlPoint, hangBarPoint)
+                .setLinearHeadingInterpolation(Basket.getHeading(), hangBar.getHeading())
                 .build();
         scoreBasket1 = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(StartingPose), new Point(Basket)))
@@ -105,17 +105,13 @@ public class BasketAuto extends OpMode {
                 .setLinearHeadingInterpolation(littleBack.getHeading(), sample2.getHeading())
                 .build();
         sampleCollect3 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(littleBack), new Point(sample3)))
-                .setLinearHeadingInterpolation(littleBack.getHeading(), sample3.getHeading())
+                .addPath(new BezierLine(new Point(Basket), new Point(sample3)))
+                .setLinearHeadingInterpolation(Basket.getHeading(), sample3.getHeading())
                 .build();
         scoreBasket3 = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(sample3), new Point(Basket)))
                 .setLinearHeadingInterpolation(sample3.getHeading(), Basket.getHeading())
                 .build();
-//        park = follower.pathBuilder()
-//                .addPath(new BezierLine(new Point(Basket), new Point(Observation)))
-//                .setLinearHeadingInterpolation(Basket.getHeading(), Observation.getHeading())
-//                .build();
         square = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(StartingPose), new Point(Basket)))
                 .setLinearHeadingInterpolation(StartingPose.getHeading(), Basket.getHeading())
@@ -131,9 +127,6 @@ public class BasketAuto extends OpMode {
 
 
         telemetryA = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
-        telemetryA.addLine("This is the Basket auto."
-                + "It scores three and parks right now."
-                + "Chaos²");
         telemetryA.update();
     }
     public void next_state(){
@@ -153,7 +146,9 @@ public class BasketAuto extends OpMode {
         follower.update();
         robot.setLastPose(follower.getPose());
         switch (autoState) {
-            case 0: //closes the claw than waits 0.5 seconds before moving to the next step
+            case 0: //closes the claw
+                robot.wristHorizontal();
+                robot.wristAct();
                 robot.closeClaw();
                 robot.closeMiniClaw();
                 next_state();
@@ -161,9 +156,9 @@ public class BasketAuto extends OpMode {
             case 1: //raises the sliders than waits 1.5 seconds
                 robot.setArmState(Robot2.armState.BASKET);
                 robot.sliderNoTouchAct();
-                if (state_timer.getElapsedTimeSeconds() > 1.5){
+                if (state_timer.getElapsedTimeSeconds() > 1.0){
                     robot.allAct();
-                    if(state_timer.getElapsedTimeSeconds()  > 3.0){
+                    if(state_timer.getElapsedTimeSeconds()  > 2.0){
                         next_state();
                     }
                 }
@@ -187,7 +182,7 @@ public class BasketAuto extends OpMode {
                 }
                 break;
             case 5: //moves the arm to resting so we don't tip
-                if (state_timer.getElapsedTimeSeconds() > 1.5){
+                if (state_timer.getElapsedTimeSeconds() > 1.1){
                     robot.setArmState(Robot2.armState.RESTING);
                     robot.sliderNoTouchAct();
                     next_state();
@@ -204,31 +199,31 @@ public class BasketAuto extends OpMode {
                     robot.setArmState(Robot2.armState.COLLECTION);
                     robot.sliderNoTouchAct();
                     robot.allAct();
-                    if (state_timer.getElapsedTimeSeconds() > 3.5) {
-                        next_state();
-                    }
+                    next_state();
                 }
                 break;
             case 8: //grabs the sample
-                robot.closeClaw();
-                robot.closeMiniClaw();
-                if(state_timer.getElapsedTimeSeconds() > 0.2){
-                    next_state();
+                if(state_timer.getElapsedTimeSeconds() > 1.4) {
+                    robot.closeClaw();
+                    robot.closeMiniClaw();
+                    if (state_timer.getElapsedTimeSeconds() > 1.5) {
+                        next_state();
+                    }
                 }
                 break;
             case 9: //sets the arm to the basket position
                 robot.setArmState(Robot2.armState.BASKET);
                 robot.sliderNoTouchAct();
-                if (state_timer.getElapsedTimeSeconds() > 1.5){
+                if (state_timer.getElapsedTimeSeconds() > 0.5){
                     robot.allAct();
-                    if(state_timer.getElapsedTimeSeconds()  > 3.0){
+                    if(state_timer.getElapsedTimeSeconds()  > 2.0){
                         next_state();
                     }
                 }
                 break;
             case 10: //moves to scoring position
-                follower.setMaxPower(0.80);
                 if(!follower.isBusy()) {
+                    follower.setMaxPower(0.80);
                     follower.followPath(scoreBasket2, true);
                     next_state();
                 }
@@ -237,20 +232,20 @@ public class BasketAuto extends OpMode {
                 if (!follower.isBusy()){
                     robot.openClaw();
                     robot.openMiniClaw();
-                    if(state_timer.getElapsedTimeSeconds() > 2.0){
+                    next_state();
+                }
+                break;
+            case 12: //moves back so we don't accidentally ascend.
+                if(state_timer.getElapsedTimeSeconds() > 0.2) {
+                    if (!follower.isBusy()) {
+                        follower.setMaxPower(1.0);
+                        follower.followPath(JustBack1);
                         next_state();
                     }
                 }
                 break;
-            case 12: //moves back so we don't accidentally ascend.
-                follower.setMaxPower(1.0);
-                if(!follower.isBusy()) {
-                    follower.followPath(JustBack1);
-                    next_state();
-                }
-                break;
             case 13://lowering the sliders
-                if(state_timer.getElapsedTimeSeconds()  > 1.5) {
+                if(state_timer.getElapsedTimeSeconds()  > 1.1) {
                     robot.setArmState(Robot2.armState.SPECIMEN);
                     robot.allAct();
                     next_state();
@@ -263,28 +258,28 @@ public class BasketAuto extends OpMode {
                 }
                 break;
             case 15: //arm to the collection position
-                if(!follower.isBusy()){
+                if(!follower.isBusy()) {
                     robot.setArmState(Robot2.armState.COLLECTION);
                     robot.sliderNoTouchAct();
                     robot.allAct();
-                    if (state_timer.getElapsedTimeSeconds() > 3.3) {
-                        next_state();
-                    }
+                    next_state();
                 }
                 break;
             case 16: //grabs the second sample
-                robot.closeClaw();
-                robot.closeMiniClaw();
-                if(state_timer.getElapsedTimeSeconds() > 0.2){
-                    next_state();
+                if (state_timer.getElapsedTimeSeconds() > 1.4) {
+                    robot.closeClaw();
+                    robot.closeMiniClaw();
+                    if (state_timer.getElapsedTimeSeconds() > 1.5) {
+                        next_state();
+                    }
                 }
                 break;
             case 17: //sets the arm to the basket position
                 robot.setArmState(Robot2.armState.BASKET);
                 robot.sliderNoTouchAct();
-                if (state_timer.getElapsedTimeSeconds() > 1.5){
+                if (state_timer.getElapsedTimeSeconds() > 0.5){
                     robot.allAct();
-                    if(state_timer.getElapsedTimeSeconds()  > 3.0){
+                    if(state_timer.getElapsedTimeSeconds()  > 2.0){
                         next_state();
                     }
                 }
@@ -299,104 +294,84 @@ public class BasketAuto extends OpMode {
                 if (!follower.isBusy()){
                     robot.openClaw();
                     robot.openMiniClaw();
-                    if(state_timer.getElapsedTimeSeconds() > 2.0){
-                        next_state();
-                    }
-                }
-                break;
-            case 20: //moves back so we don't accidentally ascend.
-                follower.setMaxPower(1.0);
-                if(!follower.isBusy()) {
-                    follower.followPath(JustBack1);
                     next_state();
                 }
                 break;
-            case 21: //lowers the sliders
-                if(state_timer.getElapsedTimeSeconds() > 1.5) {
-                    robot.setArmState(Robot2.armState.SPECIMEN);
-                    robot.allAct();
-                    next_state();
-                }
-                break;
-            case 22://drives to the third sample
+            case 20://drives to the third sample
                 if(!follower.isBusy()){
                     follower.followPath(sampleCollect3, true);
                     next_state();
                 }
                 break;
-            case 23: //wrist lined up with the arm
-                robot.setWristPosition(1.8);
+            case 21: //lowers the sliders
+                if(state_timer.getElapsedTimeSeconds() > 1.1) {
+                    robot.setArmState(Robot2.armState.SPECIMEN);
+                    robot.allAct();
+                    next_state();
+                }
+                break;
+            case 22: //wrist lined up with the arm
+                robot.setWristPosition(1.5);
                 robot.wristAct();
                 next_state();
                 break;
-            case 24: //arm to the collection position
+            case 23: //arm to the collection position
                 if(!follower.isBusy()){
                     robot.setArmState(Robot2.armState.COLLECTION);
                     robot.sliderNoTouchAct();
                     robot.allAct();
-                    if (state_timer.getElapsedTimeSeconds() > 5.3) {
-                        next_state();
-                    }
-                }
-                break;
-            case 25: //grabs the third sample
-                robot.closeClaw();
-                robot.closeMiniClaw();
-                if(state_timer.getElapsedTimeSeconds() > 0.2){
                     next_state();
                 }
                 break;
-            case 26: //sets the arm to the basket position
-                robot.setArmState(Robot2.armState.BASKET);
-                robot.sliderNoTouchAct();
-                if (state_timer.getElapsedTimeSeconds() > 1.5){
-                    robot.allAct();
-                    if(state_timer.getElapsedTimeSeconds()  > 3.0){
+            case 24: //grabs the third sample
+                if(state_timer.getElapsedTimeSeconds() > 1.8) {
+                    robot.closeClaw();
+                    robot.closeMiniClaw();
+                    if (state_timer.getElapsedTimeSeconds() > 1.9) {
                         next_state();
                     }
                 }
                 break;
-            case 27: //moves to scoring position
+            case 25: //sets the arm to the basket position
+                robot.setArmState(Robot2.armState.BASKET);
+                robot.sliderNoTouchAct();
+                if (state_timer.getElapsedTimeSeconds() > 0.5){
+                    robot.allAct();
+                    if(state_timer.getElapsedTimeSeconds()  > 2.0){
+                        next_state();
+                    }
+                }
+                break;
+            case 26: //moves to scoring position
                 if(!follower.isBusy()) {
                     follower.followPath(scoreBasket3, true);
                     next_state();
                 }
                 break;
-            case 28://drops the sample in the bucket
+            case 27://drops the sample in the bucket
                 if (!follower.isBusy()){
                     robot.openClaw();
                     robot.openMiniClaw();
-                    if(state_timer.getElapsedTimeSeconds() > 2.0){
-                        next_state();
-                    }
-                }
-                break;
-            case 29: //moves back so we don't accidentally ascend.
-                follower.setMaxPower(1.0);
-                if(!follower.isBusy()) {
-                    follower.followPath(JustBack1);
                     next_state();
                 }
                 break;
-            case 30: //sliders to parking
-                if(!follower.isBusy()) {
-                    robot.setArmState(Robot2.armState.BELOW_BAR);
-                    robot.allAct();
-                    next_state();
-                }
-                break;
-            case 31: //parks
+            case 28: //parks
                 if(!follower.isBusy()) {
                     follower.followPath(park);
                     next_state();
                 }
                 break;
-            case 32: // arm to parking
-                if(!follower.isBusy()){
-                    robot.setShoulderPosition(200);
-                    robot.shoulderAct();
+            case 29: //sliders to parking
+                if(state_timer.getElapsedTimeSeconds() > 0.3) {
+                    robot.setArmState(Robot2.armState.BELOW_BAR);
+                    robot.allAct();
                     next_state();
                 }
+                break;
+            case 30: // arm to parking
+                robot.setShoulderPosition(200);
+                robot.shoulderAct();
+                next_state();
                 break;
 
         }
