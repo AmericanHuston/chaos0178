@@ -19,9 +19,10 @@ public class TwoArmTwoFurious extends OpMode {
 
     private Follower follower;
     private final Pose startPose = new Pose(8, 72, 0);
-    private final Pose SpecGrab = new Pose(8.5, 36, Math.toRadians(180));
+    private final Pose SpecGrab = new Pose(11, 36, Math.toRadians(180));
     private final Pose Basket = new Pose(20, 126, Math.toRadians(130));
-    private final Pose HangLeft = new Pose( 95, 95, Math.toRadians(270));
+    private final Pose HangLeft = new Pose( 80, 95, Math.toRadians(270));
+    private final Pose HangRight = new Pose( 57, 95, Math.toRadians(270));
 
     private PathChain ToSpecPickup;
     private PathChain ToBasket;
@@ -64,9 +65,21 @@ public class TwoArmTwoFurious extends OpMode {
         }
         if (gamepad1.x) {
             robot.setGreenLED(true);
+            Pose i_am_here = follower.getPose();
+            telemetry.addData("i_am_here", i_am_here);
             PathChain ToHang = follower.pathBuilder()
-                    .addPath(new BezierLine(new Point(follower.getPose()), new Point(HangLeft)))
-                    .setLinearHeadingInterpolation(follower.getPose().getHeading(), HangLeft.getHeading())
+                    .addPath(new BezierLine(new Point(i_am_here.getX(), i_am_here.getY()), new Point(HangLeft)))
+                    .setLinearHeadingInterpolation(i_am_here.getHeading(), HangLeft.getHeading())
+                    .build();
+            follower.followPath(ToHang);
+        }
+        if (gamepad1.y) {
+            robot.setGreenLED(true);
+            Pose i_am_here = follower.getPose();
+            telemetry.addData("i_am_here", i_am_here);
+            PathChain ToHang = follower.pathBuilder()
+                    .addPath(new BezierLine(new Point(i_am_here.getX(), i_am_here.getY()), new Point(HangRight)))
+                    .setLinearHeadingInterpolation(i_am_here.getHeading(), HangRight.getHeading())
                     .build();
             follower.followPath(ToHang);
         }
@@ -149,6 +162,9 @@ public class TwoArmTwoFurious extends OpMode {
         }
         if (robot.getClawPosition() >= 0.70){
             robot.setRedLED(true);
+        }
+        if (follower.isBusy()) {
+            robot.setGreenLED(true);
         }
         robot.allAct();
         //Rewrite above----------
