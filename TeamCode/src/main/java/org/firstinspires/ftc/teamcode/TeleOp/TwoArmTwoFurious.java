@@ -21,6 +21,7 @@ public class TwoArmTwoFurious extends OpMode {
     private final Pose startPose = new Pose(8, 72, 0);
     private final Pose SpecGrab = new Pose(8.5, 36, Math.toRadians(180));
     private final Pose Basket = new Pose(20, 126, Math.toRadians(130));
+    private final Pose HangLeft = new Pose( 95, 95, Math.toRadians(270));
 
     private PathChain ToSpecPickup;
     private PathChain ToBasket;
@@ -60,6 +61,14 @@ public class TwoArmTwoFurious extends OpMode {
                     .setLinearHeadingInterpolation(startPose.getHeading(), Basket.getHeading())
                     .build();
             follower.followPath(ToBasket);
+        }
+        if (gamepad1.x) {
+            robot.setGreenLED(true);
+            PathChain ToHang = follower.pathBuilder()
+                    .addPath(new BezierLine(new Point(follower.getPose()), new Point(HangLeft)))
+                    .setLinearHeadingInterpolation(follower.getPose().getHeading(), HangLeft.getHeading())
+                    .build();
+            follower.followPath(ToHang);
         }
         if (gamepad1.left_stick_button || gamepad1.right_stick_button) {
             follower.startTeleopDrive();
