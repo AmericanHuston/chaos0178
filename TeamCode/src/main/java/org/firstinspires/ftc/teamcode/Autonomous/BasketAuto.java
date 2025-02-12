@@ -177,9 +177,7 @@ public class BasketAuto extends OpMode {
                 if(!follower.isBusy()){
                     robot.openClaw();
                     robot.openMiniClaw();
-                    if(state_timer.getElapsedTimeSeconds() > 1.6) {
-                        next_state();
-                    }
+                    next_state();
                 }
                 break;
             case 4: //moves back so we don't accidentally ascend.
@@ -189,7 +187,7 @@ public class BasketAuto extends OpMode {
                 }
                 break;
             case 5: //moves the arm to resting so we don't tip
-                if (state_timer.getElapsedTimeSeconds() > 1.0){
+                if (state_timer.getElapsedTimeSeconds() > 1.5){
                     robot.setArmState(Robot2.armState.RESTING);
                     robot.sliderNoTouchAct();
                     next_state();
@@ -252,9 +250,11 @@ public class BasketAuto extends OpMode {
                 }
                 break;
             case 13://lowering the sliders
-                robot.setArmState(Robot2.armState.SPECIMEN);
-                robot.allAct();
-                next_state();
+                if(state_timer.getElapsedTimeSeconds()  > 1.5) {
+                    robot.setArmState(Robot2.armState.SPECIMEN);
+                    robot.allAct();
+                    next_state();
+                }
                 break;
             case 14://drives to the second sample
                 if(!follower.isBusy()){
@@ -312,9 +312,11 @@ public class BasketAuto extends OpMode {
                 }
                 break;
             case 21: //lowers the sliders
-                robot.setArmState(Robot2.armState.SPECIMEN);
-                robot.allAct();
-                next_state();
+                if(state_timer.getElapsedTimeSeconds() > 1.5) {
+                    robot.setArmState(Robot2.armState.SPECIMEN);
+                    robot.allAct();
+                    next_state();
+                }
                 break;
             case 22://drives to the third sample
                 if(!follower.isBusy()){
@@ -376,10 +378,12 @@ public class BasketAuto extends OpMode {
                     next_state();
                 }
                 break;
-            case 30:
-                robot.setArmState(Robot2.armState.BELOW_BAR);
-                robot.allAct();
-                next_state();
+            case 30: //sliders to parking
+                if(!follower.isBusy()) {
+                    robot.setArmState(Robot2.armState.BELOW_BAR);
+                    robot.allAct();
+                    next_state();
+                }
                 break;
             case 31: //parks
                 if(!follower.isBusy()) {
@@ -387,7 +391,7 @@ public class BasketAuto extends OpMode {
                     next_state();
                 }
                 break;
-            case 32:
+            case 32: // arm to parking
                 if(!follower.isBusy()){
                     robot.setShoulderPosition(200);
                     robot.shoulderAct();
