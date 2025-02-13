@@ -59,7 +59,7 @@ public class Robot2 {
     public static double MIN_POS     =  0.0;// Minimum rotational position
     public static int slider_above_bar_position = 1900;
     public static int slider_below_bar_position = 1200;
-    public static int shoulder_bar_position = 100;
+    public static int shoulder_bar_position = 50;
     //public static double wrist_bar_position = 0.39;
     public static int shoulder_bar_velotity = 270;
     public static double kp = 0.2;
