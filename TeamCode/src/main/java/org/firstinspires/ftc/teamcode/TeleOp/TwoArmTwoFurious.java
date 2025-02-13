@@ -20,7 +20,7 @@ public class TwoArmTwoFurious extends OpMode {
     private Follower follower;
     private final Pose startPose = new Pose(8, 72, 0);
     private final Pose SpecGrab = new Pose(13, 35, Math.toRadians(180));
-    private final Pose Basket = new Pose(15, 130, Math.toRadians(130));
+    private final Pose Basket = new Pose(17, 125, Math.toRadians(130));
     private final Pose HangLeft = new Pose( 80, 95, Math.toRadians(270));
     private final Pose HangRight = new Pose( 57, 95, Math.toRadians(270));
 
