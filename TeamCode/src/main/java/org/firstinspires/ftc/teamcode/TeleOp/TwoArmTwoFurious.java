@@ -82,7 +82,7 @@ public class TwoArmTwoFurious extends OpMode {
             Pose i_am_here = follower.getPose();
             telemetry.addData("i_am_here", i_am_here);
             PathChain ToHang = follower.pathBuilder()
-                    .addPath(new BezierLine(new Point(i_am_here.getX(), i_am_here.getY()), new Point(HangRight)))
+                    .addPath(new BezierLine(i_am_here, HangRight))
                     .setLinearHeadingInterpolation(i_am_here.getHeading(), HangRight.getHeading())
                     .build();
             follower.followPath(ToHang);
