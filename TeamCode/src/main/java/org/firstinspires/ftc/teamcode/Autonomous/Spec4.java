@@ -211,10 +211,10 @@ public class Spec4 extends OpMode {
                 }
                 break;
             case 4: //releases the claw
-                if(state_timer.getElapsedTimeSeconds() > 0.25){
+                if(state_timer.getElapsedTimeSeconds() > 0.3){
                     robot.openClaw();
                     robot.openMiniClaw();
-                    if (state_timer.getElapsedTimeSeconds() > 0.5) {
+                    if (state_timer.getElapsedTimeSeconds() > 0.45) {
                         next_state();
                     }
                 }
@@ -273,7 +273,7 @@ public class Spec4 extends OpMode {
                 if(state_timer.getElapsedTimeSeconds() > 0.25){
                     robot.openClaw();
                     robot.openMiniClaw();
-                    if (state_timer.getElapsedTimeSeconds() > 0.5) {
+                    if (state_timer.getElapsedTimeSeconds() > 0.4) {
                         next_state();
                     }
                 }
@@ -323,7 +323,7 @@ public class Spec4 extends OpMode {
                 if(state_timer.getElapsedTimeSeconds() > 0.25){
                     robot.openClaw();
                     robot.openMiniClaw();
-                    if (state_timer.getElapsedTimeSeconds() > 0.5) {
+                    if (state_timer.getElapsedTimeSeconds() > 0.4) {
                         next_state();
                     }
                 }
@@ -373,7 +373,7 @@ public class Spec4 extends OpMode {
                 if(state_timer.getElapsedTimeSeconds() > 0.25){
                     robot.openClaw();
                     robot.openMiniClaw();
-                    if (state_timer.getElapsedTimeSeconds() > 0.5) {
+                    if (state_timer.getElapsedTimeSeconds() > 0.4) {
                         next_state();
                     }
                 }
