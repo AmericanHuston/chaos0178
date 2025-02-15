@@ -47,28 +47,28 @@ public class Spec4 extends OpMode {
     private final Pose OtherObservation = new Pose(120, 120, Math.toRadians(90));
     private final Pose OtherBasket = new Pose(120, 24, Math.toRadians(135));
     private final Pose Observation = new Pose(8,40, Math.toRadians(0));
-    private final Pose HangSpecimen1 = new Pose(36.5,75, Math.toRadians(0));
-    private final Pose HangSpecimen2 = new Pose(36.5, 72.5, Math.toRadians(0));
-    private final Pose HangSpecimen3 = new Pose(36.5, 70, Math.toRadians(0));
-    private final Pose HangSpecimen4 = new Pose(36.5, 67.5, Math.toRadians(0));
+    private final Pose HangSpecimen1 = new Pose(37.5,75, Math.toRadians(0));
+    private final Pose HangSpecimen2 = new Pose(37.5, 72.5, Math.toRadians(0));
+    private final Pose HangSpecimen3 = new Pose(37.5, 70, Math.toRadians(0));
+    private final Pose HangSpecimen4 = new Pose(37.5, 67.5, Math.toRadians(0));
     private final Pose OtherHangSpecimen = new Pose(112,72,Math.toRadians(90));
     private final Pose TapeHangRobot = new Pose(72,96, Math.toRadians(90));
     private final Pose OtherTapeHangRobot = new Pose(72,48, Math.toRadians(270));
-    private final Pose SpecPrepStep1 = new Pose(54, 26.9, Math.toRadians(180));
-    private final Point SpecPrepStep1Point = new Point(76, 8);
+    private final Pose SpecPrepStep1 = new Pose(54, 26.9, Math.toRadians(0));
+    private final Point SpecPrepStep1Point = new Point(54, 26.9);
     private final Point SpecPrepStep2Point = new Point(25, 20);
-    private final Pose SpecPrepStep2 = new Pose(25, 20, Math.toRadians(180));
+    private final Pose SpecPrepStep2 = new Pose(25, 20, Math.toRadians(0));
     private final Point littleBackPoint = new Point (25, 24);
-    private final Pose littleBack = new Pose (25, 24, Math.toRadians(180));
+    private final Pose littleBack = new Pose (25, 24, Math.toRadians(0));
     private final Pose littleForward = new Pose (37, 74, Math.toRadians(0));
     private final Pose littleRight = new Pose(37,70, Math.toRadians(0));
     private final Point littleRightPoint = new Point(37,70);
     private final Pose BlockPush1 = new Pose(20, 20, Math.toRadians(180));
     private final Pose BlockPush2 = new Pose(20, 16, Math.toRadians(180));
     private final Pose SpecGrab = new Pose(9.55, 35, Math.toRadians(180));
-    private final Pose CurvePoseSpecGrab = new Pose(61, 28, Math.toRadians(180));
-    private final Point CurveSpecGrab = new Point(61, 28);
-    private final Point controlSpecCollect1Step1 = new Point(8, 55);
+    private final Pose CurvePoseSpecGrab = new Pose(61, 27, Math.toRadians(0));
+    private final Point CurveSpecGrab = new Point(61, 27);
+    private final Point controlSpecCollect1Step1 = new Point(5,54);
     private final Point controlSpecCollect2 = new Point(80, 11);
 
     private PathChain square;
@@ -226,7 +226,7 @@ public class Spec4 extends OpMode {
                 break;
             case 6:
                 if(!follower.isBusy()){
-                    follower.setMaxPower(0.6);
+                    follower.setMaxPower(1.0);
                     follower.followPath(BlockToBase1, true);
                     next_state();
                 }
@@ -372,6 +372,7 @@ public class Spec4 extends OpMode {
                 break;
             case 27: //goes to the collection position for the park
                 if(!follower.isBusy()){
+                    follower.setMaxPower(1.0);
                     follower.followPath(Park);
                     next_state();
                 }
