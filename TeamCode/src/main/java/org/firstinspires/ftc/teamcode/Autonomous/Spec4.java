@@ -183,14 +183,14 @@ public class Spec4 extends OpMode {
             case 0: //closes the claw
                 robot.closeMiniClaw();
                 robot.closeClaw();
-                if (state_timer.getElapsedTimeSeconds()  > 0.8) {
+                if (state_timer.getElapsedTimeSeconds()  > 0.85) {
                     next_state();
                 }
                 break;
             case 1: //raises the arm and sliders to the above bar position
                 robot.setArmState(Robot2.armState.ABOVE_BAR);
                 robot.sliderNoTouchAct();
-                if(state_timer.getElapsedTimeSeconds() > 0.1) {
+                if(state_timer.getElapsedTimeSeconds() > 0.2) {
                     robot.allAct();
                     next_state();
                 }
