@@ -71,21 +71,21 @@ public class TwoArmTwoFurious extends OpMode {
             robot.setGreenLED(true);
             Pose i_am_here = follower.getPose();
             telemetry.addData("i_am_here", i_am_here);
-            PathChain ToHang = follower.pathBuilder()
+            PathChain ToHangLeft = follower.pathBuilder()
                     .addPath(new BezierLine(new Point(i_am_here.getX(), i_am_here.getY()), new Point(HangLeft)))
                     .setLinearHeadingInterpolation(i_am_here.getHeading(), HangLeft.getHeading())
                     .build();
-            follower.followPath(ToHang);
+            follower.followPath(ToHangLeft);
         }
         if (gamepad1.y) {
             robot.setGreenLED(true);
             Pose i_am_here = follower.getPose();
             telemetry.addData("i_am_here", i_am_here);
-            PathChain ToHang = follower.pathBuilder()
+            PathChain ToHangRight = follower.pathBuilder()
                     .addPath(new BezierLine(i_am_here, HangRight))
                     .setLinearHeadingInterpolation(i_am_here.getHeading(), HangRight.getHeading())
                     .build();
-            follower.followPath(ToHang);
+            follower.followPath(ToHangRight);
         }
         if (gamepad1.left_stick_button || gamepad1.right_stick_button) {
             follower.startTeleopDrive();
@@ -102,7 +102,8 @@ public class TwoArmTwoFurious extends OpMode {
 
         //Rewrite below----------
         if (gamepad1.back) {
-            // Reset IMU.  This is currently a private function inside the follower
+            follower.setPose(new Pose(8, 71, Math.toRadians(0)));
+            follower.update();
         }
         if (gamepad2.right_trigger > 0.01) {
             robot.setClawPosition(Range.scale(gamepad2.right_trigger, 0.0, 1.0, 0.5, 0.99));
