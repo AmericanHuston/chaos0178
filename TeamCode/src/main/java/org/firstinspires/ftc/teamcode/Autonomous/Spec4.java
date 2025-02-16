@@ -56,19 +56,19 @@ public class Spec4 extends OpMode {
     private final Pose OtherTapeHangRobot = new Pose(72,48, Math.toRadians(270));
     private final Pose SpecPrepStep1 = new Pose(54, 26.9, Math.toRadians(0));
     private final Point SpecPrepStep1Point = new Point(54, 26.9);
-    private final Point SpecPrepStep2Point = new Point(25, 20);
-    private final Pose SpecPrepStep2 = new Pose(25, 20, Math.toRadians(0));
-    private final Point littleBackPoint = new Point (25, 24);
-    private final Pose littleBack = new Pose (25, 24, Math.toRadians(0));
+    private final Point SpecPrepStep2Point = new Point(25, 19);
+    private final Pose SpecPrepStep2 = new Pose(25, 19, Math.toRadians(0));
+    private final Point littleBackPoint = new Point (25, 22);
+    private final Pose littleBack = new Pose (25, 22, Math.toRadians(0));
     private final Pose littleForward = new Pose (37, 74, Math.toRadians(0));
     private final Pose littleRight = new Pose(37,70, Math.toRadians(0));
     private final Point littleRightPoint = new Point(37,70);
     private final Pose BlockPush1 = new Pose(20, 20, Math.toRadians(180));
     private final Pose BlockPush2 = new Pose(20, 16, Math.toRadians(180));
     private final Pose SpecGrab = new Pose(9.55, 35, Math.toRadians(180));
-    private final Pose CurvePoseSpecGrab = new Pose(61, 27, Math.toRadians(0));
-    private final Point CurveSpecGrab = new Point(61, 27);
-    private final Point controlSpecCollect1Step1 = new Point(5,52.8);
+    private final Pose CurvePoseSpecGrab = new Pose(61, 28, Math.toRadians(0));
+    private final Point CurveSpecGrab = new Point(61, 28);
+    private final Point controlSpecCollect1Step1 = new Point(5,52.7);
     private final Point controlSpecCollect2 = new Point(80, 11);
 
     private PathChain square;
@@ -197,7 +197,7 @@ public class Spec4 extends OpMode {
                 break;
             case 2: //drives to the bar
                 if(!follower.isBusy()) {
-                    follower.setMaxPower(0.7);
+                    follower.setMaxPower(0.72);
                     follower.followPath(specimenHang1, true);
                     next_state();
                 }
@@ -270,10 +270,10 @@ public class Spec4 extends OpMode {
                 }
                 break;
             case 12: //releases the claw
-                if(state_timer.getElapsedTimeSeconds() > 0.25){
+                if(state_timer.getElapsedTimeSeconds() > 0.2){
                     robot.openClaw();
                     robot.openMiniClaw();
-                    if (state_timer.getElapsedTimeSeconds() > 0.4) {
+                    if (state_timer.getElapsedTimeSeconds() > 0.35) {
                         next_state();
                     }
                 }
@@ -320,10 +320,10 @@ public class Spec4 extends OpMode {
                 }
                 break;
             case 19: //releases the claw
-                if(state_timer.getElapsedTimeSeconds() > 0.25){
+                if(state_timer.getElapsedTimeSeconds() > 0.2){
                     robot.openClaw();
                     robot.openMiniClaw();
-                    if (state_timer.getElapsedTimeSeconds() > 0.4) {
+                    if (state_timer.getElapsedTimeSeconds() > 0.35) {
                         next_state();
                     }
                 }
@@ -370,10 +370,10 @@ public class Spec4 extends OpMode {
                 }
                 break;
             case 26: //releases the claw
-                if(state_timer.getElapsedTimeSeconds() > 0.25){
+                if(state_timer.getElapsedTimeSeconds() > 0.2){
                     robot.openClaw();
                     robot.openMiniClaw();
-                    if (state_timer.getElapsedTimeSeconds() > 0.4) {
+                    if (state_timer.getElapsedTimeSeconds() > 0.35) {
                         next_state();
                     }
                 }
