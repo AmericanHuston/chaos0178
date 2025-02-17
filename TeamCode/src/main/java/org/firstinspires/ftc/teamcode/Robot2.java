@@ -285,7 +285,7 @@ public class Robot2 {
                 desired_slider_velocity = Slidervelocityup;
                 break;
             case POSTHANG:
-                desired_slider_position = 1000;//used to be resting_position
+                desired_slider_position = 1900;//used to be resting_position
                 desired_slider_velocity = Slidervelocityup;
                 break;
         }

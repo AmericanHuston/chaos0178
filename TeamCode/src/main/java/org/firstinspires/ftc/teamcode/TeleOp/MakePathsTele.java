@@ -4,6 +4,7 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.util.Constants;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -17,7 +18,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
 
 import java.io.IOException;
 import java.util.List;
-
+@Disabled
 @TeleOp(name = "MakePathsTele", group = "PathMakers")
 public class MakePathsTele extends OpMode {
 
