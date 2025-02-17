@@ -117,7 +117,7 @@ public class TwoArmTwoFurious extends OpMode {
         }
 
         if (gamepad2.left_trigger > 0.01) {
-            robot.wrist45();
+            robot.setWristPosition(Range.scale(gamepad2.left_trigger, 0.0, 1.0, 0.0, 1.0));
         }
         if (gamepad2.left_bumper && !robot.changedWrist) {
             if (robot.getWristPosition() <= 0.45) {
@@ -178,6 +178,7 @@ public class TwoArmTwoFurious extends OpMode {
         telemetry.addData("X", follower.getPose().getX());
         telemetry.addData("Y", follower.getPose().getY());
         telemetry.addData("Heading in Degrees", Math.toDegrees(follower.getPose().getHeading()));
+        telemetry.addData("wrist pos", robot.getWristPosition());
 
         /* Update Telemetry to the Driver Hub */
         telemetry.update();

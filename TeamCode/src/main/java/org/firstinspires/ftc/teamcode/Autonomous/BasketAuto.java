@@ -311,7 +311,7 @@ public class BasketAuto extends OpMode {
                 }
                 break;
             case 22: //wrist lined up with the arm
-                robot.setWristPosition(1.5);
+                robot.setWristPosition(1.0);
                 robot.wristAct();
                 next_state();
                 break;
