@@ -41,21 +41,21 @@ public class BasketAuto extends OpMode {
     //Other Observation Zone is 144,144
     //0 PROBABLY intersects the fully coloOther bars
     // Pose goes in this order: Pose(x,y, Radians);
-    private final Pose StartingPose = new Pose(8, 104, Math.toRadians(90));
-    private final Pose Basket = new Pose(13.5,126.5, Math.toRadians(130));
-    private final Pose OtherObservation = new Pose(120, 104, Math.toRadians(90));
-    private final Pose OtherBasket = new Pose(120, 8, Math.toRadians(135));
-    private final Pose Observation = new Pose(8,34, Math.toRadians(0));
-    private final Pose TapeHangRobot = new Pose(72,80, Math.toRadians(90));
-    private final Pose OtherTapeHangRobot = new Pose(72,32, Math.toRadians(270));
-    private final Pose littleBack = new Pose(20, 114, Math.toRadians(130));
-    private final Pose sample1  = new Pose(24.5, 128, Math.toRadians(0));
-    private final Pose sample2 = new Pose(24.5,118, Math.toRadians(0));
-    private final Pose sample3 = new Pose(45.5, 120.8, Math.toRadians(90));
-    private final Pose hangBar = new Pose(80,94, Math.toRadians(270));
-    private final Point BasketPoint = new Point(13.5, 124.5);
-    private final Point hangBarPoint = new Point(60, 99);
-    private final Point parkControlPoint = new Point(64, 122);
+    private final Pose StartingPose = new Pose(8, 102, Math.toRadians(90));
+    private final Pose Basket = new Pose(13.5,124.5, Math.toRadians(130));
+    private final Pose OtherObservation = new Pose(120, 102, Math.toRadians(90));
+    private final Pose OtherBasket = new Pose(120, 6, Math.toRadians(135));
+    private final Pose Observation = new Pose(8,32, Math.toRadians(0));
+    private final Pose TapeHangRobot = new Pose(72,78, Math.toRadians(90));
+    private final Pose OtherTapeHangRobot = new Pose(72,30, Math.toRadians(270));
+    private final Pose littleBack = new Pose(20, 112, Math.toRadians(130));
+    private final Pose sample1  = new Pose(24.5, 126, Math.toRadians(0));
+    private final Pose sample2 = new Pose(24.5,116, Math.toRadians(0));
+    private final Pose sample3 = new Pose(45.5, 118.8, Math.toRadians(90));
+    private final Pose hangBar = new Pose(80,92, Math.toRadians(270));
+    private final Point BasketPoint = new Point(13.5, 122.5);
+    private final Point hangBarPoint = new Point(60, 97);
+    private final Point parkControlPoint = new Point(64, 120);
 
     private PathChain square;
 
