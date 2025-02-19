@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.VarsAndBoards.Utils;
 
 import android.os.Environment;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,6 +19,7 @@ import kotlin.ReplaceWith;
  * Almost all code is original, aside from some small changes
  * <a href="https://github.com/StPaulAcademy/HOMAR-FTC-Library/tree/master">Credit</a>
  */
+@Disabled
 @Deprecated(message = "Now use DataLogger.java")
 public class Log {
     private static final String BASE_FOLDER_NAME = "FIRST";

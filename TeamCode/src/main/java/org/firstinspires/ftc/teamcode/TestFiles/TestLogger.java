@@ -6,11 +6,12 @@ import android.os.Environment;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.VarsAndBoards.Utils.DataLogger;
 import org.firstinspires.ftc.teamcode.VarsAndBoards.Utils.DataReader;
-
+@Disabled
 @Autonomous(name = "TestLogger", group = "Tests")
 public class TestLogger extends OpMode {
     @Override

@@ -49,7 +49,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.LED;
-
+@Disabled
 @TeleOp(name = "Concept: RevLED", group = "Concept")
 public class ConceptRevLED extends OpMode {
     LED frontLED_red;

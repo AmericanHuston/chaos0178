@@ -5,7 +5,9 @@ import android.os.Environment;
 import java.io.*;
 import java.util.*;
 import com.opencsv.*;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
+@Disabled
 public class DataLogger {
     List<String[]> allData = new ArrayList<>();
     String constructionString;
