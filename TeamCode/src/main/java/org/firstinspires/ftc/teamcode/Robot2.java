@@ -211,7 +211,7 @@ public class Robot2 {
         desired_red_LED_on = false;
     }
     public void closeClaw(){
-        desired_claw_position = 0.99;
+        desired_claw_position = 0.85;
         claw.setPosition(desired_claw_position);
         desired_red_LED_on = true;
     }
@@ -221,7 +221,7 @@ public class Robot2 {
         desired_green_LED_on = false;
     }
     public void closeMiniClaw(){
-        desired_miniClaw_position = 0.89;
+        desired_miniClaw_position = 0.85;
         miniClaw.setPosition(desired_miniClaw_position);
         desired_green_LED_on= true;
     }

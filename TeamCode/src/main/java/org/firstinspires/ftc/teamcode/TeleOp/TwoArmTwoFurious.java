@@ -161,9 +161,11 @@ public class TwoArmTwoFurious extends OpMode {
         }
         if (gamepad1.dpad_up) {
             robot.sliderMove(50);
+            robot.slidersAct();
         }
         if (gamepad1.dpad_down) {
             robot.sliderMove(-50);
+            robot.slidersAct();
         }
         if (robot.getClawPosition() >= 0.70){
             robot.setRedLED(true);
