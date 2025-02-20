@@ -156,7 +156,7 @@ public class BasketAuto extends OpMode {
             case 1: //raises the sliders than waits 1.5 seconds
                 robot.setArmState(Robot2.armState.BASKET);
                 robot.sliderNoTouchAct();
-                if (state_timer.getElapsedTimeSeconds() > 1.0){
+                if (state_timer.getElapsedTimeSeconds() > 0.7){
                     robot.allAct();
                     if(state_timer.getElapsedTimeSeconds()  > 2.0){
                         next_state();
@@ -184,7 +184,7 @@ public class BasketAuto extends OpMode {
             case 5: //moves the arm to resting so we don't tip
                 if (state_timer.getElapsedTimeSeconds() > 1.1){
                     robot.setArmState(Robot2.armState.RESTING);
-                    robot.sliderNoTouchAct();
+                    robot.slidersAct();
                     next_state();
                 }
                 break;
@@ -214,7 +214,7 @@ public class BasketAuto extends OpMode {
             case 9: //sets the arm to the basket position
                 robot.setArmState(Robot2.armState.BASKET);
                 robot.sliderNoTouchAct();
-                if (state_timer.getElapsedTimeSeconds() > 0.5){
+                if (state_timer.getElapsedTimeSeconds() > 0.2){
                     robot.allAct();
                     if(state_timer.getElapsedTimeSeconds()  > 2.0){
                         next_state();
@@ -277,7 +277,7 @@ public class BasketAuto extends OpMode {
             case 17: //sets the arm to the basket position
                 robot.setArmState(Robot2.armState.BASKET);
                 robot.sliderNoTouchAct();
-                if (state_timer.getElapsedTimeSeconds() > 0.5){
+                if (state_timer.getElapsedTimeSeconds() > 0.2){
                     robot.allAct();
                     if(state_timer.getElapsedTimeSeconds()  > 2.0){
                         next_state();
@@ -335,7 +335,7 @@ public class BasketAuto extends OpMode {
             case 25: //sets the arm to the basket position
                 robot.setArmState(Robot2.armState.BASKET);
                 robot.sliderNoTouchAct();
-                if (state_timer.getElapsedTimeSeconds() > 0.5){
+                if (state_timer.getElapsedTimeSeconds() > 0.2){
                     robot.allAct();
                     if(state_timer.getElapsedTimeSeconds()  > 2.0){
                         next_state();
