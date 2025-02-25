@@ -35,7 +35,9 @@ public class Robot2 {
         ABOVE_BAR,
         BELOW_BAR,
         PREHANG,
-        POSTHANG
+        POSTHANG,
+        ARM_ABOVE_BAR,
+        ARM_BELOW_BAR
     }
     armState state;
     final static double CLAW_OPEN = 0.5;
@@ -48,7 +50,7 @@ public class Robot2 {
     public static double COLLECTION_VELOCITY = 270;
     public static int hangHeight = 2500;
     public static double Slidervelocityup = 2600;
-    public static double Slidervelocitydown = 1450;
+    public static double Slidervelocitydown = 1500;
     public static int resting_position = 50;
     public static int basket_position = 170;
     public static int specimen_position = 400;
@@ -192,6 +194,9 @@ public class Robot2 {
     public void setShoulderPosition(int x){
         desired_shoulder_position = x;
     }
+    public void setSliderPosition(int x){
+        desired_slider_position = x;
+    }
     public void resetIMU() {
         imu.resetYaw();
         pinpoint.resetPosAndIMU();
@@ -287,6 +292,18 @@ public class Robot2 {
             case POSTHANG:
                 desired_slider_position = 1900;//used to be resting_position
                 desired_slider_velocity = Slidervelocityup;
+                break;
+            case ARM_ABOVE_BAR:
+                desired_slider_position = 1050;
+                desired_slider_velocity = Slidervelocityup;
+                desired_shoulder_position = 130;
+                desired_shoulder_velocity = shoulder_bar_velotity;
+                break;
+            case ARM_BELOW_BAR:
+                desired_slider_position = 500;
+                desired_slider_velocity = Slidervelocitydown;
+                desired_shoulder_position = 160;
+                desired_shoulder_velocity = shoulder_bar_velotity;
                 break;
         }
     }

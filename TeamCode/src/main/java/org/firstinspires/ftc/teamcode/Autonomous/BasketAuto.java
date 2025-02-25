@@ -51,7 +51,7 @@ public class BasketAuto extends OpMode {
     private final Pose littleBack = new Pose(20, 112, Math.toRadians(130));
     private final Pose sample1  = new Pose(24.5, 126, Math.toRadians(0));
     private final Pose sample2 = new Pose(24.5,116, Math.toRadians(0));
-    private final Pose sample3 = new Pose(45.5, 118.8, Math.toRadians(90));
+    private final Pose sample3 = new Pose(45.5, 118, Math.toRadians(90));
     private final Pose hangBar = new Pose(80,92, Math.toRadians(270));
     private final Point BasketPoint = new Point(13.5, 122.5);
     private final Point hangBarPoint = new Point(60, 97);
@@ -91,7 +91,6 @@ public class BasketAuto extends OpMode {
                 .addPath(new BezierLine(new Point(Basket), new Point(littleBack)))
                 .setLinearHeadingInterpolation(Basket.getHeading(), littleBack.getHeading())
                 .build();
-
         sampleCollect1 = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(littleBack), new Point(sample1)))
                 .setLinearHeadingInterpolation(littleBack.getHeading(), sample1.getHeading())
