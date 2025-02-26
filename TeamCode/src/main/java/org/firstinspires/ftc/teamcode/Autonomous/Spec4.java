@@ -63,7 +63,7 @@ public class Spec4 extends OpMode {
     private final Pose SpecGrab = new Pose(9.55, 35, Math.toRadians(180));
     private final Pose CurvePoseSpecGrab = new Pose(61, 28, Math.toRadians(0));
     private final Point CurveSpecGrab = new Point(61, 28);
-    private final Point controlSpecCollect1Step1 = new Point(5,50);
+    private final Point controlSpecCollect1Step1 = new Point(1,45);
     private final Point controlSpecCollect2 = new Point(70, 11);
 
     private PathChain square;
