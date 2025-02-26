@@ -163,6 +163,7 @@ public class Spec4 extends OpMode {
         Op_mode_timer.resetTimer();
         autoState = 0;
         Op_mode_timer.getElapsedTimeSeconds();
+        robot.allAct();
     }
 
 
@@ -175,7 +176,9 @@ public class Spec4 extends OpMode {
             case 0: //closes the claw
                 robot.closeMiniClaw();
                 robot.closeClaw();
-                if (state_timer.getElapsedTimeSeconds() > 0.9) {
+                robot.miniClawAct();
+                robot.clawAct();
+                if (state_timer.getElapsedTimeSeconds() > 0.4) {
                     next_state();
                 }
                 break;
@@ -206,9 +209,9 @@ public class Spec4 extends OpMode {
                 if(state_timer.getElapsedTimeSeconds() > 0.5){
                     robot.openClaw();
                     robot.openMiniClaw();
-                    if (state_timer.getElapsedTimeSeconds() > 0.55) {
-                        next_state();
-                    }
+                    robot.clawAct();
+                    robot.miniClawAct();
+                    next_state();
                 }
                 break;
             case 5: //goes to resting
@@ -241,7 +244,11 @@ public class Spec4 extends OpMode {
             case 9: //closes the claw
                 robot.closeMiniClaw();
                 robot.closeClaw();
-                if (state_timer.getElapsedTimeSeconds() > 0.45) {next_state();}
+                robot.miniClawAct();
+                robot.clawAct();
+                if (state_timer.getElapsedTimeSeconds() > 0.3) {
+                    next_state();
+                }
                 break;
             case 10: //raises the arm and sliders to the above bar position
                 robot.setArmState(Robot2.armState.ABOVE_BAR);
@@ -270,9 +277,9 @@ public class Spec4 extends OpMode {
                 if(state_timer.getElapsedTimeSeconds() > 0.3){
                     robot.openClaw();
                     robot.openMiniClaw();
-                    if (state_timer.getElapsedTimeSeconds() > 0.35) {
-                        next_state();
-                    }
+                    robot.clawAct();
+                    robot.miniClawAct();
+                    next_state();
                 }
                 break;
             case 14: //goes to the collection position
@@ -293,7 +300,11 @@ public class Spec4 extends OpMode {
             case 16: //closes the claw
                 robot.closeMiniClaw();
                 robot.closeClaw();
-                if (state_timer.getElapsedTimeSeconds() > 0.45) {next_state();}
+                robot.miniClawAct();
+                robot.clawAct();
+                if (state_timer.getElapsedTimeSeconds() > 0.3) {
+                    next_state();
+                }
                 break;
             case 17: //raises the arm and sliders to the above bar position
                 robot.setArmState(Robot2.armState.ABOVE_BAR);
@@ -322,9 +333,9 @@ public class Spec4 extends OpMode {
                 if(state_timer.getElapsedTimeSeconds() > 0.3){
                     robot.openClaw();
                     robot.openMiniClaw();
-                    if (state_timer.getElapsedTimeSeconds() > 0.35) {
-                        next_state();
-                    }
+                    robot.miniClawAct();
+                    robot.clawAct();
+                    next_state();
                 }
                 break;
             case 21: //goes to the collection position
@@ -344,7 +355,11 @@ public class Spec4 extends OpMode {
             case 23: //closes the claw
                 robot.closeMiniClaw();
                 robot.closeClaw();
-                if (state_timer.getElapsedTimeSeconds() > 0.45) {next_state();}
+                robot.clawAct();
+                robot.miniClawAct();
+                if (state_timer.getElapsedTimeSeconds() > 0.3) {
+                    next_state();
+                }
                 break;
             case 24: //raises the arm and sliders to the above bar position
                 robot.setArmState(Robot2.armState.ABOVE_BAR);
@@ -372,9 +387,9 @@ public class Spec4 extends OpMode {
                 if(state_timer.getElapsedTimeSeconds() > 0.3){
                     robot.openClaw();
                     robot.openMiniClaw();
-                    if (state_timer.getElapsedTimeSeconds() > 0.45) {
-                        next_state();
-                    }
+                    robot.miniClawAct();
+                    robot.clawAct();
+                    next_state();
                 }
                 break;
             case 28: //goes to the collection position for the park

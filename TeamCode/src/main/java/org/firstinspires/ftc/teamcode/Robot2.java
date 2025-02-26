@@ -123,7 +123,6 @@ public class Robot2 {
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         final double sliderSpeed = 0.35;
         state = armState.RESTING;
-        allAct();
         rightLEDRed = hardwareMap.get(LED.class, "rightLEDRed");
         rightLEDGreen = hardwareMap.get(LED.class, "rightLEDGreen");
         leftLEDRed = hardwareMap.get(LED.class, "leftLEDRed");
