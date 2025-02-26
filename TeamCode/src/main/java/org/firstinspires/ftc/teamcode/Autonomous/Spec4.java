@@ -170,10 +170,12 @@ public class Spec4 extends OpMode {
             case 0: //closes the claw
                 robot.closeMiniClaw();
                 robot.closeClaw();
-                next_state();
+                if (state_timer.getElapsedTimeSeconds() > 0.9) {
+                    next_state();
+                }
                 break;
             case 1: //raises the arm and sliders to the above bar position
-                robot.setArmState(Robot2.armState.ARM_ABOVE_BAR);
+                robot.setArmState(Robot2.armState.ABOVE_BAR);
                 robot.sliderNoTouchAct();
                 if(state_timer.getElapsedTimeSeconds() > 0.2) {
                     robot.allAct();
@@ -189,7 +191,7 @@ public class Spec4 extends OpMode {
                 break;
             case 3: //clips the specimen
                 if(!follower.isBusy()) {
-                    robot.setArmState(Robot2.armState.ARM_BELOW_BAR);
+                    robot.setArmState(Robot2.armState.BELOW_BAR);
                     robot.sliderNoTouchAct();
                     robot.allAct();
                     next_state();

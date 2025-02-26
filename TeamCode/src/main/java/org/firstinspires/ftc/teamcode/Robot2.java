@@ -123,6 +123,7 @@ public class Robot2 {
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         final double sliderSpeed = 0.35;
         state = armState.RESTING;
+        allAct();
         rightLEDRed = hardwareMap.get(LED.class, "rightLEDRed");
         rightLEDGreen = hardwareMap.get(LED.class, "rightLEDGreen");
         leftLEDRed = hardwareMap.get(LED.class, "leftLEDRed");
@@ -292,18 +293,6 @@ public class Robot2 {
             case POSTHANG:
                 desired_slider_position = 1900;//used to be resting_position
                 desired_slider_velocity = Slidervelocityup;
-                break;
-            case ARM_ABOVE_BAR:
-                desired_slider_position = 1050;
-                desired_slider_velocity = Slidervelocityup;
-                desired_shoulder_position = 130;
-                desired_shoulder_velocity = shoulder_bar_velotity;
-                break;
-            case ARM_BELOW_BAR:
-                desired_slider_position = 500;
-                desired_slider_velocity = Slidervelocitydown;
-                desired_shoulder_position = 160;
-                desired_shoulder_velocity = shoulder_bar_velotity;
                 break;
         }
     }
