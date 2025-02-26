@@ -50,7 +50,9 @@ public class Spec4 extends OpMode {
     private final Pose HangSpecimen1 = new Pose(37.5,75, Math.toRadians(0));
     private final Point HangSpecimen1Point = new Point(37.5, 75);
     private final Pose HangSpecimen2 = new Pose(37.5, 72.5, Math.toRadians(0));
+    private final Point HangSpecimen2Point = new Point(37.5, 72.5);
     private final Pose HangSpecimen3 = new Pose(37.5, 70, Math.toRadians(0));
+    private final Point HangSpecimen3Point = new Point(37.5, 70);
     private final Pose HangSpecimen4 = new Pose(37.75, 67.5, Math.toRadians(0));
     private final Pose SpecPrepStep1 = new Pose(54, 26.9, Math.toRadians(0));
     private final Point SpecPrepStep1Point = new Point(54, 26.9);
@@ -60,10 +62,14 @@ public class Spec4 extends OpMode {
     private final Pose littleBack = new Pose (25, 22, Math.toRadians(0));
     private final Pose littleBackSpec = new Pose(12, 35, Math.toRadians(180));
     private final Point littleBackSpecPoint = new Point (12, 35);
-    private final Pose SpecGrab = new Pose(10, 35, Math.toRadians(180));
+    private final Pose SpecGrab = new Pose(9.55, 35, Math.toRadians(180));
+    private final Point SpecGrabPoint = new Point(9.55, 35);
+    private final Point SpecGrabControl1 = new Point(15, 64);
+    private final Point SpecGrabControl2 = new Point(46, 34);
     private final Pose CurvePoseSpecGrab = new Pose(61, 28, Math.toRadians(0));
     private final Point CurveSpecGrab = new Point(61, 28);
-    private final Point controlSpecCollect1Step1 = new Point(1,45);
+    private final Point controlSpecCollect1Step1 = new Point(1,38);
+    private final Point controlSpecCollect1Step2 = new Point(45, 43);
     private final Point controlSpecCollect2 = new Point(70, 11);
 
     private PathChain square;
@@ -107,19 +113,19 @@ public class Spec4 extends OpMode {
                 .setLinearHeadingInterpolation(SpecGrab.getHeading(), HangSpecimen4.getHeading())
                 .build();
         specimenGrab1 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(HangSpecimen2), new Point(SpecGrab)))
+                .addBezierCurve(HangSpecimen2Point, SpecGrabControl1, SpecGrabControl2, SpecGrabPoint)
                 .setLinearHeadingInterpolation(HangSpecimen2.getHeading(), SpecGrab.getHeading())
                 .build();
         specimenGrab2 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(HangSpecimen3), new Point(SpecGrab)))
+                .addBezierCurve(HangSpecimen3Point, SpecGrabControl1, SpecGrabControl2, SpecGrabPoint)
                 .setLinearHeadingInterpolation(HangSpecimen3.getHeading(), SpecGrab.getHeading())
                 .build();
         Park = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(HangSpecimen4), new Point(SpecGrab)))
-                .setLinearHeadingInterpolation(HangSpecimen4.getHeading(), SpecGrab.getHeading())
+                .setLinearHeadingInterpolation(HangSpecimen4.getHeading(), HangSpecimen4.getHeading())
                 .build();
         SpecCollect1 = follower.pathBuilder()
-                .addBezierCurve(HangSpecimen1Point, controlSpecCollect1Step1, CurveSpecGrab)
+                .addBezierCurve(HangSpecimen1Point, controlSpecCollect1Step1, controlSpecCollect1Step2, CurveSpecGrab)
                 .setLinearHeadingInterpolation(HangSpecimen1.getHeading(), CurvePoseSpecGrab.getHeading())
                 .build();
         BlockToBase1 = follower.pathBuilder()
