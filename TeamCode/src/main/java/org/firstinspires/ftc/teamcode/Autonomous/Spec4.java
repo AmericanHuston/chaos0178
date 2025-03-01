@@ -62,7 +62,7 @@ public class Spec4 extends OpMode {
     private final Pose littleBack = new Pose (25, 22, Math.toRadians(0));
     private final Pose littleBackSpec = new Pose(12, 35, Math.toRadians(180));
     private final Point littleBackSpecPoint = new Point (12, 35);
-    private final Pose SpecGrab = new Pose(9.55, 35, Math.toRadians(180));
+    private final Pose SpecGrab = new Pose(9.45, 35, Math.toRadians(180));
     private final Point SpecGrabPoint = new Point(9.55, 35);
     private final Point SpecGrabControl1 = new Point(15, 64);
     private final Point SpecGrabControl2 = new Point(46, 34);
@@ -178,7 +178,7 @@ public class Spec4 extends OpMode {
                 robot.closeClaw();
                 robot.miniClawAct();
                 robot.clawAct();
-                if (state_timer.getElapsedTimeSeconds() > 0.9) {
+                if (state_timer.getElapsedTimeSeconds() > 1.0) {
                     next_state();
                 }
                 break;
@@ -206,7 +206,7 @@ public class Spec4 extends OpMode {
                 }
                 break;
             case 4: //releases the claw
-                if(state_timer.getElapsedTimeSeconds() > 0.5){
+                if(state_timer.getElapsedTimeSeconds() > 0.3){
                     robot.openClaw();
                     robot.openMiniClaw();
                     robot.clawAct();
@@ -246,7 +246,7 @@ public class Spec4 extends OpMode {
                 robot.closeClaw();
                 robot.miniClawAct();
                 robot.clawAct();
-                if (state_timer.getElapsedTimeSeconds() > 0.45) {
+                if (state_timer.getElapsedTimeSeconds() > 0.5) {
                     next_state();
                 }
                 break;
@@ -302,7 +302,7 @@ public class Spec4 extends OpMode {
                 robot.closeClaw();
                 robot.miniClawAct();
                 robot.clawAct();
-                if (state_timer.getElapsedTimeSeconds() > 0.45) {
+                if (state_timer.getElapsedTimeSeconds() > 0.5) {
                     next_state();
                 }
                 break;
@@ -357,7 +357,7 @@ public class Spec4 extends OpMode {
                 robot.closeClaw();
                 robot.clawAct();
                 robot.miniClawAct();
-                if (state_timer.getElapsedTimeSeconds() > 0.45) {
+                if (state_timer.getElapsedTimeSeconds() > 0.5) {
                     next_state();
                 }
                 break;
