@@ -178,7 +178,7 @@ public class Spec4 extends OpMode {
                 robot.closeClaw();
                 robot.miniClawAct();
                 robot.clawAct();
-                if (state_timer.getElapsedTimeSeconds() > 0.4) {
+                if (state_timer.getElapsedTimeSeconds() > 0.7) {
                     next_state();
                 }
                 break;
@@ -246,7 +246,7 @@ public class Spec4 extends OpMode {
                 robot.closeClaw();
                 robot.miniClawAct();
                 robot.clawAct();
-                if (state_timer.getElapsedTimeSeconds() > 0.3) {
+                if (state_timer.getElapsedTimeSeconds() > 0.45) {
                     next_state();
                 }
                 break;
@@ -302,7 +302,7 @@ public class Spec4 extends OpMode {
                 robot.closeClaw();
                 robot.miniClawAct();
                 robot.clawAct();
-                if (state_timer.getElapsedTimeSeconds() > 0.3) {
+                if (state_timer.getElapsedTimeSeconds() > 0.45) {
                     next_state();
                 }
                 break;
@@ -357,7 +357,7 @@ public class Spec4 extends OpMode {
                 robot.closeClaw();
                 robot.clawAct();
                 robot.miniClawAct();
-                if (state_timer.getElapsedTimeSeconds() > 0.3) {
+                if (state_timer.getElapsedTimeSeconds() > 0.45) {
                     next_state();
                 }
                 break;
@@ -408,5 +408,10 @@ public class Spec4 extends OpMode {
 
 
         //follower.telemetryDebug(telemetryA);
+    }
+    @Override
+    public void stop() {
+        telemetry.addLine("Stopped");
+        telemetry.update();
     }
 }

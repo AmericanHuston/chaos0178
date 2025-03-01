@@ -185,4 +185,9 @@ public class TwoArmTwoFurious extends OpMode {
         /* Update Telemetry to the Driver Hub */
         telemetry.update();
     }
+    @Override
+    public void stop() {
+        telemetry.addLine("Stopped");
+        telemetry.update();
+    }
 }

@@ -379,4 +379,9 @@ public class BasketAuto extends OpMode {
 
         //follower.telemetryDebug(telemetryA);
     }
+    @Override
+    public void stop() {
+        telemetry.addLine("Stopped");
+        telemetry.update();
+    }
 }
