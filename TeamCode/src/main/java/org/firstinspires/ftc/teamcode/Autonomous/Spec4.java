@@ -178,7 +178,7 @@ public class Spec4 extends OpMode {
                 robot.closeClaw();
                 robot.miniClawAct();
                 robot.clawAct();
-                if (state_timer.getElapsedTimeSeconds() > 0.7) {
+                if (state_timer.getElapsedTimeSeconds() > 0.9) {
                     next_state();
                 }
                 break;
