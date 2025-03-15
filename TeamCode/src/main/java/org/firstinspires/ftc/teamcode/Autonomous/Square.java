@@ -25,7 +25,6 @@ import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
  * @author Samarth Mahapatra - 1002 CircuitRunners Robotics Surge
  * @version 1.0, 12/30/2024
  */
-@Disabled
 @Autonomous(name = "Square", group = "Examples")
 public class Square extends OpMode {
     private Follower follower;

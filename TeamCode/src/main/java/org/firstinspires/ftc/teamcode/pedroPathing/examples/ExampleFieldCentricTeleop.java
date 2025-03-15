@@ -16,8 +16,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
  * @author Baron Henderson - 20077 The Indubitables
  * @version 2.0, 12/30/2024
  */
-@Disabled
-@TeleOp(name = "Example Field-Centric Teleop", group = "Examples")
+@TeleOp(name = "Push bot Teleop", group = "Examples")
 public class ExampleFieldCentricTeleop extends OpMode {
     private Follower follower;
     private final Pose startPose = new Pose(8,72,0);
@@ -52,7 +51,7 @@ public class ExampleFieldCentricTeleop extends OpMode {
         - Robot-Centric Mode: false
         */
 
-        follower.setTeleOpMovementVectors(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x, false);
+        follower.setTeleOpMovementVectors(-gamepad1.left_stick_y/4, -gamepad1.left_stick_x/4, -gamepad1.right_stick_x/4, false);
         follower.update();
 
         /* Telemetry Outputs of our Follower */
