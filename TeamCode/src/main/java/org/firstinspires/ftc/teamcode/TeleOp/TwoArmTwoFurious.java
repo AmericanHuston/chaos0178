@@ -145,7 +145,7 @@ public class TwoArmTwoFurious extends OpMode {
              robot.setArmState(Robot2.armState.SPECIMEN);
         }
         if (gamepad2.b) {
-        robot.setArmState(Robot2.armState.COLLECTION);
+            robot.setArmState(Robot2.armState.COLLECTION);
         }
         if (gamepad2.dpad_left) {
             robot.setArmState(Robot2.armState.ABOVE_BAR);
