@@ -5,6 +5,8 @@ import static java.lang.Double.valueOf;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.localization.Pose;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -14,7 +16,6 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.LED;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
-
 import org.firstinspires.ftc.teamcode.VarsAndBoards.Utils.DataLogger;
 import org.firstinspires.ftc.teamcode.VarsAndBoards.Utils.DataReader;
 
@@ -92,6 +93,7 @@ public class Robot2 {
     Servo miniClaw;
     TouchSensor sliderButton;
     GoBildaPinpointDriver pinpoint;
+    Rev2mDistanceSensor Distancer;
 
     public void init(HardwareMap hardwareMap) {
 
@@ -123,6 +125,7 @@ public class Robot2 {
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         final double sliderSpeed = 0.35;
         state = armState.RESTING;
+        Distancer = hardwareMap.get(Rev2mDistanceSensor.class, "FrontDistanceSensor");
         rightLEDRed = hardwareMap.get(LED.class, "rightLEDRed");
         rightLEDGreen = hardwareMap.get(LED.class, "rightLEDGreen");
         leftLEDRed = hardwareMap.get(LED.class, "leftLEDRed");
@@ -152,6 +155,11 @@ public class Robot2 {
         this.state = armState;
         updateDesiredValues();
     }
+
+    public double getDistanceFromSensor(){
+        return Distancer.getDistance(DistanceUnit.MM);
+    }
+
     public void setGreenLED(boolean light_on) {
         if (light_on) {
             rightLEDGreen.on();
